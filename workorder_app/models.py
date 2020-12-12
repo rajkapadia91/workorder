@@ -115,15 +115,15 @@ class WorkOrder(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Material(models.Model):
-    product = models.CharField(max_length=255)
-    quantity = models.IntegerField()
+    product = models.CharField(max_length=255, default="None")
+    quantity = models.CharField(max_length=10, default="0")
     workorder = models.ForeignKey(WorkOrder, related_name="materials", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
 
 class OtherMaterial(models.Model):
-    other_name = models.CharField(max_length=255)
-    other_quantity = models.IntegerField()
+    other_name = models.CharField(max_length=255, default="None")
+    other_quantity = models.CharField(max_length=10, default="0")
     workorder = models.OneToOneField(WorkOrder, related_name="othermaterial", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
