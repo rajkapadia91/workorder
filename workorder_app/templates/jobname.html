@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jobname.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h2>Create Project/Job</h2>
+        </div>
+        <button><a href="/">Creating a New Extra Work Order</a></button>
+        <button><a href="/workorder">Back to All Extra Work Orders</a></button>
+        <div id="form_1">
+            <form action="/create_jobname" method="post">
+                {% csrf_token %}
+                General Contractor: <input type="text" name="contractor_name" id=""><br><br>
+                Name of Job: <input type="text" name="job_name" id=""><br><br>
+                <p>Full Address Below:</p>
+                <div id="address">
+                    Street: <input type="text" name="street" id="">
+                    City: <input type="text" name="city" id="">
+                    State: <input type="text" name="state" id="" placeholder="Ex: NJ">
+                    Zipcode: <input type="number" name="zipcode" placeholder="Ex: 08895" id="">
+                </div> <br>
+                <input id="create_button" type="submit" value="Create">
+            </form>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>General Contractor</th>
+                    <th>Name of Job</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+                {% for one_job in all_jobs reversed %}
+                <tr>
+                    <td>{{one_job.contractor_name}}</td>
+                    <td>{{one_job.name}}</td>
+                    <td>
+                        <ul>
+                            <li>{{one_job.street}}</li>
+                            <li>{{one_job.city}} {{one_job.state}}, {{one_job.zip_code}}</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <button><a href="/delete_job/{{one_job.id}}">Delete Job</a></button>
+                        <button><a href="/edit/{{one_job.id}}">Edit Job</a></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Work Orders</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'workorder.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1 class="head">All Work Orders</h1>
+            <div class="head"> 
+                <button><a href="/">Creating New Extra Work Order</a></button>
+                <button><a href="/logout">Logout</a></button>
+            </div>
+        </div>
+        <div id="main_table">
+            <table>
+                <tr>
+                    <th>Work Order No.</th>
+                    <th>Created By</th>
+                    <th>General Contractor</th>
+                    <th>Job Name</th>
+                    <th>Location of Work Performed</th>
+                    <th>Signature of General Contractor</th>
+                    <th>Signature of Belcon Foreman</th>
+                    <th>Actions</th>
+                </tr>
+                {% for one_work_order in my_work_orders reversed %}
+                <tr>
+                    <td>{{one_work_order.id}}</td>
+                    <td>{{one_work_order.user.first_name}} {{one_work_order.user.last_name}}</td>
+                    <td>{{one_work_order.jobname.contractor_name}}</td>
+                    <td>{{one_work_order.jobname.name}}</td>
+                    <td>{{one_work_order.location}}</td>
+                    <td><img src="{{one_work_order.signature_1}}" alt="Signature of contractor" srcset=""></td>
+                    <td><img src="{{one_work_order.signature_2}}" alt="Signature of belcon foreman" srcset=""></td>
+                    <td>
+                        {% if one_work_order.id == latest_work_order.id %}
+                        <button><a href="/workorderpreview/{{one_work_order.id}}">Show Work Order</a></button>
+                        <button><a href="/edit/{{one_work_order.id}}">Edit Work Order</a></button>
+                        {% else %}
+                        <button>Unable to Edit Any Further</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
