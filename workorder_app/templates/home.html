@@ -53,7 +53,7 @@
             <form action="/login" method="post">
                 {% csrf_token %}
                 Email: <input type="email" name="logged_email" class="form_field"><br><br>
-                Password <input type="password" name="logged_password" class="form_field"><br><br>
+                Password: <input type="password" name="logged_password" class="form_field"><br><br>
                 <input type="submit" value="Login" class="button">
             </form>
             <div id="error_login">

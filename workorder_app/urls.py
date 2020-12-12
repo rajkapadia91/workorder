@@ -17,5 +17,7 @@ urlpatterns = [
     path('delete/<int:workorder_id>', views.delete_work_order),
     path('workorderpreview/<int:workorder_id>', views.workorderpreview),
     path('edit/<int:workorder_id>', views.editorder),
-    path('save_edit/<int:workorder_id>', views.save_edit)
+    path('save_edit/<int:workorder_id>', views.save_edit),
+    path('all_users', views.all_users),
+    path('delete_user/<int:user_id>', views.delete_user)
 ]

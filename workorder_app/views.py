@@ -182,3 +182,16 @@ def myworkorders(request, user_id):
         'latest_work_order': WorkOrder.objects.filter(user=User.objects.get(id=user_id)).last(),
         }
     return render(request, 'myworkorders.html', context)
+
+def all_users(request):
+    if request.session['secret_code'] == "FGadmin!":
+        context = {
+            'all_user_accounts' : User.objects.all()
+        }
+        return render(request, 'alluseraccounts.html', context)
+    else:
+        return redirect('/')
+
+def delete_user(request, user_id):
+    User.objects.get(id=user_id).delete()
+    return redirect ('/all_users')

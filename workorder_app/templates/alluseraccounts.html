@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'workorder.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1 class="head">All User Accounts</h1>
+            <div class="head"> 
+                <button><a href="/">Creating New Extra Work Order</a></button>
+                <button><a href="/jobname">Create New Job</a></button>
+                <button><a href="/logout">Logout</a></button>
+                <button><a href="/workorder">Admin View</a></button>
+            </div>
+        </div>
+        <div id="main_table">
+            <table>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>User Account Created At</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Employee Level</th>
+                    <th>Delete User</th>
+                    <th>Edit User</th>
+                </tr>
+                {% for one_user in all_user_accounts reversed %}
+                <tr>
+                    <td>{{one_user.id}}</a></td>
+                    <td>{{one_user.created_at}}</td>
+                    <td>{{one_user.first_name}}</td>
+                    <td>{{one_user.last_name}}</td>
+                    <td>{{one_user.email}}</td>
+                    {% if one_user.secret_code == "Inside1" %}
+                    <td>{{one_user.secret_code}} | Non Admin</td>
+                    {% else %}
+                    <td>{{one_user.secret_code}} | <b>ADMIN</b></td>
+                    {% endif %}
+                    {% if request.session.user_id == one_user.id %}
+                    <td>Can't Delete Your Own Account</td>
+                    {% else %}
+                    <td><a href="/delete_user/{{one_user.id}}">Delete User</a></td>
+                    {% endif %}
+                    <td><a disabled href="">Edit User</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
