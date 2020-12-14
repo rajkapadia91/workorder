@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Order</title>
+    <title>View Work Order</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'showworkorder.css' %}">
 </head>
@@ -28,6 +28,7 @@
             <p> <span class="titles">Name of Job:</span> {{this_work_order.jobname.name}}</p>
             <p> <span class="titles">Address:</span> {{this_work_order.jobname.street}}, {{this_work_order.jobname.city}}, {{this_work_order.jobname.state}} {{this_work_order.jobname.zip_code}}</p>
             <p> <span class="titles">Location of Work Performed:</span> {{this_work_order.location}}</p>
+            <p> <span class="titles">Date/ Date Range of Work Performed:</span> {{this_work_order.date_work_performed}}</p>
             <p> <span class="titles">Work Performed:</span> {{this_work_order.work_performed}}</p>
             <hr>
             <h3>Material/s Used:</h3>
@@ -35,20 +36,29 @@
                 <tr>
                     <th>Quantity</th>
                     <th>Product</th>
+                    <th>Unit of Measurement</th>
+                    <th>Measurmement Amount</th>
                 </tr>
                 {% for material in this_work_order.materials.all %}
                 <tr>
                     <td>{{material.quantity}}</td>
                     <td>{{material.product}}</td>
+                    <td>{{material.measurement}}</td>
+                    <td>{{material.measurement_amount}}</td>
                 </tr>
                 {% endfor %}
+                <tr><th>Other Material:</th></tr>
                 <tr>
-                    <th>Other: Quantity</th>
-                    <th>Other: Product</th>
+                    <th>Quantity</th>
+                    <th>Product</th>
+                    <th>Unit of Measurement</th>
+                    <th>Measurmement Amount</th>
                 </tr>
                 <tr>
                     <td>{{this_work_order.othermaterial.other_quantity}}</td>
                     <td>{{this_work_order.othermaterial.other_name}}</td>
+                    <td>{{this_work_order.othermaterial.other_measurement}}</td>
+                    <td>{{this_work_order.othermaterial.other_measurement_amount}}</td>
                 </tr>
             </table>
             <h3>Labor Type</h3>

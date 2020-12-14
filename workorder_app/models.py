@@ -98,6 +98,7 @@ class Supervisor(models.Model):
  
 class WorkOrder(models.Model):
     location = models.CharField(max_length=255)
+    date_work_performed = models.CharField(max_length=255, default="None")
     work_performed = models.TextField()
     signature_1 = models.TextField()
     signator_1 = models.CharField(max_length=255)
@@ -117,6 +118,8 @@ class WorkOrder(models.Model):
 class Material(models.Model):
     product = models.CharField(max_length=255, default="None")
     quantity = models.CharField(max_length=10, default="0")
+    measurement = models.CharField(max_length=20, default="None")
+    measurement_amount = models.CharField(max_length=20, default="None")
     workorder = models.ForeignKey(WorkOrder, related_name="materials", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
@@ -124,6 +127,8 @@ class Material(models.Model):
 class OtherMaterial(models.Model):
     other_name = models.CharField(max_length=255, default="None")
     other_quantity = models.CharField(max_length=10, default="0")
+    other_measurement = models.CharField(max_length=20, default="None")
+    other_measurement_amount = models.CharField(max_length=20, default="None")
     workorder = models.OneToOneField(WorkOrder, related_name="othermaterial", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

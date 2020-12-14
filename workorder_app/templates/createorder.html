@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extra Work Order Page</title>
+    <title>Create Extra Work Order</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'createorder.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -46,11 +46,11 @@
                 {% csrf_token %}
                 Job/Project Name: <select class="job_list" name="contractor">
                     {% for one_job in all_jobs %}
-                    <option value="{{one_job.id}}">Job Name: {{one_job.name}} &#160;&#160;&#160;&#160; General Contractor:
-                        {{one_job.contractor_name}}</option>
+                    <option value="{{one_job.id}}">Job Name: {{one_job.name}}</option>
                     {% endfor %}
                 </select> <br> <br>
-                Location of Work Performed: <input type="text" name="location" id="location_work"> <br> <br>
+                Location of Work Performed: <input type="text" name="location" id="location_work"> <br><br>
+                Date/ Date Range Work Performed: <input type="text" name="date_work_performed" id="date_work_performed"> <br><br>
                 Work Performed: <br>
                 <textarea name="work_performed" id="work_performed" cols="70" rows="8"></textarea><br>
 
@@ -63,6 +63,8 @@
                         <tr>
                             <th>Quantity</th>
                             <th>Product</th>
+                            <th>Unit of Measurement</th>
+                            <th>Measurmement Amount</th>
                         </tr>
                         <tr>
                             <td><input type="number" name="quantity1"></td>
@@ -200,6 +202,14 @@
                                 <option value="FRP Glue ">Location: FRP&#160;&#160;&#160;&#160;Product: FRP Glue </option>
                             </select>
                             </td>
+                            <td><select name="measurement1" class="measurement">
+                                <option value="">None &#160;&#160;&#160;&#160;</option>
+                                <option value="FT">FT</option>
+                                <option value="EA">EA</option>
+                                <option value="Box(s)">Box(s)</option>
+                                <option value="SQ FT">SQ FT</option>
+                            </select></td>
+                            <td><input type="text" name="measurement_amount1"></td>
                         </tr>
                     </table><br>
                     <button type="button" id="add_material">Add another material</button>
@@ -211,11 +221,14 @@
                         <tr>
                             <th>Quantity</th>
                             <th>Product</th>
+                            <th>Unit of Measurement</th>
+                            <th>Measurmement Amount</th>
                         </tr>
                         <tr>
                             <td><input type="number" name="other_quantity"></td>
                             <td><input type="text" name="other_name"></td>
-                            </td>
+                            <td><input type="test" name="other_measurement"></td>
+                            <td><input type="text" name="other_measurement_amount"></td>
                         </tr>
                     </table><br>
                     
@@ -250,14 +263,14 @@
                         </tr>
                         <tr>
                             <input hidden type="text" name="labor_type_tj" value="Taper - Journeyman" id="">
-                            <td>Taper Journeyman</td>
+                            <td>Taper - Journeyman</td>
                             <td><input type="number" name="employee_numbers_tj" id=""></td>
                             <td><input type="number" name="regular_hours_tj" id=""></td>
                             <td><input type="number" name="over_hours_tj" id=""></td>
                             <td><input type="number" name="double_hours_tj" id=""></td>
                         </tr>
                         <tr>
-                            <input hidden type="text" name="labor_type_tf" value="Taper - Formeman" id="">
+                            <input hidden type="text" name="labor_type_tf" value="Taper - Foreman" id="">
                             <td>Taper - Foreman</td>
                             <td><input type="number" name="employee_numbers_tf" id=""></td>
                             <td><input type="number" name="regular_hours_tf" id=""></td>
@@ -592,6 +605,7 @@
         $(document).ready(function () {
             $('.job_list').select2();
             $('.material_list').select2();
+            $('.measurement').select2();
         });
 
         // $(document).ready(function () {
@@ -733,9 +747,10 @@
                                 <option value="FRP">Location: FRP&#160;&#160;&#160;&#160;Product: FRP</option>
                                 <option value="FRP Glue ">Location: FRP&#160;&#160;&#160;&#160;Product: FRP Glue </option>
                             </select>
-                            </td> </tr>`)
+                            </td><td><select name="measurement${i}" class="measurement"><option value="">None &#160;&#160;&#160;&#160;</option><option value="FT">FT</option><option value="EA">EA</option><option value="Box(s)">Box(s)</option><option value="SQ FT">SQ FT</option></select></td><td><input type="text" name="measurement_amount${i}"></td></tr>`)
             $(document).ready(function () {
             $('.material_list').select2();
+            $('.measurement').select2();
         });
         })
 

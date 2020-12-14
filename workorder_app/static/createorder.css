@@ -42,6 +42,11 @@
     height: 20px;
 }
 
+#date_work_performed {
+    width: 340px;
+    height: 20px;
+}
+
 #work_performed{
     margin-top: 5px;
     line-height: 3.1ch;
@@ -73,7 +78,6 @@
 }
 
 #material_table tr th{
-    white-space: nowrap;
     padding: 5px;
     text-align: center;
     width: 40%;
@@ -83,6 +87,18 @@
     text-align: center;
     width: 40%;
   }
+
+  #other_material_table tr th{
+    padding: 5px;
+    text-align: center;
+    width: 40%;
+}
+
+#other_material_table {
+    text-align: center;
+    width: 40%;
+  }
+
 
 .select2-container .select2-selection--single {
     height: 24px!important;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Belcon Extra Work Order Login</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="box" id="form_1">
-            <h3>Please sign in or if you are first time user, register in order to create an extra work order.</h3>
+            <h3>Please sign in or if you are a first time user, register in order to create an extra work order.</h3>
             <form action="/create_account" method="post">
                 {% csrf_token %}
                 First Name: <input type="text" name="first_name" class="form_field"><br><br>

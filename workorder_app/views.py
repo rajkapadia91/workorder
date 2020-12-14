@@ -101,7 +101,8 @@ def create_order(request):
         new_lab = Laborer.objects.create(labor_type=request.POST['labor_type_l'],employee_numbers=request.POST['employee_numbers_l'], regular_hours=request.POST['regular_hours_l'], over_hours=request.POST['over_hours_l'], double_hours=request.POST['double_hours_l'])
         new_sup = Supervisor.objects.create(labor_type=request.POST['labor_type_s'],employee_numbers=request.POST['employee_numbers_s'], regular_hours=request.POST['regular_hours_s'], over_hours=request.POST['over_hours_s'], double_hours=request.POST['double_hours_s'])
         new_order = WorkOrder.objects.create(
-            location=request.POST['location'], 
+            location=request.POST['location'],
+            date_work_performed = request.POST['date_work_performed'],
             work_performed=request.POST['work_performed'],
             signature_1=request.POST['signature_1'],
             signator_1=request.POST['signator_1'], 
@@ -117,8 +118,8 @@ def create_order(request):
             user=User.objects.get(id=user_creating_order.id))
         mat_count = int(request.POST['material_count'])
         for i in range(1, mat_count+1):
-            new_material = Material.objects.create(product=request.POST[f"product{i}"], quantity= request.POST[f"quantity{i}"],workorder=WorkOrder.objects.get(id=new_order.id))
-        new_other_material = OtherMaterial.objects.create(other_name=request.POST['other_name'], other_quantity=request.POST['other_quantity'], workorder=WorkOrder.objects.get(id=new_order.id))
+            new_material = Material.objects.create(product=request.POST[f"product{i}"], quantity= request.POST[f"quantity{i}"], measurement=request.POST[f"measurement{i}"], measurement_amount= request.POST[f"measurement_amount{i}"], workorder=WorkOrder.objects.get(id=new_order.id))
+        new_other_material = OtherMaterial.objects.create(other_name=request.POST['other_name'], other_quantity=request.POST['other_quantity'], other_measurement=request.POST['other_measurement'], other_measurement_amount=request.POST['other_measurement_amount'],  workorder=WorkOrder.objects.get(id=new_order.id))
         return redirect (f"/workorderpreview/{new_order.id}")
     else:
         return redirect('/')
