@@ -31,7 +31,7 @@
             {% endif %}
         </div>
         <div id="created_by">
-            <h3>Extra work order successfully created by {{this_work_order.user.first_name}} {{this_work_order.user.last_name}}. Below is a summary of the same.</h3>
+            <h3>Extra work order successfully created by {{this_work_order.user.first_name}} {{this_work_order.user.last_name}} on {{this_work_order.created_at}}</h3>
         </div>
         <div id="actual_order">
             <h3>Extra Work Order No. {{this_work_order.id}}</h3>

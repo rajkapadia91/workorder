@@ -23,7 +23,7 @@
         <button><a href="/workorder">Back to All Extra Work Orders</a></button>
         <button><a href="/edit/{{this_work_order.id}}">Edit Order # {{this_work_order.id}}</a></button>
         <div id="actual_order">
-            <h3>Extra Work Order No. {{this_work_order.id}}</h3>
+            <h3>Extra Work Order No. {{this_work_order.id}} | Created on: {{this_work_order.created_at}}</h3>
             <p> <span class="titles">General Contractor:</span> {{this_work_order.jobname.contractor_name}}</p>
             <p> <span class="titles">Name of Job:</span> {{this_work_order.jobname.name}}</p>
             <p> <span class="titles">Address:</span> {{this_work_order.jobname.street}}, {{this_work_order.jobname.city}}, {{this_work_order.jobname.state}} {{this_work_order.jobname.zip_code}}</p>
