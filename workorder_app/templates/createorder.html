@@ -64,7 +64,7 @@
                             <th>Quantity</th>
                             <th>Product</th>
                             <th>Unit of Measurement</th>
-                            <th>Measurmement Amount</th>
+                            <th>Measuremement Amount</th>
                         </tr>
                         <tr>
                             <td><input type="number" name="quantity1"></td>
@@ -222,7 +222,7 @@
                             <th>Quantity</th>
                             <th>Product</th>
                             <th>Unit of Measurement</th>
-                            <th>Measurmement Amount</th>
+                            <th>Measuremement Amount</th>
                         </tr>
                         <tr>
                             <td><input type="number" name="other_quantity"></td>
@@ -247,7 +247,7 @@
                         </tr>
                         <tr>
                             <input hidden type="text" name="labor_type_cf" value="Carpenter - Foreman" id="">
-                            <td>Carpenter - Forman</td>
+                            <td>Carpenter - Foreman</td>
                             <td><input type="number" name="employee_numbers_cf" id=""></td>
                             <td><input type="number" name="regular_hours_cf" id=""></td>
                             <td><input type="number" name="over_hours_cf" id=""></td>
@@ -296,12 +296,14 @@
                     </table>
                 </div><br>
                 <!-- End - This is the div for adding labor type to the work order. One labor type can be on many work orders -->
-
+                <hr><br>
                 <!-- 1) Start of the signature div for general contractor   -->
                 <div>
                     <div id="canvas_1">
                         Name of General Contractor Signing: <input type="text" name="signator_1" class="signator_name"
                             id="signator_1" placeholder="Please print your name."><br><br>
+                            <p><b>We agree to pay for the above work on the basis of cost of material, labor,<br>
+                                insurance and taxes, on labor and direct costs, plus overhead and profit.</b></p>
                         <!-- Start This is the canvas functionality -->
                         <img hidden src="" id="imgConverted"
                             style="float: left; background: none; border: 2px solid blue ;" alt="This is the signature">
@@ -317,7 +319,7 @@
                     <button type="button" onclick="myFunction()">Clear & Re-Sign</button>
                     <input onclick="saveSignature()" type="button" id="save1" value="Save Signature">
                 </div><br><br>
-
+                <hr><br>
                 <div>
                     <div id="canvas2">
                         Name of Belcon Foreman Signing: <input type="text" name="signator_2" class="signator_name"
