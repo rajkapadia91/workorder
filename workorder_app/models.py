@@ -41,60 +41,6 @@ class JobName(models.Model):
     contractor_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-class CarpenterForeman(models.Model):
-    labor_type = models.CharField(max_length=255, default="Carpenter - Foreman")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
-class CarpenterJourneyamn(models.Model):
-    labor_type = models.CharField(max_length=255, default="Carpenter - Journeyman")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
-class TaperJourneyman(models.Model):
-    labor_type = models.CharField(max_length=255, default="Taper - Journeyman")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
-class TaperForeman(models.Model):
-    labor_type = models.CharField(max_length=255, default="Taper - Foreman")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
-class Laborer(models.Model):
-    labor_type = models.CharField(max_length=255, default="Laborer")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
-class Supervisor(models.Model):
-    labor_type = models.CharField(max_length=255, default="Supervisor")
-    employee_numbers = models.CharField(max_length=255, default="0")
-    regular_hours = models.CharField(max_length=255, default="0")
-    over_hours = models.CharField(max_length=255,default="0")
-    double_hours = models.CharField(max_length=255,default="0")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
  
 class WorkOrder(models.Model):
     location = models.CharField(max_length=255)
@@ -105,12 +51,6 @@ class WorkOrder(models.Model):
     signature_2 = models.TextField()
     signator_2 = models.CharField(max_length=255)
     jobname = models.ForeignKey(JobName, related_name="workorders", on_delete=models.CASCADE)
-    carpenterforeman = models.ForeignKey(CarpenterForeman, related_name="workorders", on_delete=models.CASCADE)
-    carpenterjourneyamn = models.ForeignKey(CarpenterJourneyamn, related_name="workorders", on_delete=models.CASCADE)
-    taperjourneyman = models.ForeignKey(TaperJourneyman, related_name="workorders", on_delete=models.CASCADE)
-    taperforeman = models.ForeignKey(TaperForeman, related_name="workorders", on_delete=models.CASCADE)
-    laborer = models.ForeignKey(Laborer, related_name="workorders", on_delete=models.CASCADE)
-    supervisor = models.ForeignKey(Supervisor, related_name="workorders", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='workorders', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -132,6 +72,17 @@ class OtherMaterial(models.Model):
     workorder = models.OneToOneField(WorkOrder, related_name="othermaterial", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class LaborType(models.Model):
+    labor_type = models.CharField(max_length=255, default="None")
+    labor_description = models.CharField(max_length=255, default="None")
+    employee_numbers = models.CharField(max_length=255, default="0")
+    regular_hours = models.CharField(max_length=255, default="0")
+    premium_hours = models.CharField(max_length=255,default="0")
+    double_hours = models.CharField(max_length=255,default="0")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    workorder = models.ForeignKey(WorkOrder, related_name="labortypes", on_delete=models.CASCADE)
 
 
 

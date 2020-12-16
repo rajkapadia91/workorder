@@ -38,7 +38,7 @@
         </div> <br>
 
         <!-- End This is where the logo and contact info is embedded -->
-        <p>Hi {{request.session.user_fname}}! You are about to create a new work order</p><br>
+        <p id="header_para">Hi {{request.session.user_fname}}! You are about to create a new work order</p><br>
         
         <!-- Start - Master Div for creating work order -->
         <div id="create_order">
@@ -52,11 +52,12 @@
                 Location of Work Performed: <input type="text" name="location" id="location_work"> <br><br>
                 Date/ Date Range Work Performed: <input type="text" name="date_work_performed" id="date_work_performed"> <br><br>
                 Work Performed: <br>
-                <textarea name="work_performed" id="work_performed" cols="70" rows="8"></textarea><br>
+                <textarea name="work_performed" id="work_performed" cols="120" rows="8"></textarea><br><br><br><br>
+                <hr>
 
                 <!-- Start - This is the div for adding material to the work order. Material can be on many work orders -->
                 <div id="material">
-                    <h3>Material:</h3>
+                    <h3>Material</h3>
                     <p id="material_message">Input quantity (number format) and product used below. To add more
                         materials, click on the button.</p>
                     <table id="material_table">
@@ -67,7 +68,7 @@
                             <th>Measurement Amount</th>
                         </tr>
                         <tr>
-                            <td><input type="number" name="quantity1"></td>
+                            <td><input type="number" name="quantity1" id="mat_quantity"></td>
                             <td><select name="product1" class="material_list">
                                 <option value="">None</option>
                                 <option value="">Other (Input Below)</option>
@@ -209,13 +210,13 @@
                                 <option value="Box(s)">Box(s)</option>
                                 <option value="SQ FT">SQ FT</option>
                             </select></td>
-                            <td><input type="text" name="measurement_amount1"></td>
+                            <td><input type="text" name="measurement_amount1" id="measurement_amount"></td>
                         </tr>
                     </table><br>
                     <button type="button" id="add_material">Add another material</button>
                 </div><br>
                 <div id="other_material">
-                    <h3>Other Material:</h3>
+                    <h3>Other Material</h3>
                     <p id="other_material_message">If you are unable to find your material from the above dropdown, please input below. </p>
                     <table id="other_material_table">
                         <tr>
@@ -225,76 +226,50 @@
                             <th>Measurement Amount</th>
                         </tr>
                         <tr>
-                            <td><input type="number" name="other_quantity"></td>
-                            <td><input type="text" name="other_name"></td>
-                            <td><input type="test" name="other_measurement"></td>
-                            <td><input type="text" name="other_measurement_amount"></td>
+                            <td><input type="number" id="other_quantity" name="other_quantity"></td>
+                            <td><input type="text" id="other_name" name="other_name"></td>
+                            <td><input type="test" id="other_measurement" name="other_measurement"></td>
+                            <td><input type="text" id="other_measurement_amount" name="other_measurement_amount"></td>
                         </tr>
                     </table><br>
                     
-                </div>
+                </div><br>
+                <hr>
                 <!-- End - This is the div for adding material to the work order. Material can be on many work orders -->
 
                 <!-- Start - This is the div for adding labor type to the work order. One labor type can be on many work orders -->
                 <div id="labor_type">
-                    <table>
+                    <h3>Labor Type</h3>
+                    <table id="labor_table_master">
                         <tr id="labor_header">
-                            <th>Labor</th>
+                            <th>Labor Type</th>
+                            <th>Labor Description <br><span id="lab_head">(if selecting other)</span></th>
                             <th># of Employees</th>
                             <th>Regular Hours</th>
-                            <th>Over Hours</th>
+                            <th>Premium Hours</th>
                             <th>Doubletime Hours</th>
                         </tr>
                         <tr>
-                            <input hidden type="text" name="labor_type_cf" value="Carpenter - Foreman" id="">
-                            <td>Carpenter - Foreman</td>
-                            <td><input type="number" name="employee_numbers_cf" id=""></td>
-                            <td><input type="number" name="regular_hours_cf" id=""></td>
-                            <td><input type="number" name="over_hours_cf" id=""></td>
-                            <td><input type="number" name="double_hours_cf" id=""></td>
-                        </tr>
-                        <tr>
-                            <input hidden type="text" name="labor_type_cj" value="Carpenter - Journeyman" id="">
-                            <td>Carpenter - Journeyman</td>
-                            <td><input type="number" name="employee_numbers_cj" id=""></td>
-                            <td><input type="number" name="regular_hours_cj" id=""></td>
-                            <td><input type="number" name="over_hours_cj" id=""></td>
-                            <td><input type="number" name="double_hours_cj" id=""></td>
-                        </tr>
-                        <tr>
-                            <input hidden type="text" name="labor_type_tj" value="Taper - Journeyman" id="">
-                            <td>Taper - Journeyman</td>
-                            <td><input type="number" name="employee_numbers_tj" id=""></td>
-                            <td><input type="number" name="regular_hours_tj" id=""></td>
-                            <td><input type="number" name="over_hours_tj" id=""></td>
-                            <td><input type="number" name="double_hours_tj" id=""></td>
-                        </tr>
-                        <tr>
-                            <input hidden type="text" name="labor_type_tf" value="Taper - Foreman" id="">
-                            <td>Taper - Foreman</td>
-                            <td><input type="number" name="employee_numbers_tf" id=""></td>
-                            <td><input type="number" name="regular_hours_tf" id=""></td>
-                            <td><input type="number" name="over_hours_tf" id=""></td>
-                            <td><input type="number" name="double_hours_tf" id=""></td>
-                        </tr>
-                        <tr>
-                            <input hidden type="text" name="labor_type_l" value="Laborer" id="">
-                            <td>Laborer</td>
-                            <td><input type="number" name="employee_numbers_l" id=""></td>
-                            <td><input type="number" name="regular_hours_l" id=""></td>
-                            <td><input type="number" name="over_hours_l" id=""></td>
-                            <td><input type="number" name="double_hours_l" id=""></td>
-                        </tr>
-                        <tr>
-                            <input hidden type="text" name="labor_type_s" value="Supervisor" id="">
-                            <td>Supervisor</td>
-                            <td><input type="number" name="employee_numbers_s" id=""></td>
-                            <td><input type="number" name="regular_hours_s" id=""></td>
-                            <td><input type="number" name="over_hours_s" id=""></td>
-                            <td><input type="number" name="double_hours_s" id=""></td>
+                            <td>
+                                <select name="labor_type1" id="labor_type_select" class="labor_drop">
+                                    <option value="Carpenter - Foreman">Carpenter - Foreman</option>
+                                    <option value="Carpenter - Journeyman">Carpenter - Journeyman</option>
+                                    <option value="Taper - Journeyman">Taper - Journeyman</option>
+                                    <option value="Taper - Foreman">Taper - Foreman</option>
+                                    <option value="Laborer">Laborer</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                            <td><input type="text" name="labor_description1" id="labor_description"></td>
+                            <td><input type="number" name="employee_numbers1" id="employee_numbers"></td>
+                            <td><input type="number" name="regular_hours1" id="regular_hours"></td>
+                            <td><input type="number" name="premium_hours1" id="premium_hours"></td>
+                            <td><input type="number" name="double_hours1" id="double_hours"></td>
                         </tr>
                     </table>
                 </div><br>
+                <button type="button" id="add_labor">Add another labor type</button><br><br><br>
                 <!-- End - This is the div for adding labor type to the work order. One labor type can be on many work orders -->
                 <hr><br>
                 <!-- 1) Start of the signature div for general contractor   -->
@@ -343,6 +318,7 @@
                 <input type="hidden" name="signature_1" value="" id="sign1"><br>
                 <input type="hidden" name="signature_2" value="" id="sign2"><br>
                 <input type="hidden" name="material_count" value="1" id="material_count">
+                <input type="hidden" name="labor_count" value="1" id="labor_count">
                 <input id="submit_button" type="submit" value="Create Work Order"><br>
             </form>
         </div>
@@ -608,17 +584,14 @@
             $('.job_list').select2();
             $('.material_list').select2();
             $('.measurement').select2();
+            $('.labor_drop').select2();
         });
-
-        // $(document).ready(function () {
-        //     $('.material_list').select2();
-        // });
 
 
         $('#add_material').click(function (e) {
             $('#material_count').attr('value', Number($('#material_count').attr('value')) + 1)
             var i = Number($('#material_count').attr('value'))
-            $('#material_table').append(`<tr> <td><input type="number" name="quantity${i}" id=""></td> <td><select name="product${i}" class="material_list"><option value="">None</option><option value="">Other (Input Below)</option>
+            $('#material_table').append(`<tr> <td><input type="number" name="quantity${i}" id="mat_quantity"></td> <td><select name="product${i}" class="material_list"><option value="">None</option><option value="">Other (Input Below)</option>
                 <option value="2&quot; Z furring  20 gauge ">Location: Framing&#160;&#160;&#160;&#160;Product: 2" Z furring  20 gauge </option>
                                 <option value="7/8&quot; Hat Channel 20 gauge">Location: Framing&#160;&#160;&#160;&#160;Product: 7/8" Hat Channel 20 gauge</option>
                                 <option value="1 5/8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Metal Stud</option>
@@ -749,15 +722,22 @@
                                 <option value="FRP">Location: FRP&#160;&#160;&#160;&#160;Product: FRP</option>
                                 <option value="FRP Glue ">Location: FRP&#160;&#160;&#160;&#160;Product: FRP Glue </option>
                             </select>
-                            </td><td><select name="measurement${i}" class="measurement"><option value="">None &#160;&#160;&#160;&#160;</option><option value="FT">FT</option><option value="EA">EA</option><option value="Box(s)">Box(s)</option><option value="SQ FT">SQ FT</option></select></td><td><input type="text" name="measurement_amount${i}"></td></tr>`)
+                            </td><td><select name="measurement${i}" class="measurement"><option value="">None &#160;&#160;&#160;&#160;</option><option value="FT">FT</option><option value="EA">EA</option><option value="Box(s)">Box(s)</option><option value="SQ FT">SQ FT</option></select></td><td><input type="text" name="measurement_amount${i}" id="measurement_amount"></td></tr>`)
             $(document).ready(function () {
             $('.material_list').select2();
             $('.measurement').select2();
         });
         })
 
+                $('#add_labor').click(function (e) {
+                    $('#labor_count').attr('value', Number($('#labor_count').attr('value')) + 1)
+                    var n = Number($('#labor_count').attr('value'))
+                    $('#labor_table_master').append(`<tr><td><select name="labor_type${n}" class="labor_drop"><option value="Carpenter - Foreman">Carpenter - Foreman</option><option value="Carpenter - Journeyman">Carpenter - Journeyman</option><option value="Taper - Journeyman">Taper - Journeyman</option><option value="Taper - Foreman">Taper - Foreman</option><option value="Laborer">Laborer</option><option value="Supervisor">Supervisor</option><option value="Other">Other</option></select></td><td><input type="text" name="labor_description${n}" id="labor_description"></td><td><input type="number" name="employee_numbers${n}" id="employee_numbers"></td><td><input type="number" name="regular_hours${n}" id="regular_hours"></td><td><input type="number" name="premium_hours${n}" id="premium_hours"></td><td><input type="number" name="double_hours${n}" id="double_hours"></td></tr>`)
 
-
+            $(document).ready(function () {
+            $('.labor_drop').select2();
+                });
+                })
 
     </script>
     <!-- End This is the javascript for the signature -->

@@ -94,12 +94,6 @@ def create_order(request):
         user_creating_order = User.objects.get(id=request.session['user_id'])
         print(user_creating_order)
         job_id_selected = JobName.objects.get(id=request.POST['contractor'])
-        new_c_f = CarpenterForeman.objects.create(labor_type=request.POST['labor_type_cf'], employee_numbers=request.POST['employee_numbers_cf'], regular_hours=request.POST['regular_hours_cf'], over_hours=request.POST['over_hours_cf'], double_hours=request.POST['double_hours_cf'])
-        new_c_j = CarpenterJourneyamn.objects.create(labor_type=request.POST['labor_type_cj'],employee_numbers=request.POST['employee_numbers_cj'], regular_hours=request.POST['regular_hours_cj'], over_hours=request.POST['over_hours_cj'], double_hours=request.POST['double_hours_cj'])
-        new_t_f = TaperForeman.objects.create(labor_type=request.POST['labor_type_tf'],employee_numbers=request.POST['employee_numbers_tf'], regular_hours=request.POST['regular_hours_tf'], over_hours=request.POST['over_hours_tf'], double_hours=request.POST['double_hours_tf'])
-        new_t_j = TaperJourneyman.objects.create(labor_type=request.POST['labor_type_tj'],employee_numbers=request.POST['employee_numbers_tj'], regular_hours=request.POST['regular_hours_tj'], over_hours=request.POST['over_hours_tj'], double_hours=request.POST['double_hours_tj'])
-        new_lab = Laborer.objects.create(labor_type=request.POST['labor_type_l'],employee_numbers=request.POST['employee_numbers_l'], regular_hours=request.POST['regular_hours_l'], over_hours=request.POST['over_hours_l'], double_hours=request.POST['double_hours_l'])
-        new_sup = Supervisor.objects.create(labor_type=request.POST['labor_type_s'],employee_numbers=request.POST['employee_numbers_s'], regular_hours=request.POST['regular_hours_s'], over_hours=request.POST['over_hours_s'], double_hours=request.POST['double_hours_s'])
         new_order = WorkOrder.objects.create(
             location=request.POST['location'],
             date_work_performed = request.POST['date_work_performed'],
@@ -109,16 +103,15 @@ def create_order(request):
             signature_2=request.POST['signature_2'],
             signator_2=request.POST['signator_2'], 
             jobname=job_id_selected, 
-            carpenterforeman=CarpenterForeman.objects.get(id=new_c_f.id), 
-            carpenterjourneyamn=CarpenterJourneyamn.objects.get(id=new_c_j.id), 
-            taperforeman=TaperForeman.objects.get(id=new_t_f.id), 
-            taperjourneyman=TaperJourneyman.objects.get(id=new_t_j.id), 
-            laborer=Laborer.objects.get(id=new_lab.id), 
-            supervisor=Supervisor.objects.get(id=new_sup.id),
             user=User.objects.get(id=user_creating_order.id))
         mat_count = int(request.POST['material_count'])
+        lab_count = int(request.POST['labor_count'])
+        print(lab_count)
         for i in range(1, mat_count+1):
             new_material = Material.objects.create(product=request.POST[f"product{i}"], quantity= request.POST[f"quantity{i}"], measurement=request.POST[f"measurement{i}"], measurement_amount= request.POST[f"measurement_amount{i}"], workorder=WorkOrder.objects.get(id=new_order.id))
+        for n in range(1, lab_count+1):
+            new_labor = LaborType.objects.create(labor_type=request.POST[f"labor_type{n}"], labor_description=request.POST[f"labor_description{n}"], employee_numbers=request.POST[f"employee_numbers{n}"], regular_hours=request.POST[f"regular_hours{n}"], premium_hours=request.POST[f"premium_hours{n}"],double_hours=request.POST[f"double_hours{n}"], workorder=WorkOrder.objects.get(id=new_order.id))
+            print(new_labor)
         new_other_material = OtherMaterial.objects.create(other_name=request.POST['other_name'], other_quantity=request.POST['other_quantity'], other_measurement=request.POST['other_measurement'], other_measurement_amount=request.POST['other_measurement_amount'],  workorder=WorkOrder.objects.get(id=new_order.id))
         return redirect (f"/workorderpreview/{new_order.id}")
     else:

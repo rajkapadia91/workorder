@@ -51,6 +51,8 @@
                 <tr>
                     <th>Quantity</th>
                     <th>Product</th>
+                    <th>Unit of Measurement</th>
+                    <th>Measurement Amount</th>
                 </tr>
                 {% for material in edit_this_order.materials.all %}
                 <tr>
@@ -63,63 +65,36 @@
                 <tr>
                     <th>Other: Quantity</th>
                     <th>Other: Product</th>
+                    <th>Unit of Measurement</th>
+                    <th>Measurement Amount</th>
                 </tr>
                 <tr>
                     <td>{{edit_this_order.othermaterial.other_quantity}}</td>
                     <td>{{edit_this_order.othermaterial.other_name}}</td>
+                    <td>{{edit_this_order.othermaterial.other_measurement}}</td>
+                    <td>{{edit_this_order.othermaterial.other_measurement_amount}}</td>
                 </tr>
             </table>
             <h3>Labor Type</h3>
             <table>
-                <tr>
-                    <th>Labor</th>
-                    <th># of Employees</th>
-                    <th>Regular Hours</th>
-                    <th>Over Hours</th>
-                    <th>Doubletime Hours</th>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.carpenterforeman.labor_type}}</td>
-                    <td>{{edit_this_order.carpenterforeman.employee_numbers}}</td>
-                    <td>{{edit_this_order.carpenterforeman.regular_hours}}</td>
-                    <td>{{edit_this_order.carpenterforeman.over_hours}}</td>
-                    <td>{{edit_this_order.carpenterforeman.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.carpenterjourneyamn.labor_type}}</td>
-                    <td>{{edit_this_order.carpenterjourneyamn.employee_numbers}}</td>
-                    <td>{{edit_this_order.carpenterjourneyamn.regular_hours}}</td>
-                    <td>{{edit_this_order.carpenterjourneyamn.over_hours}}</td>
-                    <td>{{edit_this_order.carpenterjourneyamn.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.taperjourneyman.labor_type}}</td>
-                    <td>{{edit_this_order.taperjourneyman.employee_numbers}}</td>
-                    <td>{{edit_this_order.taperjourneyman.regular_hours}}</td>
-                    <td>{{edit_this_order.taperjourneyman.over_hours}}</td>
-                    <td>{{edit_this_order.taperjourneyman.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.taperforeman.labor_type}}</td>
-                    <td>{{edit_this_order.taperforeman.employee_numbers}}</td>
-                    <td>{{edit_this_order.taperforeman.regular_hours}}</td>
-                    <td>{{edit_this_order.taperforeman.over_hours}}</td>
-                    <td>{{edit_this_order.taperforeman.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.laborer.labor_type}}</td>
-                    <td>{{edit_this_order.laborer.employee_numbers}}</td>
-                    <td>{{edit_this_order.laborer.regular_hours}}</td>
-                    <td>{{edit_this_order.laborer.over_hours}}</td>
-                    <td>{{edit_this_order.laborer.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{edit_this_order.supervisor.labor_type}}</td>
-                    <td>{{edit_this_order.supervisor.employee_numbers}}</td>
-                    <td>{{edit_this_order.supervisor.regular_hours}}</td>
-                    <td>{{edit_this_order.supervisor.over_hours}}</td>
-                    <td>{{edit_this_order.supervisor.double_hours}}</td>
-                </tr>
+                    <tr>
+                        <th>Labor Type</th>
+                        <th>Labor Description (if selecting other)</th>
+                        <th># of Employees</th>
+                        <th>Regular Hours</th>
+                        <th>Premium Hours</th>
+                        <th>Doubletime Hours</th>
+                    </tr>
+                    {% for one_labor in edit_this_order.labortypes.all %}
+                    <tr>
+                        <td>{{one_labor.labor_type}}</td>
+                        <td>{{one_labor.labor_description}}</td>
+                        <td>{{one_labor.employee_numbers}}</td>
+                        <td>{{one_labor.regular_hours}}</td>
+                        <td>{{one_labor.premium_hours}}</td>
+                        <td>{{one_labor.double_hours}}</td>
+                    </tr>
+                    {% endfor %}
             </table><br><br><br>
             <hr>
             <div id="contractor_signator">

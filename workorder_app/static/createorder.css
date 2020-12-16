@@ -37,6 +37,10 @@
     width: 260px;
 }
 
+#header_para{
+    margin-bottom: 0px;
+}
+
 #location_work{
     width: 380px;
     height: 20px;
@@ -49,11 +53,7 @@
 
 #work_performed{
     margin-top: 5px;
-    line-height: 3.1ch;
-    background-image: linear-gradient(transparent, transparent calc(3.1ch - 1px), #c7c8ca 0px);
-    background-size: 100% 3.1ch;
-
-    
+    line-height: 3.1ch;    
 }
 
 #material{
@@ -88,17 +88,82 @@
     width: 40%;
   }
 
+  #mat_quantity{
+      margin-right: 12px;
+  }
+
+  #measurement_amount{
+      width: 100px;
+  }
+
+  #other_material_table {
+    text-align: center;
+    width: 40%;
+  }
+
   #other_material_table tr th{
     padding: 5px;
     text-align: center;
     width: 40%;
 }
 
-#other_material_table {
+#other_quantity{
+    margin-right: 12px;
+}
+#labor_table_master {
     text-align: center;
     width: 40%;
   }
 
+
+  #labor_table_master tr th{
+    padding: 5px;
+    text-align: center;
+    width: 40%;
+}
+
+
+  #other_name{
+    width: 557px;
+}
+
+#other_measurement{
+    width: 71px;
+}
+
+#labor_description{
+    width: 250px;
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+#employee_numbers{
+    width: 95px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#regular_hours{
+    width: 95px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#premium_hours{
+    width: 95px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#double_hours{
+    width: 95px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#other_measurement_amount{
+    width: 100px;
+}
 
 .select2-container .select2-selection--single {
     height: 24px!important;

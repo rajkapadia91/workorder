@@ -6,6 +6,11 @@
     <title>Work Order Preview</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'showworkorder.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script defer src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"
+        defer></script>
 </head>
 <body>
     <div id="wrapper">
@@ -31,7 +36,7 @@
             {% endif %}
         </div>
         <div id="created_by">
-            <h3>Extra work order successfully created by {{this_work_order.user.first_name}} {{this_work_order.user.last_name}} on {{this_work_order.created_at}}</h3>
+            <h3>Extra work order successfully submitted by {{this_work_order.user.first_name}} {{this_work_order.user.last_name}} on <span id="updated_at_est">{{this_work_order.updated_at}} EST</span></h3>
         </div>
         <div id="actual_order">
             <h3>Extra Work Order No. {{this_work_order.id}}</h3>
@@ -75,54 +80,24 @@
             <h3>Labor Type</h3>
             <table>
                 <tr>
-                    <th>Labor</th>
+                    <th>Labor Type</th>
+                    <th>Labor Description (if selecting other)</th>
                     <th># of Employees</th>
                     <th>Regular Hours</th>
-                    <th>Over Hours</th>
+                    <th>Premium Hours</th>
                     <th>Doubletime Hours</th>
                 </tr>
+                {% for one_labor in this_work_order.labortypes.all %}
                 <tr>
-                    <td>{{this_work_order.carpenterforeman.labor_type}}</td>
-                    <td>{{this_work_order.carpenterforeman.employee_numbers}}</td>
-                    <td>{{this_work_order.carpenterforeman.regular_hours}}</td>
-                    <td>{{this_work_order.carpenterforeman.over_hours}}</td>
-                    <td>{{this_work_order.carpenterforeman.double_hours}}</td>
+                    <td>{{one_labor.labor_type}}</td>
+                    <td>{{one_labor.labor_description}}</td>
+                    <td>{{one_labor.employee_numbers}}</td>
+                    <td>{{one_labor.regular_hours}}</td>
+                    <td>{{one_labor.premium_hours}}</td>
+                    <td>{{one_labor.double_hours}}</td>
                 </tr>
-                <tr>
-                    <td>{{this_work_order.carpenterjourneyamn.labor_type}}</td>
-                    <td>{{this_work_order.carpenterjourneyamn.employee_numbers}}</td>
-                    <td>{{this_work_order.carpenterjourneyamn.regular_hours}}</td>
-                    <td>{{this_work_order.carpenterjourneyamn.over_hours}}</td>
-                    <td>{{this_work_order.carpenterjourneyamn.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{this_work_order.taperjourneyman.labor_type}}</td>
-                    <td>{{this_work_order.taperjourneyman.employee_numbers}}</td>
-                    <td>{{this_work_order.taperjourneyman.regular_hours}}</td>
-                    <td>{{this_work_order.taperjourneyman.over_hours}}</td>
-                    <td>{{this_work_order.taperjourneyman.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{this_work_order.taperforeman.labor_type}}</td>
-                    <td>{{this_work_order.taperforeman.employee_numbers}}</td>
-                    <td>{{this_work_order.taperforeman.regular_hours}}</td>
-                    <td>{{this_work_order.taperforeman.over_hours}}</td>
-                    <td>{{this_work_order.taperforeman.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{this_work_order.laborer.labor_type}}</td>
-                    <td>{{this_work_order.laborer.employee_numbers}}</td>
-                    <td>{{this_work_order.laborer.regular_hours}}</td>
-                    <td>{{this_work_order.laborer.over_hours}}</td>
-                    <td>{{this_work_order.laborer.double_hours}}</td>
-                </tr>
-                <tr>
-                    <td>{{this_work_order.supervisor.labor_type}}</td>
-                    <td>{{this_work_order.supervisor.employee_numbers}}</td>
-                    <td>{{this_work_order.supervisor.regular_hours}}</td>
-                    <td>{{this_work_order.supervisor.over_hours}}</td>
-                    <td>{{this_work_order.supervisor.double_hours}}</td>
-                </tr>
+                {% endfor %}
+
             </table><br><br><br>
             <hr>
             <div id="contractor_signator">
@@ -142,6 +117,5 @@
             </div>
         </div>
     </div>
-    
 </body>
 </html>
