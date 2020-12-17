@@ -213,7 +213,7 @@
                             <td><input type="text" name="measurement_amount1" id="measurement_amount"></td>
                         </tr>
                     </table><br>
-                    <button type="button" id="add_material">Add another material</button>
+                    <button type="button" id="add_material">+</button>
                 </div><br>
                 <div id="other_material">
                     <h3>Other Material</h3>
@@ -226,13 +226,13 @@
                             <th>Measurement Amount</th>
                         </tr>
                         <tr>
-                            <td><input type="number" id="other_quantity" name="other_quantity"></td>
-                            <td><input type="text" id="other_name" name="other_name"></td>
-                            <td><input type="test" id="other_measurement" name="other_measurement"></td>
-                            <td><input type="text" id="other_measurement_amount" name="other_measurement_amount"></td>
+                            <td><input type="number" id="other_quantity" name="other_quantity1"></td>
+                            <td><input type="text" id="other_name" name="other_name1"></td>
+                            <td><input type="test" id="other_measurement" name="other_measurement1"></td>
+                            <td><input type="text" id="other_measurement_amount" name="other_measurement_amount1"></td>
                         </tr>
                     </table><br>
-                    
+                    <button type="button" id="add_more">+</button><br><br><br>
                 </div><br>
                 <hr>
                 <!-- End - This is the div for adding material to the work order. Material can be on many work orders -->
@@ -269,7 +269,7 @@
                         </tr>
                     </table>
                 </div><br>
-                <button type="button" id="add_labor">Add another labor type</button><br><br><br>
+                <button type="button" id="add_labor">+</button><br><br><br>
                 <!-- End - This is the div for adding labor type to the work order. One labor type can be on many work orders -->
                 <hr><br>
                 <!-- 1) Start of the signature div for general contractor   -->
@@ -319,6 +319,7 @@
                 <input type="hidden" name="signature_2" value="" id="sign2"><br>
                 <input type="hidden" name="material_count" value="1" id="material_count">
                 <input type="hidden" name="labor_count" value="1" id="labor_count">
+                <input type="hidden" name="other_material_count" value="1" id="other_material_count">
                 <input id="submit_button" type="submit" value="Create Work Order"><br>
             </form>
         </div>
@@ -728,6 +729,12 @@
             $('.measurement').select2();
         });
         })
+
+        $('#add_more').click(function (e) {
+                    $('#other_material_count').attr('value', Number($('#other_material_count').attr('value')) + 1)
+                    var c = Number($('#other_material_count').attr('value'))
+                    $('#other_material_table').append(`<tr><td><input type="number" id="other_quantity" name="other_quantity${c}"></td><td><input type="text" id="other_name" name="other_name${c}"></td><td><input type="test" id="other_measurement" name="other_measurement${c}"></td><td><input type="text" id="other_measurement_amount" name="other_measurement_amount${c}"></td></tr>`)
+                })
 
                 $('#add_labor').click(function (e) {
                     $('#labor_count').attr('value', Number($('#labor_count').attr('value')) + 1)

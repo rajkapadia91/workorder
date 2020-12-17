@@ -106,13 +106,16 @@ def create_order(request):
             user=User.objects.get(id=user_creating_order.id))
         mat_count = int(request.POST['material_count'])
         lab_count = int(request.POST['labor_count'])
+        other_mat_count = int(request.POST['other_material_count'])
         print(lab_count)
         for i in range(1, mat_count+1):
             new_material = Material.objects.create(product=request.POST[f"product{i}"], quantity= request.POST[f"quantity{i}"], measurement=request.POST[f"measurement{i}"], measurement_amount= request.POST[f"measurement_amount{i}"], workorder=WorkOrder.objects.get(id=new_order.id))
+        for c in range(1, other_mat_count+1):
+            new_other_material = OtherMaterial.objects.create(other_name=request.POST[f"other_name{c}"], other_quantity=request.POST[f"other_quantity{c}"], other_measurement=request.POST[f"other_measurement{c}"], other_measurement_amount=request.POST[f"other_measurement_amount{c}"],  workorder=WorkOrder.objects.get(id=new_order.id))
+            print(new_other_material)
         for n in range(1, lab_count+1):
             new_labor = LaborType.objects.create(labor_type=request.POST[f"labor_type{n}"], labor_description=request.POST[f"labor_description{n}"], employee_numbers=request.POST[f"employee_numbers{n}"], regular_hours=request.POST[f"regular_hours{n}"], premium_hours=request.POST[f"premium_hours{n}"],double_hours=request.POST[f"double_hours{n}"], workorder=WorkOrder.objects.get(id=new_order.id))
             print(new_labor)
-        new_other_material = OtherMaterial.objects.create(other_name=request.POST['other_name'], other_quantity=request.POST['other_quantity'], other_measurement=request.POST['other_measurement'], other_measurement_amount=request.POST['other_measurement_amount'],  workorder=WorkOrder.objects.get(id=new_order.id))
         return redirect (f"/workorderpreview/{new_order.id}")
     else:
         return redirect('/')

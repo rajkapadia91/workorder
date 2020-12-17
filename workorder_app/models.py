@@ -69,7 +69,7 @@ class OtherMaterial(models.Model):
     other_quantity = models.CharField(max_length=10, default="0")
     other_measurement = models.CharField(max_length=20, default="None")
     other_measurement_amount = models.CharField(max_length=20, default="None")
-    workorder = models.OneToOneField(WorkOrder, related_name="othermaterial", on_delete=models.CASCADE)
+    workorder = models.ForeignKey(WorkOrder, related_name="othermaterials", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

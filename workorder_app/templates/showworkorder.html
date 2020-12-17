@@ -31,7 +31,7 @@
             <p> <span class="titles">Date/ Date Range Work Performed:</span> {{this_work_order.date_work_performed}}</p>
             <p> <span class="titles">Work Performed:</span> {{this_work_order.work_performed}}</p>
             <hr>
-            <h3>Material/s Used:</h3>
+            <h3>Material/s Used</h3>
             <table>
                 <tr>
                     <th>Quantity</th>
@@ -47,19 +47,21 @@
                     <td>{{material.measurement_amount}}</td>
                 </tr>
                 {% endfor %}
-                <tr><th>Other Material:</th></tr>
+                <tr><th colspan="4">Other Material</th></tr>
                 <tr>
                     <th>Quantity</th>
                     <th>Product</th>
                     <th>Unit of Measurement</th>
                     <th>Measurement Amount</th>
                 </tr>
+                {% for one_other_material in this_work_order.othermaterials.all %}
                 <tr>
-                    <td>{{this_work_order.othermaterial.other_quantity}}</td>
-                    <td>{{this_work_order.othermaterial.other_name}}</td>
-                    <td>{{this_work_order.othermaterial.other_measurement}}</td>
-                    <td>{{this_work_order.othermaterial.other_measurement_amount}}</td>
+                    <td>{{one_other_material.other_quantity}}</td>
+                    <td>{{one_other_material.other_name}}</td>
+                    <td>{{one_other_material.other_measurement}}</td>
+                    <td>{{one_other_material.other_measurement_amount}}</td>
                 </tr>
+                {% endfor %}
             </table>
             <h3>Labor Type</h3>
             <table>
