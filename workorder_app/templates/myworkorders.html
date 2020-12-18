@@ -7,6 +7,9 @@
     <title>My Work Orders</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'workorder.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"
+        defer></script>
 </head>
 
 <body>
@@ -40,11 +43,11 @@
                     <td><img src="{{one_work_order.signature_1}}" alt="Signature of contractor" srcset=""></td>
                     <td><img src="{{one_work_order.signature_2}}" alt="Signature of belcon foreman" srcset=""></td>
                     <td>
-                        {% if one_work_order.id == latest_work_order.id %}
+                        {% if one_work_order.signature_1 == "" or one_work_order.signature_2 == "" %}
                         <button><a href="/workorderpreview/{{one_work_order.id}}">Show Work Order</a></button>
-                        <button><a href="/edit/{{one_work_order.id}}">Edit Work Order</a></button>
+                        <button id="edit_button"><a id="edit_view" href="/edit/{{one_work_order.id}}">Edit Work Order</a></button>
                         {% else %}
-                        <button>Unable to Edit Any Further</button>
+                        <button><a href="/workorderpreview/{{one_work_order.id}}">Show Work Order</a></button>
                         {% endif %}
                     </td>
                 </tr>

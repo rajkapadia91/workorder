@@ -27,7 +27,7 @@
             <button><a href="/">Creating a New Extra Work Order</a></button>
             <button><a href="/logout">Logout</a></button>
             {% if request.session.user_id == this_work_order.user.id or request.session.secret_code == "FGadmin!" %}
-            <button><a href="/edit/{{this_work_order.id}}">Edit Order</a></button>
+            <button id="edit_button"><a id="edit_view" href="/edit/{{this_work_order.id}}">Edit Order</a></button>
             {% endif %}
             {% if request.session.secret_code == "FGadmin!" %}
             <button><a href="/workorder">Admin View</a></button>
@@ -118,6 +118,23 @@
 
             </div>
         </div>
+        <p hidden id="sign1">{{this_work_order.signature_1}}</p>
+        <p hidden id="sign2">{{this_work_order.signature_2}}</p>
     </div>
+
+    <script>
+        function editNon(){
+            var x = document.getElementById('sign1').innerHTML
+            var y = document.getElementById('sign2').innerHTML
+            if (x == "" || y == ""){
+                console.log("None are signed")
+            }
+            else {
+                document.getElementById('edit_view').href = "#"
+                document.getElementById('edit_button').style.display = "none";
+            }   
+        }
+        editNon();
+    </script>
 </body>
 </html>

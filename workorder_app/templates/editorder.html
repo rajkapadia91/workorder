@@ -17,6 +17,7 @@
 <body>
     <div id="wrapper">
         <!-- Start This is where the logo and contact info is embedded -->
+        {% if request.session.secret_code == "FGadmin!" or edit_this_order.signature_1 == "" or edit_this_order.signature_2 == "" %}
         <div id="header">
             <div class="head" id="logo_image_div">
                 <a href="/"><img id="logo" src="{% static 'logobelcon.png' %}" alt="This is the logo"></a>
@@ -161,6 +162,9 @@
 
             </div>
         </div>
+        {% else %}
+        <p>Sorry you will not be able to edit this order. Please click <a href="/">Home</a> to go back to your home page</p>
+        {% endif %}
     </div>
       
         <!-- Start This is the javascript for the signature and other functions -->
