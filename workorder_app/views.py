@@ -192,3 +192,47 @@ def all_users(request):
 def delete_user(request, user_id):
     User.objects.get(id=user_id).delete()
     return redirect ('/all_users')
+
+def edit_user(request, user_id):
+    context = {
+        'this_user' : User.objects.get(id=user_id)
+    }
+    return render(request, 'this_user.html', context) 
+    
+
+def save_job_edit(request, job_id):
+    if request.method == 'POST':
+        edit_this_job = JobName.objects.get(id=job_id)
+        edit_this_job.name = request.POST['job_name_edit']
+        edit_this_job.contractor_name = request.POST['contractor_name_edit']
+        edit_this_job.street = request.POST['street_edit']
+        edit_this_job.city = request.POST['city_edit']
+        edit_this_job.state = request.POST['state_edit']
+        edit_this_job.zip_code = request.POST['zipcode_edit']
+        edit_this_job.save()
+        return redirect('/jobname')
+    else:
+        return redirect('/jobname')
+
+def save_user(request, user_id):
+    if request.method == 'POST':
+        errors = User.objects.user_validator_2(request.POST)
+        if errors:
+            for error in errors:
+                messages.error(request, errors[error])
+            print("There are errors")
+            return redirect(f'/edit_user/{user_id}')
+        else:
+            save_edit_user = User.objects.get(id=user_id)
+            orignal_password = request.POST['password']
+            encrypted_password = bcrypt.hashpw(orignal_password.encode(), bcrypt.gensalt()).decode()
+            save_edit_user.first_name = request.POST['first_name']
+            save_edit_user.last_name = request.POST['last_name']
+            save_edit_user.email = request.POST['email']
+            save_edit_user.password = encrypted_password
+            save_edit_user.secret_code = request.POST['secret_code']
+            save_edit_user.save()
+            return redirect(f'/edit_user/{user_id}')
+    else:
+        print("Not a post request")
+        return redirect(f'/edit_user/{user_id}')

@@ -22,6 +22,21 @@ class UserManager(models.Manager):
             errors['secret_code'] = "Sorry, you are not authorized to register"
         return errors
 
+    def user_validator_2(self, postData):
+        errors = {}
+        valid_email = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        if len(postData['first_name']) <= 2:
+            errors['first_name'] = "First name needs to be more than 2 characters"
+        if len(postData['last_name']) <= 2:
+            errors['last_name'] = "Last name needs to be more than 2 characters"
+        if not valid_email.match(postData['email']): # test whether a field matches the pattern 
+            errors['email'] = "Invalid email address!"
+        if len(postData['password']) <= 6:
+            errors['password'] = "Password needs to be more than 6 characters"
+        if postData['password'] != postData['confirm_password']:
+            errors['confirm_password'] = "Passwords do not match!"
+        return errors
+
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

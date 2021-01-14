@@ -18,6 +18,9 @@ urlpatterns = [
     path('workorderpreview/<int:workorder_id>', views.workorderpreview),
     path('edit/<int:workorder_id>', views.editorder),
     path('save_edit/<int:workorder_id>', views.save_edit),
+    path('edit_job/<int:job_id>', views.save_job_edit),
     path('all_users', views.all_users),
+    path('edit_user/<int:user_id>', views.edit_user),
+    path('save_user/<int:user_id>', views.save_user),
     path('delete_user/<int:user_id>', views.delete_user)
 ]

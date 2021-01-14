@@ -37,7 +37,9 @@
                     <th>General Contractor</th>
                     <th>Name of Job</th>
                     <th>Address</th>
-                    <th>Action</th>
+                    <th>Delete Job</th>
+                    <th>Edit Job</th>
+
                 </tr>
                 {% for one_job in all_jobs reversed %}
                 <tr>
@@ -51,7 +53,20 @@
                     </td>
                     <td>
                         <button><a href="/delete_job/{{one_job.id}}">Delete Job</a></button>
-                        <button><a disabled href="">Edit Job</a></button>
+                    </td>
+                    <td>
+                        <form action="/edit_job/{{one_job.id}}" method="post">
+                            {% csrf_token %}
+                            General Contractor: <input type="text" name="contractor_name_edit" value="{{one_job.contractor_name}}" id="edit_contractor1"><br><br>
+                            Name of Job: <input type="text" name="job_name_edit" value="{{one_job.name}}" id="edit_name1"><br><br>
+                            <div id="edit_address">
+                                Street: <input type="text" name="street_edit" value="{{one_job.street}}" id="edit_street1">
+                                City: <input type="text" name="city_edit" value="{{one_job.city}}" id="edit_city1">
+                                State: <input type="text" name="state_edit" value="{{one_job.state}}" id="edit_state1" placeholder="Ex: NJ">
+                                Zipcode: <input type="number" name="zipcode_edit" value="{{one_job.zip_code}}" placeholder="Ex: 123456" id="edit_zipcode1">
+                            </div> <br>
+                            <input id="create_button" type="submit" value="Edit Job">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
