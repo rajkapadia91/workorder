@@ -58,6 +58,9 @@
                     <td><a href="/delete_user/{{one_user.id}}">Delete User</a></td>
                     {% endif %}
                     <td><a href="/edit_user/{{one_user.id}}">Reset Password</a></td>
+                    {% if request.session.user_id == one_user.id %}
+                    <td>Can't Deactivate Your Own Account</td>
+                    {% else %}
                     <td>
                         <form action="/active_deactive/{{one_user.id}}" method="post">
                             {% csrf_token %}
@@ -71,6 +74,7 @@
                             </form>
                             {% endif %}
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </table>

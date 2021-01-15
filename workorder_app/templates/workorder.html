@@ -42,7 +42,7 @@
                     <td>{{one_work_order.jobname.contractor_name}}</td>
                     <td>{{one_work_order.jobname.name}}</td>
                     <td>{{one_work_order.location}}</td>
-                    {% if one_work_order.priced == "No" %}
+                    {% if one_work_order.priced == "No" or one_work_order.priced == "None" %}
                     <td id="priced_no">{{one_work_order.priced}}</td>
                     {% else %}
                     <td id="priced_yes">{{one_work_order.priced}}</td>
