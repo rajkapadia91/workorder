@@ -38,6 +38,16 @@
     color: #F5821E;
 }
 
+#priced_no{
+    background-color: rgb(255, 115, 115);
+    font-weight: bold;
+}
+
+#priced_yes{
+    background-color: rgb(82, 182, 120);
+    font-weight: bold;
+}
+
 th{
     height: 50px;
 }
@@ -82,4 +92,37 @@ button a{
 
 button:hover{
     border-color: rgba(255,255,255,1);
+}
+
+#submit_button {
+    display: inline-block;
+    margin-right: 20px;
+    padding:0.3em 1.2em;
+    margin:0 0.1em 0.1em 0;
+    border:0.16em solid rgba(255,255,255,0);
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color: #F5821E;
+    text-align:center;
+}
+
+#submit_button a{
+    color: #F5821E;
+    text-decoration: none;
+
+}
+
+#submit_button:hover{
+    border-color: rgba(255,255,255,1);
+}
+
+#active {
+    background-color: rgb(90, 163, 90);
+}
+
+#inactive {
+   background-color: rgb(248, 124, 124);
 }

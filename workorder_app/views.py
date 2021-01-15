@@ -21,12 +21,16 @@ def login(request):
         logged_user = User.objects.filter(email = request.POST['logged_email'])
         if logged_user:
             logged_user = logged_user[0]
-            if bcrypt.checkpw(request.POST['logged_password'].encode(), logged_user.password.encode()):
-                request.session['user_id'] = logged_user.id
-                request.session['user_fname'] = logged_user.first_name
-                request.session['user_lname'] = logged_user.last_name
-                request.session['secret_code'] = logged_user.secret_code
-                return redirect('/createorder')
+            if logged_user.active == "Active":
+                if bcrypt.checkpw(request.POST['logged_password'].encode(), logged_user.password.encode()):
+                    request.session['user_id'] = logged_user.id
+                    request.session['user_fname'] = logged_user.first_name
+                    request.session['user_lname'] = logged_user.last_name
+                    request.session['secret_code'] = logged_user.secret_code
+                    return redirect('/createorder')
+                else:
+                    request.session['failed_login'] = "Your credentials don't match. Please try again!"
+                    return redirect('/')
             else:
                 request.session['failed_login'] = "Your credentials don't match. Please try again!"
                 return redirect('/')
@@ -48,7 +52,7 @@ def create_account(request):
         else:
             orignal_password = request.POST['password']
             encrypted_password = bcrypt.hashpw(orignal_password.encode(), bcrypt.gensalt()).decode()
-            new_user = User.objects.create(first_name = request.POST['first_name'], last_name= request.POST['last_name'], email = request.POST['email'], password= encrypted_password, secret_code=request.POST['secret_code'])
+            new_user = User.objects.create(first_name = request.POST['first_name'], last_name= request.POST['last_name'], email = request.POST['email'], password= encrypted_password, secret_code=request.POST['secret_code'], active=request.POST['active'])
             request.session['user_id'] = new_user.id
             request.session['user_fname'] = new_user.first_name
             request.session['user_lname'] = new_user.last_name
@@ -98,6 +102,7 @@ def create_order(request):
             location=request.POST['location'],
             date_work_performed = request.POST['date_work_performed'],
             work_performed=request.POST['work_performed'],
+            priced = request.POST['priced'],
             signature_1=request.POST['signature_1'],
             signator_1=request.POST['signator_1'], 
             signature_2=request.POST['signature_2'],
@@ -122,6 +127,7 @@ def create_order(request):
 
 def all_work_orders(request):
     if request.session['secret_code'] == "FGadmin!":
+        request.session['success'] = 0
         context = {
             'all_work_orders': WorkOrder.objects.all()
             }
@@ -164,6 +170,7 @@ def editorder(request, workorder_id):
 def save_edit(request, workorder_id):
     if request.method == 'POST':
         edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
+        edit_this_work_order.priced=request.POST['priced_edit']
         edit_this_work_order.signature_1=request.POST['signature_1']
         edit_this_work_order.signator_1=request.POST['signator_1']
         edit_this_work_order.signature_2=request.POST['signature_2']
@@ -181,6 +188,7 @@ def myworkorders(request, user_id):
     return render(request, 'myworkorders.html', context)
 
 def all_users(request):
+    request.session['success'] = 0
     if request.session['secret_code'] == "FGadmin!":
         context = {
             'all_user_accounts' : User.objects.all()
@@ -221,6 +229,7 @@ def save_user(request, user_id):
             for error in errors:
                 messages.error(request, errors[error])
             print("There are errors")
+            request.session['success'] = 0
             return redirect(f'/edit_user/{user_id}')
         else:
             save_edit_user = User.objects.get(id=user_id)
@@ -232,7 +241,24 @@ def save_user(request, user_id):
             save_edit_user.password = encrypted_password
             save_edit_user.secret_code = request.POST['secret_code']
             save_edit_user.save()
+            success = "Password has been successfully changed!"
+            request.session['success'] = success
             return redirect(f'/edit_user/{user_id}')
     else:
         print("Not a post request")
         return redirect(f'/edit_user/{user_id}')
+
+def save_edit_here(request, workorder_id):
+    if request.method == 'POST':
+        edit_this_work_order_here = WorkOrder.objects.get(id=workorder_id)
+        edit_this_work_order_here.priced=request.POST['priced_edit']
+        edit_this_work_order_here.save()
+        return redirect('/workorder')
+    else:
+        return redirect('/workorder')
+
+def active_deactive(request, user_id):
+    save_edit_user = User.objects.get(id=user_id)
+    save_edit_user.active = request.POST['active_edit']
+    save_edit_user.save()
+    return redirect ('/all_users')

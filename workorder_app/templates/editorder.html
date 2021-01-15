@@ -39,6 +39,8 @@
             <button><a href="/">Creating New Extra Work Order</a></button>
             <button><a href="/logout">Logout</a></button>
         </div> <br>
+        <form action="/save_edit/{{edit_this_order.id}}" method="post">
+                {% csrf_token %}
         <div id="actual_order">
             <h3>Extra Work Order No. {{edit_this_order.id}}</h3>
             <p> <span class="titles">General Contractor:</span> {{edit_this_order.jobname.contractor_name}}</p>
@@ -46,6 +48,13 @@
             <p> <span class="titles">Address:</span> {{edit_this_order.jobname.street}}, {{edit_this_order.jobname.city}}, {{edit_this_order.jobname.state}} {{edit_this_order.jobname.zip_code}}</p>
             <p> <span class="titles">Location of Work Performed:</span> {{edit_this_order.location}}</p>
             <p> <span class="titles">Work Performed:</span> {{edit_this_order.work_performed}}</p>
+            {% if request.session.secret_code == "FGadmin!" %}
+            <p id="priced_original"> <span class="titles">Priced:</span> {{edit_this_order.priced}}  <button type="button" id="change_button"><a href="#">Change</a></button></p> 
+            <p hidden id="priced_dropdown"> <span class="titles">Priced:</span> <select name="priced_edit" id="priced_edit">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select></p>
+            {% endif %}
             <hr>
             <h3>Material/s Used</h3>
             <table>
@@ -112,8 +121,8 @@
             </div>
             <hr>
 
-            <form action="/save_edit/{{edit_this_order.id}}" method="post">
-                {% csrf_token %}
+            <!-- <form action="/save_edit/{{edit_this_order.id}}" method="post">
+                {% csrf_token %} -->
             <div id="re-sign">
                 <div>
                     <div id="canvas_1">
@@ -418,6 +427,13 @@
             sign2.value = dataURI2;
             imgConverted2.src = dataURI2;
         }    
+
+        $('#change_button').click(function() {
+            document.getElementById("priced_original").hidden = true;
+            document.getElementById("priced_dropdown").hidden = false;
+        }
+
+        )
         </script>
 </body>
 

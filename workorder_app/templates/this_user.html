@@ -18,12 +18,12 @@
         <div id="form_1">
             <form action="/save_user/{{this_user.id}}" method="post">
                 {% csrf_token %}
-            First Name: <input type="text" name="first_name" class="form_field" value="{{this_user.first_name}}"><br><br>
-            Last Name: <input type="text" name="last_name" class="form_field" value="{{this_user.last_name}}"><br><br>
-            Email Address: <input type="email" name="email" class="form_field" value="{{this_user.email}}"><br><br>
+            First Name: <input type="text" readonly name="first_name" class="form_field" value="{{this_user.first_name}}"><br><br>
+            Last Name: <input type="text" readonly name="last_name" class="form_field" value="{{this_user.last_name}}"><br><br>
+            Email Address: <input type="email" readonly name="email" class="form_field" value="{{this_user.email}}"><br><br>
             Reset Password: <input type="password" name="password" class="form_field"><br><br>
             Confirm Reset Password: <input type="password" name="confirm_password" class="form_field"><br><br>
-            Secret Code: <input type="text" name="secret_code" class="form_field" value="{{this_user.secret_code}}"><br><br>
+            Secret Code: <input type="text" readonly name="secret_code" class="form_field" value="{{this_user.secret_code}}"><br><br>
                 <input id="create_button" type="submit" value="Save Changes">
             </form>
             <div id="errors">
@@ -35,11 +35,10 @@
                 </ul>
                 {% endif %}
             </div>
-            <h4 hidden id="success">Your password has been saved!</h4>
+            {% if request.session.success != 0 %}
+            <h4 id="password_reset_success">Password was succesfully changed on {{this_user.updated_at}}</h4>
+            {% endif %}
         </div>
     </div>
-    <script>
-
-    </script>
 </body>
 </html>

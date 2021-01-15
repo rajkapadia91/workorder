@@ -7,6 +7,7 @@
     <title>User Account Details</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'workorder.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -29,12 +30,14 @@
                     <th>Last Name</th>
                     <th>Email Address</th>
                     <th>Employee Level</th>
+                    <th>Status</th>
                     <th>Delete User</th>
                     <th>Edit User</th>
+                    <th>Active/Deactive</th>
                 </tr>
                 {% for one_user in all_user_accounts reversed %}
                 <tr>
-                    <td>{{one_user.id}}</a></td>
+                    <td>{{one_user.id}}</td>
                     <td>{{one_user.created_at}}</td>
                     <td>{{one_user.first_name}}</td>
                     <td>{{one_user.last_name}}</td>
@@ -44,16 +47,36 @@
                     {% else %}
                     <td>{{one_user.secret_code}} | <b>ADMIN</b></td>
                     {% endif %}
+                    {% if one_user.active == "Active" %}
+                    <td id="active">{{one_user.active}}</td>
+                    {% else %}
+                    <td id="inactive">{{one_user.active}}</td>
+                    {% endif %}
                     {% if request.session.user_id == one_user.id %}
                     <td>Can't Delete Your Own Account</td>
                     {% else %}
                     <td><a href="/delete_user/{{one_user.id}}">Delete User</a></td>
                     {% endif %}
                     <td><a href="/edit_user/{{one_user.id}}">Reset Password</a></td>
+                    <td>
+                        <form action="/active_deactive/{{one_user.id}}" method="post">
+                            {% csrf_token %}
+                            {% if one_user.active == "Active" %}
+                          <input hidden type="text" name="active_edit" value="Deactive" id="Deactive">
+                          <input id="submit_button" type="submit" value="Deactivate">
+                        </form>
+                        {% else %}
+                        <input hidden type="text" name="active_edit" value="Active" id="Active">
+                        <input id="submit_button" type="submit" value="Activate">
+                            </form>
+                            {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
+    <script>
+    </script>
 </body>
 </html>
