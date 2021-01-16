@@ -33,6 +33,7 @@
             <button class="thelinks"><a href="/workorder">Admin View</a></button>
             {% else %}
             <button class="thelinks"><a href="/myworkorders/{{request.session.user_id}}">My Work Orders</a></button>
+            <button class="thelinks"><a href="/reset_password">Reset Password</a></button>
             {% endif %}
             <button class="thelinks"><a href="/logout">Logout</a></button>
         </div> <br>

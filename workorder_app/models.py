@@ -19,7 +19,7 @@ class UserManager(models.Manager):
         if postData['password'] != postData['confirm_password']:
             errors['confirm_password'] = "Passwords do not match!"
         if postData['secret_code'] != "Inside1" and postData['secret_code'] != "FGadmin!":
-            errors['secret_code'] = "Sorry, you are not authorized to register"
+            errors['secret_code'] = "Unable to register without the appropriate code"
         return errors
 
     def user_validator_2(self, postData):

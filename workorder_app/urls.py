@@ -13,6 +13,8 @@ urlpatterns = [
     path('create_order', views.create_order),
     path('workorder', views.all_work_orders),
     path('myworkorders/<int:user_id>', views.myworkorders),
+    path('reset_password', views.reset_password),
+    path('save_reset_password', views.save_reset_password),
     path('show_work_order/<int:workorder_id>', views.show_work_order),
     path('delete/<int:workorder_id>', views.delete_work_order),
     path('workorderpreview/<int:workorder_id>', views.workorderpreview),

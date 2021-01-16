@@ -44,10 +44,17 @@
         <div id="actual_order">
             <h3>Extra Work Order No. {{edit_this_order.id}}</h3>
             <p> <span class="titles">General Contractor:</span> {{edit_this_order.jobname.contractor_name}}</p>
-            <p> <span class="titles">Name of Job:</span> {{edit_this_order.jobname.name}}</p>
+            <p hidden id="job_id">{{edit_this_order.jobname.id}}</p>
+            <p> <span class="titles">Name of Job:</span> <select class="joblist" name="contractor_edit" id="contractor_edit">
+                {% for one_job in all_jobs %}
+                <option value="{{one_job.id}}">{{one_job.name}}</option>
+                {% endfor %}
+                </select>
+            </p>
             <p> <span class="titles">Address:</span> {{edit_this_order.jobname.street}}, {{edit_this_order.jobname.city}}, {{edit_this_order.jobname.state}} {{edit_this_order.jobname.zip_code}}</p>
-            <p> <span class="titles">Location of Work Performed:</span> {{edit_this_order.location}}</p>
-            <p> <span class="titles">Work Performed:</span> {{edit_this_order.work_performed}}</p>
+            <p> <span class="titles">Location of Work Performed:</span> <input type="text" name="location_edit" value="{{edit_this_order.location}}" id="location_edit"></p>
+            <p> <span class="titles">Date/ Date Range Work Performed:</span> <input id="date_range" name="date_work_performed_edit" type="text" value="{{edit_this_order.date_work_performed}}"></p>
+            <p> <span class="titles">Work Performed:</span><br><textarea name="work_performed_edit" id="text_area" cols="120" rows="12">{{edit_this_order.work_performed}}</textarea></p>
             {% if request.session.secret_code == "FGadmin!" %}
             <p id="priced_original"> <span class="titles">Priced:</span> {{edit_this_order.priced}}  <button type="button" id="change_button"><a href="#">Change</a></button></p> 
             <p hidden id="priced_dropdown"> <span class="titles">Priced:</span> <select name="priced_edit" id="priced_edit">
@@ -427,6 +434,18 @@
             sign2.value = dataURI2;
             imgConverted2.src = dataURI2;
         }    
+    
+        $(document).ready(function () {
+            $('.joblist').select2();
+        });
+
+
+        function first_dropdown(){
+            var b = document.getElementById("job_id").innerHTML
+            console.log(b)
+            document.getElementById("contractor_edit").value = document.getElementById("job_id").innerHTML
+        }
+        first_dropdown()
 
         $('#change_button').click(function() {
             document.getElementById("priced_original").hidden = true;

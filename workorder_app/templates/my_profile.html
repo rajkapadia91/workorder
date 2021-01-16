@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'this_user.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h2>Edit details for {{my_profile.first_name}} {{my_profile.last_name}} </h2>
+        </div>
+        <button><a href="/">Creating New Extra Work Order</a></button>
+        <button><a href="/logout">Logout</a></button>
+        <div id="form_1">
+            <form action="/save_reset_password" method="post">
+                {% csrf_token %}
+            First Name: <input type="text" readonly name="first_name" class="form_field" value="{{my_profile.first_name}}"><br><br>
+            Last Name: <input type="text" readonly name="last_name" class="form_field" value="{{my_profile.last_name}}"><br><br>
+            Email Address: <input type="email" readonly name="email" class="form_field" value="{{my_profile.email}}"><br><br>
+            Reset Password: <input type="password" name="password" class="form_field"><br><br>
+            Confirm Reset Password: <input type="password" name="confirm_password" class="form_field"><br><br>
+            Secret Code: <input type="text" readonly name="secret_code" class="form_field" value="{{my_profile.secret_code}}"><br><br>
+                <input id="create_button" type="submit" value="Save Changes">
+            </form>
+            <div id="errors">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% if request.session.success != 0 %}
+            <h4 id="password_reset_success">Password was succesfully changed on {{my_profile.updated_at}}</h4>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

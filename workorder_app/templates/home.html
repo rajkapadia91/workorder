@@ -8,68 +8,79 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script defer src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"
-        defer></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div id="wrapper">
-        <div id="header">
-            <div class="head" id="logo_image_div">
-                <a href="/"><img id="logo" src="{% static 'logobelcon.png' %}" alt="This is the logo"></a>
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                <h3>Register</h3>
+                <form action="/create_account" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="first_name" placeholder="First Name *" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="last_name" placeholder="Last Name *"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Your Email *"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Your Password -  Minimum 7 characters *"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password *"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="secret_code" placeholder="Secret Code *" value="" />
+                    </div>
+                    <input hidden type="text" name="active" value="Active" id="">
+                    <div class="form-group">
+                        <input type="submit" class="btnSubmit" value="Register"/>
+                    </div>
+                    <div class="form-group">
+                        <a href="/"><img id="logo" src="{% static 'logobelcon.png' %}" alt="This is the logo"></a>
+                    </div>
+                </form>
+                <div class="form-group">
+                    {% if messages %}
+                    <ul>
+                        <li id="heading_errors">The below errors took place while registering</li>
+                        {% for message in messages %}
+                        <li>{{message}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
             </div>
-            <div class="head" id="contact">
-                <p class="contact">147 Roseland Ave</p>
-                <p class="contact">Caldwell, NJ 07006</p>
-                <p class="contact">P (973) 396-1336</p>
-            </div>
-        </div>
-        <div class="box" id="form_1">
-            <h3>Please sign in or if you are a first time user, register in order to create an extra work order.</h3>
-            <form action="/create_account" method="post">
-                {% csrf_token %}
-                First Name: <input type="text" name="first_name" class="form_field"><br><br>
-                Last Name: <input type="text" name="last_name" class="form_field"><br><br>
-                Email Address: <input type="email" name="email" class="form_field"><br><br>
-                Password: <input type="password" name="password" class="form_field"><br><br>
-                Confirm Password: <input type="password" name="confirm_password" class="form_field"><br><br>
-                Secret Code: <input type="password" name="secret_code" class="form_field"><br><br>
-                <input hidden type="text" name="active" value="Active" id="">
-                <input type="submit" value="Create Account" class="button">
-            </form>
-            <div id="errors">
-                {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                    <li>{{message}}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
-        </div>
-        <div class="box" id="form_2">
-            <h3>Please login using your email address and password</h3>
-            <form action="/login" method="post">
-                {% csrf_token %}
-                Email: <input type="email" name="logged_email" class="form_field"><br><br>
-                Password: <input type="password" name="logged_password" class="form_field"><br><br>
-                <input type="submit" value="Login" class="button">
-            </form>
-            <div id="error_login">
-                <p>{{request.session.failed_login}}</p>
+            <div class="col-md-6 login-form-2">
+                <h3>Login</h3>
+                    <form action="/login" method="post">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="logged_email" placeholder="Your Email *" value="" />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="logged_password" placeholder="Your Password *" value="" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btnSubmit" value="Login" />
+                    </div>
+                    <div class="form-group">
+                        <p id="error_login">{{request.session.failed_login}}</p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
     <script>
         setTimeout(fade_out, 4000);
         function fade_out() {
             $("#error_login").fadeOut().empty();
         }
-
- 
     </script>
 </body>
 

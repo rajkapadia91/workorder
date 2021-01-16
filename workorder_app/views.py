@@ -62,6 +62,7 @@ def create_account(request):
         return redirect ('/')
    
 def createorder(request):
+    request.session['success'] = 0
     if 'user_id' in request.session:
         context = {
             'all_materials': Material.objects.all(),
@@ -170,6 +171,10 @@ def editorder(request, workorder_id):
 def save_edit(request, workorder_id):
     if request.method == 'POST':
         edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
+        edit_this_work_order.jobname=JobName.objects.get(id=request.POST['contractor_edit'])
+        edit_this_work_order.location=request.POST['location_edit']
+        edit_this_work_order.date_work_performed=request.POST['date_work_performed_edit']
+        edit_this_work_order.work_performed=request.POST['work_performed_edit']
         edit_this_work_order.priced=request.POST['priced_edit']
         edit_this_work_order.signature_1=request.POST['signature_1']
         edit_this_work_order.signator_1=request.POST['signator_1']
@@ -181,11 +186,44 @@ def save_edit(request, workorder_id):
         return redirect(f'/edit/{workorder_id}')
 
 def myworkorders(request, user_id):
+    request.session['success'] = 0
     context = {
         'my_work_orders' : WorkOrder.objects.filter(user=User.objects.get(id=user_id)),
         'latest_work_order': WorkOrder.objects.filter(user=User.objects.get(id=user_id)).last(),
         }
     return render(request, 'myworkorders.html', context)
+
+def reset_password(request):
+    context = {
+        'my_profile' : User.objects.get(id=request.session['user_id'])
+    }
+    return render(request, 'my_profile.html', context)
+
+def save_reset_password(request):
+    if request.method == 'POST':
+        errors = User.objects.user_validator_2(request.POST)
+        if errors:
+            for error in errors:
+                messages.error(request, errors[error])
+            print("There are errors")
+            request.session['success'] = 0
+            return redirect('/reset_password')
+        else:
+            my_user_details = User.objects.get(id=request.session['user_id'])
+            my_orignal_password = request.POST['password']
+            my_encrypted_password = bcrypt.hashpw(my_orignal_password.encode(), bcrypt.gensalt()).decode()
+            my_user_details.first_name = request.POST['first_name']
+            my_user_details.last_name = request.POST['last_name']
+            my_user_details.email = request.POST['email']
+            my_user_details.password = my_encrypted_password
+            my_user_details.secret_code = request.POST['secret_code']
+            my_user_details.save()
+            success = "Password has been successfully changed!"
+            request.session['success'] = success
+            return redirect('/reset_password')
+    else:
+        print("Not a post request")
+        return redirect('/reset_password')
 
 def all_users(request):
     request.session['success'] = 0
