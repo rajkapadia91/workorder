@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- End This is where the logo and contact info is embedded -->
-        <p>You are about to edit Order #{{edit_this_order.id}} created by {{edit_this_order.user.first_name}}. The only fields that can be edited here are the two signatures along with printing the name</p>
+        <p>You are about to edit Order #{{edit_this_order.id}} created by {{edit_this_order.user.first_name}}. Apart from the material used and labor type, everything else can be edited.</p>
         <div id="links">
             {% if request.session.secret_code == "FGadmin!" %}
             <button><a href="/workorder">Admin View</a></button>
@@ -62,6 +62,7 @@
                     <option value="No">No</option>
                 </select></p>
             {% endif %}
+            <input hidden type="text" name="priced_edit" value="No">
             <hr>
             <h3>Material/s Used</h3>
             <table>

@@ -26,5 +26,7 @@ urlpatterns = [
     path('save_user/<int:user_id>', views.save_user),
     path('save_edit_here/<int:workorder_id>', views.save_edit_here),
     path('active_deactive/<int:user_id>', views.active_deactive),
-    path('delete_user/<int:user_id>', views.delete_user)
+    path('delete_user/<int:user_id>', views.delete_user),
+    path('email/<int:workorder_id>', views.email),
+    path('create_email/<int:workorder_id>', views.create_email),
 ]

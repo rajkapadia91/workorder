@@ -2,6 +2,10 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from .models import *
 import bcrypt
+from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage
+from django.template.loader import render_to_string
+from email.mime.image import MIMEImage
+
 
 # Create your views here.
 def index(request):
@@ -74,7 +78,6 @@ def createorder(request):
 
 def jobname(request):
     if request.session['secret_code'] == "FGadmin!" :
-        print("Hey this is francesca!")
         context = {
             'all_jobs' : JobName.objects.all()
         }
@@ -122,9 +125,21 @@ def create_order(request):
         for n in range(1, lab_count+1):
             new_labor = LaborType.objects.create(labor_type=request.POST[f"labor_type{n}"], labor_description=request.POST[f"labor_description{n}"], employee_numbers=request.POST[f"employee_numbers{n}"], regular_hours=request.POST[f"regular_hours{n}"], premium_hours=request.POST[f"premium_hours{n}"],double_hours=request.POST[f"double_hours{n}"], workorder=WorkOrder.objects.get(id=new_order.id))
             print(new_labor)
-        return redirect (f"/workorderpreview/{new_order.id}")
+        return redirect (f"/create_email/{new_order.id}")
     else:
         return redirect('/')
+
+def create_email(request, workorder_id):
+    work_order_emailed = WorkOrder.objects.get(id=workorder_id)
+    email_sender = work_order_emailed.user.email
+    context = {
+            'this_work_order' : WorkOrder.objects.get(id=workorder_id)
+        }
+    msg_html = render_to_string('create_email.html', context)
+    msg = EmailMessage(subject=f"New Submission - Extra Work Order - {workorder_id} ", body=msg_html, from_email='belconservicewo@gmail.com', to=['raj@bizimple.com'], cc=[email_sender])
+    msg.content_subtype = "html"  # Main content is now text/html
+    msg.send()
+    return redirect(f"/workorderpreview/{workorder_id}")
 
 def all_work_orders(request):
     if request.session['secret_code'] == "FGadmin!":
@@ -168,6 +183,15 @@ def editorder(request, workorder_id):
     }
     return render(request, 'editorder.html', context)
 
+def email(request, workorder_id):
+    if 'user_id' in request.session:
+        context = {
+            'this_work_order_email' : WorkOrder.objects.get(id=workorder_id)
+        }
+        return render(request, 'email.html', context)
+    else:
+        return redirect('/')
+
 def save_edit(request, workorder_id):
     if request.method == 'POST':
         edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
@@ -181,6 +205,15 @@ def save_edit(request, workorder_id):
         edit_this_work_order.signature_2=request.POST['signature_2']
         edit_this_work_order.signator_2=request.POST['signator_2']
         edit_this_work_order.save()
+        creator_name = edit_this_work_order.user.first_name
+        context  = {
+            'this_work_order_email': WorkOrder.objects.get(id=workorder_id)
+        }
+        msg_html = render_to_string('email.html', context)
+        recipient = edit_this_work_order.user.email
+        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconservicewo@gmail.com', to=['raj@bizimple.com'], cc=[recipient])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
         return redirect(f'/workorderpreview/{workorder_id}')
     else:
         return redirect(f'/edit/{workorder_id}')
