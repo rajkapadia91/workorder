@@ -119,3 +119,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'belconcentral@gmail.com'
+EMAIL_HOST_PASSWORD = 'timesheet01!'
+EMAIL_USEL_TLS = True
+EMAIL_USE_SSL = True
