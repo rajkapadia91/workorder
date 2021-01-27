@@ -136,7 +136,7 @@ def create_email(request, workorder_id):
             'this_work_order' : WorkOrder.objects.get(id=workorder_id)
         }
     msg_html = render_to_string('create_email.html', context)
-    msg = EmailMessage(subject=f"New Submission - Extra Work Order - {workorder_id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com	'], cc=[email_sender], bcc=['raj@bizimple.com'])
+    msg = EmailMessage(subject=f"New Submission - Extra Work Order - {workorder_id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com	'], cc=[email_sender])
     msg.content_subtype = "html"  # Main content is now text/html
     msg.send()
     return redirect(f"/workorderpreview/{workorder_id}")
