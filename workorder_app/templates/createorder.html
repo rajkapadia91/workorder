@@ -30,12 +30,12 @@
 
         <div id="links">
             {% if request.session.secret_code == "FGadmin!" %}
-            <button class="thelinks"><a href="/workorder">Admin View</a></button>
+            <button style="background-color: #EFEFEF!important;" class="thelinks"><a style="font-weight: bold!important;" href="/workorder">Admin View</a></button>
             {% else %}
-            <button class="thelinks"><a href="/myworkorders/{{request.session.user_id}}">My Work Orders</a></button>
-            <button class="thelinks"><a href="/reset_password">Reset Password</a></button>
+            <button style="background-color: #EFEFEF!important;" class="thelinks"><a style="font-weight: bold!important;" href="/myworkorders/{{request.session.user_id}}">My Work Orders</a></button>
+            <button style="background-color: #EFEFEF!important;" class="thelinks"><a style="font-weight: bold!important;" href="/reset_password">Reset Password</a></button>
             {% endif %}
-            <button class="thelinks"><a href="/logout">Logout</a></button>
+            <button style="background-color: #EFEFEF!important;" class="thelinks"><a  style="font-weight: bold!important;" href="/logout">Logout</a></button>
         </div> <br>
 
         <!-- End This is where the logo and contact info is embedded -->
@@ -216,7 +216,7 @@
                             <td><input type="text" name="measurement_amount1" id="measurement_amount"></td>
                         </tr>
                     </table><br>
-                    <button type="button" id="add_material">+</button>
+                    <button style="width: 100px !important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_material"><b>Add One More</b></button>
                 </div><br>
                 <div id="other_material">
                     <h3>Other Material</h3>
@@ -235,7 +235,7 @@
                             <td><input type="text" id="other_measurement_amount" name="other_measurement_amount1"></td>
                         </tr>
                     </table><br>
-                    <button type="button" id="add_more">+</button><br><br><br>
+                    <button style="width: 100px!important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_more"><b>Add One More</b></button><br><br><br>
                 </div><br>
                 <hr>
                 <!-- End - This is the div for adding material to the work order. Material can be on many work orders -->
@@ -272,7 +272,7 @@
                         </tr>
                     </table>
                 </div><br>
-                <button type="button" id="add_labor">+</button><br><br><br>
+                <button style="width: 100px!important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_labor"><b>Add One More</b></button><br><br><br>
                 <!-- End - This is the div for adding labor type to the work order. One labor type can be on many work orders -->
                 <hr><br>
                 <!-- 1) Start of the signature div for general contractor   -->
@@ -294,8 +294,8 @@
                         <!-- End This is the div for the clear signature and save signature -->
                     </div><br>
                     <p id="TY" hidden>General Contractor has successfully signed!</p>
-                    <button type="button" onclick="myFunction()">Clear & Re-Sign</button>
-                    <input onclick="saveSignature()" type="button" id="save1" value="Save Signature">
+                    <button style="background-color: #EFEFEF !important;" type="button" onclick="myFunction()"><b>Clear & Re-Sign</b></button>
+                    <input style="background-color: #EFEFEF !important; font-weight: bold;" onclick="saveSignature()" type="button" id="save1" value="Save Signature">
                 </div><br><br>
                 <hr><br>
                 <div>
@@ -313,8 +313,8 @@
                         <!-- End This is the div for the clear signature and save signature -->
                     </div><br>
                     <p id="TY2" hidden>Belcon foreman has successfully signed!</p>
-                    <button type="button" onclick="myFunction1()">Clear & Re-Sign</button>
-                    <input onclick="saveSignature2()" type="button" id="save2" value="Save Signature">
+                    <button style="background-color: #EFEFEF !important;" type="button" onclick="myFunction1()"><b>Clear & Re-Sign</b></button>
+                    <input style="background-color: #EFEFEF !important; font-weight: bold;" onclick="saveSignature2()" type="button" id="save2" value="Save Signature">
                 </div>
 
                 <!-- 1) End of the signature div general contractor   -->
@@ -323,7 +323,7 @@
                 <input type="hidden" name="material_count" value="1" id="material_count">
                 <input type="hidden" name="labor_count" value="1" id="labor_count">
                 <input type="hidden" name="other_material_count" value="1" id="other_material_count">
-                <input id="submit_button" type="submit" value="Create Work Order"><br>
+                <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Create Work Order"><br>
             </form>
         </div>
         <!-- End - Master div for creating work order -->
