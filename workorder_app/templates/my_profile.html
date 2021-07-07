@@ -20,7 +20,7 @@
                 {% csrf_token %}
             First Name: <input type="text" readonly name="first_name" class="form_field" value="{{my_profile.first_name}}"><br><br>
             Last Name: <input type="text" readonly name="last_name" class="form_field" value="{{my_profile.last_name}}"><br><br>
-            Email Address: <input type="email" readonly name="email" class="form_field" value="{{my_profile.email}}"><br><br>
+            Email Address: <input type="email" name="email" class="form_field" value="{{my_profile.email}}"><br><br>
             Reset Password: <input type="password" name="password" class="form_field"><br><br>
             Confirm Reset Password: <input type="password" name="confirm_password" class="form_field"><br><br>
             Secret Code: <input type="text" readonly name="secret_code" class="form_field" value="{{my_profile.secret_code}}"><br><br>
