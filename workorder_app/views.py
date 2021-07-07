@@ -308,7 +308,7 @@ def save_user(request, user_id):
             encrypted_password = bcrypt.hashpw(orignal_password.encode(), bcrypt.gensalt()).decode()
             save_edit_user.first_name = request.POST['first_name']
             save_edit_user.last_name = request.POST['last_name']
-            save_edit_user.email = request.POST['email']
+            save_edit_user.email = request.POST['email'].lower()
             save_edit_user.password = encrypted_password
             save_edit_user.secret_code = request.POST['secret_code']
             save_edit_user.save()
