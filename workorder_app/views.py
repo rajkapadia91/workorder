@@ -22,7 +22,7 @@ def logout(request):
 
 def login(request):
     if request.method == 'POST':
-        logged_user = User.objects.filter(email = request.POST['logged_email'])
+        logged_user = User.objects.filter(email = request.POST['logged_email'].lower())
         if logged_user:
             logged_user = logged_user[0]
             if logged_user.active == "Active":
@@ -56,7 +56,7 @@ def create_account(request):
         else:
             orignal_password = request.POST['password']
             encrypted_password = bcrypt.hashpw(orignal_password.encode(), bcrypt.gensalt()).decode()
-            new_user = User.objects.create(first_name = request.POST['first_name'], last_name= request.POST['last_name'], email = request.POST['email'], password= encrypted_password, secret_code=request.POST['secret_code'], active=request.POST['active'])
+            new_user = User.objects.create(first_name = request.POST['first_name'], last_name= request.POST['last_name'], email = request.POST['email'].lower(), password= encrypted_password, secret_code=request.POST['secret_code'], active=request.POST['active'])
             request.session['user_id'] = new_user.id
             request.session['user_fname'] = new_user.first_name
             request.session['user_lname'] = new_user.last_name

@@ -12,7 +12,7 @@ class UserManager(models.Manager):
             errors['last_name'] = "Last name needs to be more than 2 characters"
         if not valid_email.match(postData['email']): # test whether a field matches the pattern 
             errors['email'] = "Invalid email address!"
-        if User.objects.filter(email = postData['email']).exists():
+        if User.objects.filter(email = postData['email'].lower()).exists():
             errors['unique_email'] = "Account with this email already exists!"
         if len(postData['password']) <= 6:
             errors['password'] = "Password needs to be more than 6 characters"
