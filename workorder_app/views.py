@@ -247,7 +247,7 @@ def save_reset_password(request):
             my_encrypted_password = bcrypt.hashpw(my_orignal_password.encode(), bcrypt.gensalt()).decode()
             my_user_details.first_name = request.POST['first_name']
             my_user_details.last_name = request.POST['last_name']
-            my_user_details.email = request.POST['email']
+            my_user_details.email = request.POST['email'].lower()
             my_user_details.password = my_encrypted_password
             my_user_details.secret_code = request.POST['secret_code']
             my_user_details.save()
