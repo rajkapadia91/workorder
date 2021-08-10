@@ -748,6 +748,12 @@
             $('.labor_drop').select2();
                 });
                 })
+
+
+                $(document).on("keydown", ":input:not(textarea)", function(event) {
+                        return event.key != "Enter";
+                    });
+
     </script>
     <!-- End This is the javascript for the signature -->
 </body>
