@@ -17,7 +17,6 @@
             <div class="head"> 
                 <button><a href="/">Creating New Extra Work Order</a></button>
                 <button><a href="/jobname">Create New Job</a></button>
-                <button><a href="/workordernotpriced">Work Orders Not Priced</a></button>
                 <button><a href="/logout">Logout</a></button>
                 <button><a href="/all_users">All User Accounts</a></button>
             </div>
@@ -37,18 +36,15 @@
                     <th>Change To Priced</th>
                 </tr>
                 {% for one_work_order in all_work_orders reversed %}
+                {% if one_work_order.priced == "No" or one_work_order.priced == "None" %}
                 <tr>
                     <td><a href="/show_work_order/{{one_work_order.id}}">{{one_work_order.id}}</a></td>
                     <td>{{one_work_order.user.first_name}} {{one_work_order.user.last_name}}</td>
                     <td>{{one_work_order.jobname.contractor_name}}</td>
                     <td>{{one_work_order.jobname.name}}</td>
                     <td>{{one_work_order.location}}</td>
-                    {% if one_work_order.priced == "No" or one_work_order.priced == "None" %}
                     <td id="priced_no">{{one_work_order.priced}}</td>
-                    {% else %}
-                    <td id="priced_yes">{{one_work_order.priced}}</td>
-                    {% endif %}
-                    <td><img src="{{one_work_order.signature_1}}" alt="Signature of contractor" srcset=""></td>
+                   <td><img src="{{one_work_order.signature_1}}" alt="Signature of contractor" srcset=""></td>
                     <td><img src="{{one_work_order.signature_2}}" alt="Signature of belcon foreman" srcset=""></td>
                     <td>
                         <button><a href="/delete/{{one_work_order.id}}">Delete Work Order</a></button>
@@ -62,10 +58,11 @@
                             <input id="submit_button" type="submit" value=" &#10003;">
                         </form>
                         {% else %}
-                      
                         {% endif %}
                     </td>
                 </tr>
+                {% else %}
+                {% endif %}
                 {% endfor %}
             </table>
         </div>

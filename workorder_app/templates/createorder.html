@@ -50,6 +50,10 @@
                     <option value="{{one_job.id}}">Job Name: {{one_job.name}}</option>
                     {% endfor %}
                 </select> <br> <br>
+                Request For Pricing: <select name="request_for_pricing" class="request_for_pricing">
+                    <option value="Yes - Request Pricing">Yes - Request Pricing</option>
+                    <option value="Work Already Performed">Work Already Performed</option>
+                </select><br><br>
                 Location of Work Performed: <input type="text" name="location" id="location_work"> <br><br>
                 Date/ Date Range Work Performed: <input type="text" name="date_work_performed" id="date_work_performed"> <br><br>
                 Work Performed: <br>
@@ -280,6 +284,8 @@
                     <div id="canvas_1">
                         Name of General Contractor Signing: <input type="text" name="signator_1" class="signator_name"
                             id="signator_1" placeholder="Please print your name."><br><br>
+                        General Contractor Email: <input type="email" name="general_contractor_email" placeholder="Please Enter Email" id="general_contractor_email"><br>
+                        <p style="color: red; font-weight: bold;">By entering your email, you are authorizing us to email you once this order is submitted along with emailing you if any changes take place!</p>
                             <p><b>We agree to pay for the above work on the basis of cost of material, labor,<br>
                                 insurance and taxes, on labor and direct costs, plus overhead and profit.</b></p>
                         <!-- Start This is the canvas functionality -->
@@ -334,6 +340,15 @@
 
     <!-- Start This is the javascript for the signature and other functions -->
     <script>
+
+//prevent enter key to submit workorder
+        $('form input').keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+//end enterkey prevention
 
         // start jquery for searchable dropdown 
 
@@ -586,9 +601,11 @@
         }
         $(document).ready(function () {
             $('.job_list').select2();
+            $('.request_for_pricing').select2();
             $('.material_list').select2();
             $('.measurement').select2();
             $('.labor_drop').select2();
+
         });
 
 
@@ -748,11 +765,6 @@
             $('.labor_drop').select2();
                 });
                 })
-
-
-                $(document).on("keydown", ":input:not(textarea)", function(event) {
-                        return event.key != "Enter";
-                    });
 
     </script>
     <!-- End This is the javascript for the signature -->

@@ -23,18 +23,6 @@
                 <p class="contact">Caldwell, NJ 07006</p>
                 <p class="contact">P (973) 396-1336</p>
             </div>
-        <div id="links">
-            <button><a href="/">Creating a New Extra Work Order</a></button>
-            <button><a href="/logout">Logout</a></button>
-            {% if request.session.user_id == this_work_order.user.id or request.session.secret_code == "FGadmin!" %}
-            <button id="edit_button"><a id="edit_view" href="/edit/{{this_work_order.id}}">Edit Order</a></button>
-            {% endif %}
-            {% if request.session.secret_code == "FGadmin!" %}
-            <button><a href="/workorder">Admin View</a></button>
-            {% else %}
-            <button class="thelinks"><a href="/myworkorders/{{request.session.user_id}}">My Work Orders</a></button>
-            {% endif %}
-        </div>
         <div id="created_by">
             <h3>Extra work order successfully submitted by {{this_work_order.user.first_name}} {{this_work_order.user.last_name}} on <span id="updated_at_est">{{this_work_order.updated_at}} EST</span></h3>
         </div>

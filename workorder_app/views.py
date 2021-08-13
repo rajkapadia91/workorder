@@ -103,12 +103,14 @@ def create_order(request):
         print(user_creating_order)
         job_id_selected = JobName.objects.get(id=request.POST['contractor'])
         new_order = WorkOrder.objects.create(
+            request_for_pricing = request.POST['request_for_pricing'],
             location=request.POST['location'],
             date_work_performed = request.POST['date_work_performed'],
             work_performed=request.POST['work_performed'],
             priced = request.POST['priced'],
             signature_1=request.POST['signature_1'],
-            signator_1=request.POST['signator_1'], 
+            signator_1=request.POST['signator_1'],
+            general_contractor_email=request.POST['general_contractor_email'],
             signature_2=request.POST['signature_2'],
             signator_2=request.POST['signator_2'], 
             jobname=job_id_selected, 
@@ -132,11 +134,12 @@ def create_order(request):
 def create_email(request, workorder_id):
     work_order_emailed = WorkOrder.objects.get(id=workorder_id)
     email_sender = work_order_emailed.user.email
+    general_contractor_email = work_order_emailed.general_contractor_email
     context = {
             'this_work_order' : WorkOrder.objects.get(id=workorder_id)
         }
     msg_html = render_to_string('create_email.html', context)
-    msg = EmailMessage(subject=f"New Submission - Extra Work Order - {workorder_id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com	'], cc=[email_sender])
+    msg = EmailMessage(subject=f"New Submission - Extra Work Order - {workorder_id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com	'], cc=[email_sender,general_contractor_email])
     msg.content_subtype = "html"  # Main content is now text/html
     msg.send()
     return redirect(f"/workorderpreview/{workorder_id}")
@@ -148,6 +151,16 @@ def all_work_orders(request):
             'all_work_orders': WorkOrder.objects.all()
             }
         return render(request, "workorder.html", context)
+    else:
+        return redirect ('/')
+
+def all_work_orders_not_priced(request):
+    if request.session['secret_code'] == "FGadmin!":
+        request.session['success'] = 0
+        context = {
+            'all_work_orders': WorkOrder.objects.all()
+            }
+        return render(request, "workordernotpriced.html", context)
     else:
         return redirect ('/')
 
@@ -168,6 +181,12 @@ def workorderpreview(request, workorder_id):
         return render(request, 'workorderpreview.html', context)
     else:
         return redirect('/')
+
+def workorderpreviewexternal(request, workorder_id):
+    context = {
+            'this_work_order' : WorkOrder.objects.get(id=workorder_id)
+        }
+    return render(request, 'workorderpreviewexternal.html', context)
 
 
 def delete_work_order(request, workorder_id):
@@ -196,7 +215,8 @@ def save_edit(request, workorder_id):
     if request.method == 'POST':
         edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
         edit_this_work_order.jobname=JobName.objects.get(id=request.POST['contractor_edit'])
-        edit_this_work_order.location=request.POST['location_edit']
+        edit_this_work_order.location=request.POST['location_edit'],
+        edit_this_work_order.request_for_pricing=request.POST['request_for_pricing'],
         edit_this_work_order.date_work_performed=request.POST['date_work_performed_edit']
         edit_this_work_order.work_performed=request.POST['work_performed_edit']
         edit_this_work_order.priced=request.POST['priced_edit']
@@ -211,7 +231,8 @@ def save_edit(request, workorder_id):
         }
         msg_html = render_to_string('email.html', context)
         recipient = edit_this_work_order.user.email
-        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com'], cc=[recipient])
+        general_contractor_email = edit_this_work_order.general_contractor_email
+        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com'], cc=[recipient, general_contractor_email])
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
         return redirect(f'/workorderpreview/{workorder_id}')

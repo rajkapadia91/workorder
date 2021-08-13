@@ -53,6 +53,7 @@
             </p>
             <p> <span class="titles">Address:</span> {{edit_this_order.jobname.street}}, {{edit_this_order.jobname.city}}, {{edit_this_order.jobname.state}} {{edit_this_order.jobname.zip_code}}</p>
             <p> <span class="titles">Location of Work Performed:</span> <input type="text" name="location_edit" value="{{edit_this_order.location}}" id="location_edit"></p>
+            <p> <span class="titles">Request For Pricing:</span> <input type="text" name="request_for_pricing" value="{{edit_this_order.request_for_pricing}}" id="request_for_pricing"></p>
             <p> <span class="titles">Date/ Date Range Work Performed:</span> <input id="date_range" name="date_work_performed_edit" type="text" value="{{edit_this_order.date_work_performed}}"></p>
             <p> <span class="titles">Work Performed:</span><br><textarea name="work_performed_edit" id="text_area" cols="120" rows="12">{{edit_this_order.work_performed}}</textarea></p>
             {% if request.session.secret_code == "FGadmin!" %}
