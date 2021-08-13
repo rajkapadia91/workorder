@@ -221,7 +221,8 @@ def save_edit(request, workorder_id):
         edit_this_work_order.work_performed=request.POST['work_performed_edit']
         edit_this_work_order.priced=request.POST['priced_edit']
         edit_this_work_order.signature_1=request.POST['signature_1']
-        edit_this_work_order.signator_1=request.POST['signator_1']
+        edit_this_work_order.signator_1=request.POST['signator_1'],
+        edit_this_work_order.general_contractor_email=request.POST['general_contractor_email'],
         edit_this_work_order.signature_2=request.POST['signature_2']
         edit_this_work_order.signator_2=request.POST['signator_2']
         edit_this_work_order.save()
