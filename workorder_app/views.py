@@ -233,7 +233,7 @@ def save_edit(request, workorder_id):
         msg_html = render_to_string('email.html', context)
         recipient = edit_this_work_order.user.email
         general_contractor_email = edit_this_work_order.general_contractor_email
-        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com'], cc=[recipient, general_contractor_email])
+        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com'], cc=[recipient,general_contractor_email])
         msg.content_subtype = "html"  # Main content is now text/html
         msg.send()
         return redirect(f'/workorderpreview/{workorder_id}')
