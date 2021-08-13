@@ -60,13 +60,13 @@ class JobName(models.Model):
  
 class WorkOrder(models.Model):
     location = models.CharField(max_length=255)
-    date_work_performed = models.CharField(max_length=255, default="None")
+    date_work_performed = models.CharField(max_length=255, blank=True)
     work_performed = models.TextField()
-    request_for_pricing = models.CharField(max_length=255, default="None")
-    priced = models.CharField(max_length=10, default="None")
+    request_for_pricing = models.CharField(max_length=255, blank=True)
+    priced = models.CharField(max_length=10, blank=True)
     signature_1 = models.TextField()
     signator_1 = models.CharField(max_length=255)
-    general_contractor_email = models.CharField(max_length=255, default="None")
+    general_contractor_email = models.CharField(max_length=255, blank=True)
     signature_2 = models.TextField()
     signator_2 = models.CharField(max_length=255)
     jobname = models.ForeignKey(JobName, related_name="workorders", on_delete=models.CASCADE)

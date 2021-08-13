@@ -6,7 +6,7 @@
     <title>Email - Submitting the Extra Work Order</title>
 </head>
 <body>
-    {% if this_work_order.general_contractor_email == "None" %}
+    {% if this_work_order.general_contractor_email == "" %}
     <p>Hi Francesca!<br><br>A new extra work order has been submitted by {{this_work_order.user.first_name}} on {{this_work_order.created_at}}<br>
         General Contractor: {{this_work_order.jobname.contractor_name}}<br>
         Name of Job: {{this_work_order.jobname.name}}<br><br>
