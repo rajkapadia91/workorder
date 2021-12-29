@@ -182,6 +182,7 @@ def create_order(request):
         invoice_dummy_date = date.today().strftime("%Y-%m-%d")
         new_order = WorkOrder.objects.create(
             invoice_date = invoice_dummy_date,
+            invoice_number = "1111",
             request_for_pricing = request.POST['request_for_pricing'],
             location=request.POST['location'],
             date_work_performed = request.POST['date_work_performed'],
@@ -535,6 +536,7 @@ def save_invoice(request,workorder_id):
     if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
         this_invoice = WorkOrder.objects.get(id=workorder_id)
         this_invoice.invoice_date = request.POST['invoice_date']
+        this_invoice.invoice_number = request.POST['invoice_number']
         mat_ids = []
         other_mat_ids = []
         labor_ids = []

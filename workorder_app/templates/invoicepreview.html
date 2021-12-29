@@ -49,10 +49,10 @@
                   <div class="invoice-date">
                      <!-- <small>Invoice Date</small> -->
                      <p hidden id="the_date_on_invoice">{{edit_this_order.invoice_date}}</p>
-                     <div class="date text-inverse m-t-5"> Invoice Date: <input style="color: red;" type="date" value=""
+                     <div class="date text-inverse m-t-5"> CO Date: <input style="color: red;" type="date" value=""
                            name="invoice_date" id="invoice_date" class="invoice_inputs"></div>
                      <div class="invoice-detail">
-                        Invoice #{{edit_this_order.id}}<br>
+                        CO #<input type="text" style="color: red;" name="invoice_number" value="{{edit_this_order.invoice_number}}" class="invoice_inputs" id="invoice_number"><br>
                      </div>
                   </div>
                </div>
@@ -168,7 +168,7 @@
                            </td>
                         </tr>
                         <tr class="totals">
-                           <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Grant Total</b></td>
+                           <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Grand Total</b></td>
                            <td></td>
                            <td></td>
                            <td><b><input type="text" readonly name="total_invoice_amount"
@@ -223,7 +223,7 @@
             <p style="width: 300px; font-size: large;">Thank you for your prompt payment!<br>Maria Zarfino<br></p>
          </div>
          <div class="contents_in_box" id="signature_image_div">
-            <img style="width: 300px;" src="{{edit_this_order.signature_1}}" alt=""><br><br>
+            <p style="width: 300px; height: 90px; "></p><br><br>
          </div>
 
       </div>

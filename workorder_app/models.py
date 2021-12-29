@@ -75,6 +75,7 @@ class WorkOrder(models.Model):
     jobname = models.ForeignKey(JobName, related_name="workorders", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='workorders', on_delete=models.CASCADE)
     invoice_date = models.DateField(max_length=255)
+    invoice_number = models.CharField(max_length=255, default="1111")
     subtotal_material_cost = models.CharField(max_length=255, default="0")
     subtotal_other_material_cost = models.CharField(max_length=255, default="0")
     material_cost_combined = models.CharField(max_length=255, default="0")
