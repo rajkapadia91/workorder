@@ -136,7 +136,7 @@ def upload_material(request):
     # setup a stream which is when we loop through each line we are able to handle a data in a stream
     io_string = io.StringIO(data_set)
     next(io_string)
-    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+    for column in csv.reader(io_string, delimiter=','):
             created = MaterialProductDB.objects.update_or_create(
             location=column[0],
             product_name=column[1],
