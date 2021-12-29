@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create & View Jobs</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jobname.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h2>Create Project/Job</h2>
+        </div>
+        <button><a href="/">Creating a New Extra Work Order</a></button>
+        <button><a href="/workorder">Back to All Extra Work Orders</a></button>
+        <div id="form_1">
+            <form action="/create_new_material" method="post">
+                {% csrf_token %}
+               Location: <input type="text" name="location" id="location"><br><br>
+                Product Name: <input type="text" name="product_name" id="product_name"><br><br>
+                Unit: <input type="text" name="unit_of_measurement" id="unit_of_measurement"><br><br>
+                Price: <input type="text" name="price" id="price"><br><br>
+                <input id="create_button" type="submit" value="Create Material">
+            </form>
+        </div>
+        <div id="upload_material">
+            <p><form action="/upload_material" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="file1">Bulk Upload Materials</label>
+                <input type="file" id="file1" name="file">
+                <small>Only accepts CSV files</small>
+                <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Upload">
+            </form> </p>
+            <p><button><a href="/deleteallmaterials">Delete All</a></button></p>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>Location</th>
+                    <th>Product Name</th>
+                    <th>Unit</th>
+                    <th>Price</th>
+                    <th>Delete</th>
+                </tr>
+                {% for one_material in all_material_names reversed %}
+                <tr>
+                    <td>{{one_material.location}}</td>
+                    <td>{{one_material.product_name}}</td>
+                    <td>{{one_material.unit_of_measurement}}</td>
+                    <td>{{one_material.price}}</td>
+                    <td><button><a href="/delete_material_db/{{one_material.id}}">Delete Material</a></button></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

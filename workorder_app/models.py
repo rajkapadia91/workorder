@@ -55,6 +55,9 @@ class JobName(models.Model):
     state = models.CharField(max_length=2)
     zip_code = models.CharField(max_length=5)
     contractor_name = models.CharField(max_length=255)
+    gc_street = models.CharField(max_length=255, default="111 Roseland Ave")
+    gc_city_state_zip = models.CharField(max_length=255, default= "Caldwell, NJ 07000")
+    gc_phone = models.CharField(max_length=255, default="123.456.789")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
  
@@ -71,6 +74,14 @@ class WorkOrder(models.Model):
     signator_2 = models.CharField(max_length=255)
     jobname = models.ForeignKey(JobName, related_name="workorders", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='workorders', on_delete=models.CASCADE)
+    invoice_date = models.DateField(max_length=255)
+    subtotal_material_cost = models.CharField(max_length=255, default="0")
+    subtotal_other_material_cost = models.CharField(max_length=255, default="0")
+    material_cost_combined = models.CharField(max_length=255, default="0")
+    labor_cost_combined = models.CharField(max_length=255, default="0")
+    overhead_profit = models.CharField(max_length=300, default="0")
+    total_invoice_amount =  models.CharField(max_length=255, default="0")
+    memo = models.CharField(max_length=255, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -79,6 +90,7 @@ class Material(models.Model):
     quantity = models.CharField(max_length=10, default="0")
     measurement = models.CharField(max_length=20, default="None")
     measurement_amount = models.CharField(max_length=20, default="None")
+    total_material_cost = models.CharField(max_length=200, default="0")
     workorder = models.ForeignKey(WorkOrder, related_name="materials", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
@@ -89,6 +101,7 @@ class OtherMaterial(models.Model):
     other_measurement = models.CharField(max_length=20, default="None")
     other_measurement_amount = models.CharField(max_length=20, default="None")
     workorder = models.ForeignKey(WorkOrder, related_name="othermaterials", on_delete=models.CASCADE)
+    total_other_material_cost = models.CharField(max_length=200, default="0")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -99,11 +112,27 @@ class LaborType(models.Model):
     regular_hours = models.CharField(max_length=255, default="0")
     premium_hours = models.CharField(max_length=255,default="0")
     double_hours = models.CharField(max_length=255,default="0")
+    total_hours = models.CharField(max_length=255,default="0")
+    total_labor_cost = models.CharField(max_length=255,default="0")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     workorder = models.ForeignKey(WorkOrder, related_name="labortypes", on_delete=models.CASCADE)
 
+class MaterialProductDB(models.Model):
+    location = models.CharField(max_length=300, default="None")
+    product_name = models.CharField(max_length=300, default="None")
+    unit_of_measurement = models.CharField(max_length=300, default="None")
+    price = models.CharField(max_length=300, default="None")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-
-
+class OurCompanyInfo(models.Model):
+    company_name = models.CharField(max_length=300, default="None")
+    street = models.CharField(max_length=300, default="None")
+    city_state_zip = models.CharField(max_length=300, default="None")
+    phone_number = models.CharField(max_length=300, default="None")
+    email_address = models.CharField(max_length=300, default="None")
+    status = models.CharField(max_length=300, default="Active")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 

@@ -17,6 +17,7 @@
             <div class="head"> 
                 <button><a href="/">Creating New Extra Work Order</a></button>
                 <button><a href="/jobname">Create New Job</a></button>
+                <button><a href="/allmaterials">Create New Material</a></button>
                 <button><a href="/workordernotpriced">Work Orders Not Priced</a></button>
                 <button><a href="/logout">Logout</a></button>
                 <button><a href="/all_users">All User Accounts</a></button>
@@ -35,6 +36,8 @@
                     <th>Signature of Belcon Foreman</th>
                     <th>Actions</th>
                     <th>Change To Priced</th>
+                    <th>Generate or Edit Invoice</th>
+                    <th>Final Invoice</th>
                 </tr>
                 {% for one_work_order in all_work_orders reversed %}
                 <tr>
@@ -65,6 +68,12 @@
                       
                         {% endif %}
                     </td>
+                    {% if one_work_order.total_invoice_amount == "0" %}
+                    <td><button><a target="_blank" href="/invoicepreview/{{one_work_order.id}}">Generate Invoice</a></button></td>
+                    {% else %}
+                    <td><button><a target="_blank" href="/invoicepreview/{{one_work_order.id}}">Edit Invoice</a></button></td>
+                    {% endif %}
+                    <td><button><a target="_blank" href="/finalinvoice/{{one_work_order.id}}">Go to Final Invoice</a></button></td>
                 </tr>
                 {% endfor %}
             </table>

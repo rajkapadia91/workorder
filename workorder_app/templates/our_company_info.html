@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'workorder.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1 class="head">Our Company Info</h1>
+            <div class="head"> 
+                <button><a href="/">Creating New Extra Work Order</a></button>
+                <button><a href="/jobname">Create New Job</a></button>
+                <button><a href="/logout">Logout</a></button>
+                <button><a href="/workorder">Admin View</a></button>
+                <button><a href="/our_company_info">Our Company Info</a></button>
+            </div>
+        </div>
+        <div id="main_table">
+            <table>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Street</th>
+                    <th>City/State/Zipcode</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th>Submit</th>
+                </tr>
+                <form action="/create_company_profile" method="post">
+                    {% csrf_token %}
+                <tr>
+                    <td> <input required type="text" name="company_name" id="company_name"></td>
+                    <td> <input required type="text" name="street" id="street"></td>
+                    <td> <input required type="text" name="city_state_zip" id="city_state_zip"></td>
+                    <td> <input required type="text" name="phone_number" id="phone_number"></td>
+                    <td> <input required type="email" name="email_address" id="email_address"></td> 
+                    <td> 
+                            <select name="status" id="status">
+                                <option selected value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select> 
+                    </td>  
+                    <td> <input type="submit" value="Create"> </td>
+
+                </tr>
+            </form>
+
+            </table>
+        </div> <br>
+
+        <div id="main_table">
+            <table>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Street</th>
+                    <th>City/State/Zipcode</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th>Save Edit</th>
+                </tr>
+                {% for info in our_company_info %}
+                <form action="/edit_company_profile/{{info.id}}" method="post">
+                    {% csrf_token %}
+                <tr>
+                    <td> <input required type="text" name="edit_company_name" value="{{info.company_name}}" id="edit_company_name"></td>
+                    <td> <input required type="text" name="edit_street" value="{{info.street}}" id="edit_street"></td>
+                    <td> <input required type="text" name="edit_city_state_zip" value="{{info.city_state_zip}}" id="edit_city_state_zip"></td>
+                    <td> <input required type="text" name="edit_phone_number" value="{{info.phone_number}}" id="edit_phone_number"></td>
+                    <td> <input required type="email" name="edit_email_address" value="{{info.email_address}}" id="edit_email_address"></td> 
+                    <td> 
+                            <select name="edit_status" id="edit_status">
+                                {% if info.status == "Active" %}
+                                <option selected value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                {% else %}
+                                <option value="Active">Active</option>
+                                <option selected value="Inactive">Inactive</option>
+                                {% endif %}
+                            </select> 
+                    </td>  
+                    <td> <input type="submit" value="Save Edits"> </td>
+                </tr>
+                </form>
+                {% endfor %}
+            </form>
+
+            </table>
+        </div>
+
+    </div>
+    <script>
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Belcon - Invoice Edit & Save</title>
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'invoicepreview.css' %}">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <div class="container">
+      <div class="col-md-12">
+         <div class="invoice">
+            <!-- begin invoice-company -->
+            <div class="invoice-company text-inverse f-w-600">
+               BEL-CON Construction Services, Inc.
+            </div>
+            <form action="/save_invoice/{{edit_this_order.id}}" method="post">
+               {% csrf_token %}
+               <!-- begin invoice-header -->
+               <div class="invoice-header">
+                  <div class="invoice-from">
+                     <small>From</small>
+                     <address class="m-t-5 m-b-5" id="address_1">
+                        {% for info in our_company_info %}
+                        <strong class="text-inverse">{{info.company_name}}</strong><br>
+                        {{info.street}}<br>
+                        {{info.city_state_zip}}<br>
+                        Phone: {{info.phone_number}}<br>
+                        Email: {{info.email_address}}
+                        {% endfor %}
+                     </address>
+                  </div>
+                  <div class="invoice-to">
+                     <small>To</small>
+                     <address class="m-t-5 m-b-5" id="address_1">
+                        <strong class="text-inverse">{{edit_this_order.jobname.contractor_name}}</strong><br>
+                        {{edit_this_order.jobname.gc_street}}<br>
+                        {{edit_this_order.jobname.gc_city_state_zip}}<br>
+                        Phone: {{edit_this_order.jobname.gc_phone}}
+
+                     </address>
+                  </div>
+                  <div class="invoice-date">
+                     <!-- <small>Invoice Date</small> -->
+                     <p hidden id="the_date_on_invoice">{{edit_this_order.invoice_date}}</p>
+                     <div class="date text-inverse m-t-5"> Invoice Date: <input style="color: red;" type="date" value=""
+                           name="invoice_date" id="invoice_date" class="invoice_inputs"></div>
+                     <div class="invoice-detail">
+                        Invoice #{{edit_this_order.id}}<br>
+                     </div>
+                  </div>
+               </div>
+               <!-- end invoice-header -->
+               <!-- begin invoice-content -->
+               <div class="invoice-content">
+                  <!-- begin table-responsive -->
+                  <div class="table-responsive">
+                     <table class="table table-invoice" id="customers">
+                        <thead>
+                           <tr>
+                              <th>Description</th>
+                              <th class="text-center" width="10%">Quantity / <br> # of Emp</th>
+                              <th class="text-center" width="10%">Measurement / <br> # of Hours</th>
+                              <th class="text-right" width="20%">Total</th>
+                           </tr>
+                        </thead>
+                        <tr>
+                           <td colspan="4">Work Performed: {{edit_this_order.work_performed}}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="4">
+                              <small>{{edit_this_order.jobname.name}}<br>{{edit_this_order.jobname.street}}<br>{{edit_this_order.jobname.city}},
+                                 {{edit_this_order.jobname.state}} {{edit_this_order.jobname.zip_code}}</small>
+                           </td>
+                        </tr>
+                        <tbody id="invoice_line_items">
+                           {% for material in edit_this_order.materials.all %}
+                           {% if material.product != "" %}
+                           <tr>
+                              <td class="text-center">{{material.product}} | {{material.measurement}}</td>
+                              <td class="text-center"><input type="text" style="color: red;"
+                                    name="quantity{{material.id}}" id="invoice" value="{{material.quantity}}"
+                                    class="invoice_inputs"></td>
+                              {% if material.measurement == "EA" or material.measurement == "Box(s)" %}
+                              <td class="text-center"></td>
+                              {% else %}
+                              <td class="text-center">
+                                 <input type="text" style="color: red;" name="measurement_amount{{material.id}}"
+                                    id="invoice" value="{{material.measurement_amount}}" class="invoice_inputs">
+                              </td>
+                              {% endif %}
+                              <td class="text-right"><input style="color: red;" type="text"
+                                    name="total_material_cost{{material.id}}" id="invoice"
+                                    value="{{material.total_material_cost}}" class="invoice_inputs"></td>
+                           </tr>
+                           {% endif %}
+                           {% endfor %}
+                           {% for one_other_material in edit_this_order.othermaterials.all %}
+                           {% if one_other_material.other_name != "" %}
+                           <tr>
+                              <td class="text-center">{{one_other_material.other_name}}</td>
+
+                              <td class="text-center"><input style="color: red;" type="text"
+                                    name="other_quantity{{one_other_material.id}}" id="invoice" class="invoice_inputs"
+                                    value="{{one_other_material.other_quantity}}"></td>
+
+                              <td class="text-center"><input style="color: red;" type="text"
+                                    name="other_measurement_amount{{one_other_material.id}}" id="invoice"
+                                    class="invoice_inputs" value="{{one_other_material.other_measurement_amount}}"></td>
+
+                              <td class="text-center"><input type="text" style="color: red;"
+                                    name="total_other_material_cost{{one_other_material.id}}" id="invoice"
+                                    class="invoice_inputs" value="{{one_other_material.total_other_material_cost}}">
+                              </td>
+                           </tr>
+                           {% endif %}
+                           {% endfor %}
+                        </tbody>
+                        <tr class="totals">
+                           <td><button type="button"
+                                 style="background-color: #f1dfcf; border-radius: 3px; border-color: #f1dfcf;"
+                                 onclick="show_hide_line_items()"><span id="button_sign">-</span></button><b>
+                                 &#160;Total Material Cost</b></td>
+                           <td></td>
+                           <td></td>
+                           <td><input type="text" readonly name="material_cost_combined"
+                                 value="{{edit_this_order.material_cost_combined}}" id="invoice" class="invoice_inputs">
+                           </td>
+                        </tr>
+                        <tbody id="labor_line_items">
+                           {% for one_labor in edit_this_order.labortypes.all %}
+                           <tr>
+                              <td>{{one_labor.labor_type}} {{one_labor.labor_description}} | Reg:
+                                 {{one_labor.regular_hours}}, Dou: {{one_labor.double_hours}}, Premium:
+                                 {{one_labor.premium_hours}} </td>
+                              <td><input type="text" style="color: red;" name="employee_numbers{{one_labor.id}}"
+                                    value="{{one_labor.employee_numbers}}" id="invoice" class="invoice_inputs"></td>
+                              <td><input type="text" style="color: red;" name="total_hours{{one_labor.id}}"
+                                    value="{{one_labor.total_hours}}" id="invoice" class="invoice_inputs"></td>
+                              <td><input type="text" style="color: red;" name="total_labor_cost{{one_labor.id}}"
+                                    value="{{one_labor.total_labor_cost}}" id="invoice" class="invoice_inputs"></td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                        <tr class="totals">
+                           <td><button type="button"
+                                 style="background-color: #f1dfcf; border-radius: 3px; border-color: #f1dfcf;"
+                                 onclick="show_hide_labor_items()"><span id="button_sign_2">-</span></button><b>
+                                 &#160;Total Labor Cost</b></td>
+                           <td></td>
+                           <td></td>
+                           <td><b><input type="text" readonly name="labor_cost_combined"
+                                    value="{{edit_this_order.labor_cost_combined}}" id="invoice"
+                                    class="invoice_inputs"></b></td>
+                        </tr>
+                        <tr class="totals">
+                           <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Overhead & Profit</b></td>
+                           <td></td>
+                           <td></td>
+                           <td><b><input type="text" style="color: red;" name="overhead_profit"
+                                    value="{{edit_this_order.overhead_profit}}" id="invoice" class="invoice_inputs"></b>
+                           </td>
+                        </tr>
+                        <tr class="totals">
+                           <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Grant Total</b></td>
+                           <td></td>
+                           <td></td>
+                           <td><b><input type="text" readonly name="total_invoice_amount"
+                                    value="{{edit_this_order.total_invoice_amount}}" id="invoice"
+                                    class="invoice_inputs"></b></td>
+                        </tr>
+                        <tr>
+                           <td colspan="4"><input
+                                 style="width: 500px; height: 20px; border: none; border-bottom: 1px solid;" type="text"
+                                 name="memo" placeholder="Any other comments" value="{{edit_this_order.memo}}"
+                                 id="memo"></td>
+                        </tr>
+                        <tr>
+
+                           <td colspan="4">
+                              <input style="display: inline-block;
+                        margin-right: 20px;
+                        padding:0.3em 1.2em;
+                        margin:0 0.1em 0.1em 0;
+                        border:0.16em solid rgba(255,255,255,0);
+                        border-radius:2em;
+                        box-sizing: border-box;
+                        text-decoration:none;
+                        font-family:'Roboto',sans-serif;
+                        font-weight:300;
+                        color: #b95700;
+                        text-align:center;" type="submit" value="Save Edits & Generate Invoice">  <button style="display: inline-block;
+                        margin-right: 20px;
+                        padding:0.3em 1.2em;
+                        margin:0 0.1em 0.1em 0;
+                        border:0.16em solid rgba(255,255,255,0);
+                        border-radius:2em;
+                        box-sizing: border-box;
+                        text-decoration:none;
+                        font-family:'Roboto',sans-serif;
+                        font-weight:300;
+                        color: #b95700;
+                        text-align:center;
+                        margin-left: 100px;" type="button"><a target="_blank" style="color: #b95700;
+    text-decoration: none;" href="/finalinvoice/{{edit_this_order.id}}">Go to Final Invoice</a></button>
+                           </td>
+
+                        </tr>
+            </form>
+            </table>
+         </div>
+      </div>
+      <!-- end invoice-content -->
+      <!-- begin invoice-note -->
+      <div class="invoice-note">
+         <div class="contents_in_box">
+            <p style="width: 300px; font-size: large;">Thank you for your prompt payment!<br>Maria Zarfino<br></p>
+         </div>
+         <div class="contents_in_box" id="signature_image_div">
+            <img style="width: 300px;" src="{{edit_this_order.signature_1}}" alt=""><br><br>
+         </div>
+
+      </div>
+      <div id="footer">
+         <p id="gc_name_under_signature">{{edit_this_order.jobname.contractor_name}}</p>
+      </div>
+      <!-- end invoice-note -->
+   </div>
+   <!-- </div>
+   </div> -->
+
+   <script>
+      function show_hide_line_items() {
+         var the_sign = document.getElementById('button_sign').innerHTML
+         if (the_sign == "-") {
+            $("#invoice_line_items").hide();
+            var positive = "+"
+            document.getElementById('button_sign').innerHTML = positive
+         }
+         else {
+            $("#invoice_line_items").show();
+            var negative = "-"
+            document.getElementById('button_sign').innerHTML = negative
+         }
+      }
+
+      function show_hide_labor_items() {
+         var the_sign = document.getElementById('button_sign_2').innerHTML
+         if (the_sign == "-") {
+            $("#labor_line_items").hide();
+            var positive = "+"
+            document.getElementById('button_sign_2').innerHTML = positive
+         }
+         else {
+            $("#labor_line_items").show();
+            var negative = "-"
+            document.getElementById('button_sign_2').innerHTML = negative
+         }
+      }
+
+      //   Date.prototype.toDateInputValue = (function () {
+      //      var date_on_invoice = document.getElementById('the_date_on_invoice').innerHTML
+      //       var local = new Date(this);
+      //       local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+      //       return local.toJSON().slice(0, 10);
+      //   });
+
+      //   function date_worked() {
+      //       document.getElementById('invoice_date').value = new Date().toDateInputValue();
+      //       // document.getElementById('date_worked1').setAttribute("min", min_date);
+      //       // document.getElementById('date_worked1').setAttribute("max", max_date);
+      //   };
+      //   date_worked();
+
+      ; (function today_date() {
+         var today = new Date(document.getElementById('the_date_on_invoice').innerHTML);
+         var dd = today.getDate();
+         var mm = today.getMonth() + 1;
+         var yyyy = today.getFullYear();
+         if (dd < 10) {
+            dd = `0${dd}`;
+         }
+
+         if (mm < 10) {
+            mm = `0${mm}`;
+         }
+         formatted_date = `${mm}/${dd}/${yyyy}`;
+         formatted_date_django_python = `${yyyy}-${mm}-${dd}`;
+         document.getElementById('invoice_date').value = formatted_date_django_python
+      })();
+
+   </script>
+</body>
+
+</html>

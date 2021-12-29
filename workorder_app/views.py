@@ -1,10 +1,15 @@
+import csv, io
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from .models import *
 import bcrypt
 from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage
 from django.template.loader import render_to_string
+from datetime import datetime, date, timedelta
 from email.mime.image import MIMEImage
+import xlwt
+import csv
+from django.utils.encoding import smart_str
 
 
 # Create your views here.
@@ -70,11 +75,75 @@ def createorder(request):
     if 'user_id' in request.session:
         context = {
             'all_materials': Material.objects.all(),
-            'all_jobs' : JobName.objects.all()
+            'all_jobs' : JobName.objects.all(),
+            'all_material_names': MaterialProductDB.objects.all(),
         }
         return render(request, 'createorder.html', context)
     else:
         return redirect('/')
+
+def allmaterials(request):
+    if request.session['secret_code'] == "FGadmin!" :
+        context = {
+            'all_material_names': MaterialProductDB.objects.all(),
+        }
+        return render(request, 'allmaterials.html', context)
+    else:
+        return redirect('/')
+
+def create_new_material(request):
+    if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
+        new_material = MaterialProductDB.objects.create(
+            location=request.POST['location'],
+            product_name = request.POST['product_name'],
+            unit_of_measurement = request.POST['unit_of_measurement'],
+            price = request.POST['price']
+        )
+        return redirect('/allmaterials')
+    else:
+        return redirect('/')
+
+def delete_material_db(request, material_id):
+    if request.session['secret_code'] == "FGadmin!" :
+        MaterialProductDB.objects.get(id=material_id).delete()
+        return redirect('/allmaterials')
+    else:
+        return redirect('/')
+
+def deleteallmaterials(request):
+    if request.session['secret_code'] == "FGadmin!" :
+        all_materials = MaterialProductDB.objects.all()
+        for one_material in all_materials:
+            MaterialProductDB.objects.get(id=one_material.id).delete()
+        return redirect('/allmaterials')
+    else:
+        return redirect('/')
+
+
+def upload_material(request):
+    data = MaterialProductDB.objects.all()
+    prompt = {
+        'order': 'Order of the CSV should be full_name, union, position',
+        'profiles': data
+        }
+    if request.method == "GET":
+        return redirect('/')
+    csv_file = request.FILES['file']
+    # let's check if it is a csv file
+    if not csv_file.name.endswith('.csv'):
+        messages.error(request, 'THIS IS NOT A CSV FILE')
+    data_set = csv_file.read().decode('UTF-8')
+    # setup a stream which is when we loop through each line we are able to handle a data in a stream
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+            created = MaterialProductDB.objects.update_or_create(
+            location=column[0],
+            product_name=column[1],
+            unit_of_measurement=column[2],
+            price=column[3], 
+        )
+    return redirect('/allmaterials')
 
 def jobname(request):
     if request.session['secret_code'] == "FGadmin!" :
@@ -87,7 +156,15 @@ def jobname(request):
 
 def create_job(request):
     if request.method == 'POST':
-        new_job = JobName.objects.create(name = request.POST['job_name'], contractor_name = request.POST['contractor_name'], street = request.POST['street'], city= request.POST['city'], state= request.POST['state'], zip_code = request.POST['zipcode'])
+        new_job = JobName.objects.create(name = request.POST['job_name'], 
+        contractor_name = request.POST['contractor_name'], 
+        gc_street = request.POST['gc_street'], 
+        gc_city_state_zip = request.POST['gc_city_state_zip'], 
+        gc_phone = request.POST['gc_phone'], 
+        street = request.POST['street'], 
+        city= request.POST['city'], 
+        state= request.POST['state'], 
+        zip_code = request.POST['zipcode'])
         return redirect('/jobname')
     else:
         return redirect('/jobname')
@@ -102,7 +179,9 @@ def create_order(request):
         user_creating_order = User.objects.get(id=request.session['user_id'])
         print(user_creating_order)
         job_id_selected = JobName.objects.get(id=request.POST['contractor'])
+        invoice_dummy_date = date.today().strftime("%Y-%m-%d")
         new_order = WorkOrder.objects.create(
+            invoice_date = invoice_dummy_date,
             request_for_pricing = request.POST['request_for_pricing'],
             location=request.POST['location'],
             date_work_performed = request.POST['date_work_performed'],
@@ -114,18 +193,59 @@ def create_order(request):
             signature_2=request.POST['signature_2'],
             signator_2=request.POST['signator_2'], 
             jobname=job_id_selected, 
+            subtotal_material_cost = 0,
+            subtotal_other_material_cost = 0,
+            material_cost_combined = 0,
+            labor_cost_combined = 0,
+            total_invoice_amount = 0,
+            overhead_profit = 0,
+            memo = "",
             user=User.objects.get(id=user_creating_order.id))
         mat_count = int(request.POST['material_count'])
         lab_count = int(request.POST['labor_count'])
         other_mat_count = int(request.POST['other_material_count'])
         print(lab_count)
         for i in range(1, mat_count+1):
-            new_material = Material.objects.create(product=request.POST[f"product{i}"], quantity= request.POST[f"quantity{i}"], measurement=request.POST[f"measurement{i}"], measurement_amount= request.POST[f"measurement_amount{i}"], workorder=WorkOrder.objects.get(id=new_order.id))
+            measurement_amount_entered = request.POST[f"measurement_amount{i}"]
+            if request.POST[f"measurement_amount{i}"] == "" or request.POST[f"measurement_amount{i}"] == 0:
+                measurement_amount_entered = 1
+            prod_material = request.POST[f"product{i}"]
+            material_post = prod_material.split('|')[0]
+            material_price = prod_material.split('|')[2].strip()
+            print(material_price)
+            new_material = Material.objects.create(
+                product=material_post, 
+                quantity= request.POST[f"quantity{i}"], 
+                measurement=request.POST[f"measurement{i}"], 
+                measurement_amount= measurement_amount_entered, 
+                total_material_cost = round(round(float(request.POST[f"quantity{i}"]),2) * round(float(material_price),2) * round(float(measurement_amount_entered),2),2),
+                workorder=WorkOrder.objects.get(id=new_order.id))
         for c in range(1, other_mat_count+1):
-            new_other_material = OtherMaterial.objects.create(other_name=request.POST[f"other_name{c}"], other_quantity=request.POST[f"other_quantity{c}"], other_measurement=request.POST[f"other_measurement{c}"], other_measurement_amount=request.POST[f"other_measurement_amount{c}"],  workorder=WorkOrder.objects.get(id=new_order.id))
+            new_other_material = OtherMaterial.objects.create(other_name=request.POST[f"other_name{c}"], other_quantity=request.POST[f"other_quantity{c}"], other_measurement=request.POST[f"other_measurement{c}"], other_measurement_amount=request.POST[f"other_measurement_amount{c}"], total_other_material_cost=0  ,workorder=WorkOrder.objects.get(id=new_order.id))
             print(new_other_material)
         for n in range(1, lab_count+1):
-            new_labor = LaborType.objects.create(labor_type=request.POST[f"labor_type{n}"], labor_description=request.POST[f"labor_description{n}"], employee_numbers=request.POST[f"employee_numbers{n}"], regular_hours=request.POST[f"regular_hours{n}"], premium_hours=request.POST[f"premium_hours{n}"],double_hours=request.POST[f"double_hours{n}"], workorder=WorkOrder.objects.get(id=new_order.id))
+            regular_hours = request.POST[f"regular_hours{n}"]
+            double_hours = request.POST[f"double_hours{n}"]
+            premium_hours = request.POST[f"premium_hours{n}"]
+            print(f'Reg: {regular_hours}, Prem: {premium_hours}, Dou: {double_hours}')
+            if request.POST[f"regular_hours{n}"] == "" or request.POST[f"regular_hours{n}"] == "'" or request.POST[f"regular_hours{n}"] == '' or request.POST[f"regular_hours{n}"] is None :
+                regular_hours=0
+            if request.POST[f"double_hours{n}"] == "" or request.POST[f"double_hours{n}"] == "'" or request.POST[f"double_hours{n}"] == '' or request.POST[f"double_hours{n}"] is None:
+                double_hours=0
+            if request.POST[f"premium_hours{n}"] == "" or request.POST[f"premium_hours{n}"] == "'" or request.POST[f"premium_hours{n}"] == '' or request.POST[f"premium_hours{n}"] is None:
+                premium_hours=0
+            total_hours = round(float(regular_hours),2)+round(float(double_hours),2)+round(float(premium_hours),2)
+            new_labor = LaborType.objects.create(
+            labor_type=request.POST[f"labor_type{n}"],
+            labor_description=request.POST[f"labor_description{n}"],
+            employee_numbers=round(float(request.POST[f"employee_numbers{n}"]),2),
+            regular_hours=round(float(regular_hours),2),
+            premium_hours=round(float(premium_hours),2),
+            double_hours=round(float(double_hours),2),
+            total_hours= total_hours,
+            total_labor_cost=0,
+            workorder=WorkOrder.objects.get(id=new_order.id)
+            )
             print(new_labor)
         return redirect (f"/create_email/{new_order.id}")
     else:
@@ -201,6 +321,57 @@ def editorder(request, workorder_id):
 
     }
     return render(request, 'editorder.html', context)
+
+def invoicepreview(request, workorder_id):
+    if request.session['secret_code'] == "FGadmin!" :
+        context = {
+            'edit_this_order': WorkOrder.objects.get(id=workorder_id),
+            'all_jobs' : JobName.objects.all(),
+            'all_materials': Material.objects.all(),
+            'our_company_info': OurCompanyInfo.objects.filter(status="Active"),
+
+        }
+        return render(request, 'invoicepreview.html', context)
+    else:
+        return redirect('/')
+
+def our_company_info(request):
+    if request.session['secret_code'] == "FGadmin!" :
+        context = {
+            'our_company_info': OurCompanyInfo.objects.all(),
+        }
+        return render(request, 'our_company_info.html', context)
+    else:
+        return redirect('/')
+
+def create_company_profile(request):
+    if request.session['secret_code'] == "FGadmin!" and request.method == 'POST':
+        new_entry = OurCompanyInfo.objects.create(
+            company_name = request.POST['company_name'],
+            street = request.POST['street'],
+            city_state_zip = request.POST['city_state_zip'],
+            phone_number = request.POST['phone_number'],
+            email_address = request.POST['email_address'],
+            status = request.POST['status']
+        )
+        return redirect('/our_company_info')
+    else:
+        return redirect('/')
+
+
+def edit_company_profile(request, info_id):
+    if request.session['secret_code'] == "FGadmin!" and request.method == 'POST':
+        this_company_profile = OurCompanyInfo.objects.get(id=info_id)
+        this_company_profile.company_name = request.POST['edit_company_name']
+        this_company_profile.street = request.POST['edit_street']
+        this_company_profile.city_state_zip = request.POST['edit_city_state_zip']
+        this_company_profile.phone_number = request.POST['edit_phone_number']
+        this_company_profile.email_address = request.POST['edit_email_address']
+        this_company_profile.status = request.POST['edit_status']
+        this_company_profile.save()
+        return redirect('/our_company_info')
+    else:
+        return redirect('/')
 
 def email(request, workorder_id):
     if 'user_id' in request.session:
@@ -307,6 +478,9 @@ def save_job_edit(request, job_id):
         edit_this_job = JobName.objects.get(id=job_id)
         edit_this_job.name = request.POST['job_name_edit']
         edit_this_job.contractor_name = request.POST['contractor_name_edit']
+        edit_this_job.gc_street = request.POST['gc_street_edit']
+        edit_this_job.gc_city_state_zip = request.POST['gc_city_state_zip_edit']
+        edit_this_job.gc_phone = request.POST['gc_phone_edit']
         edit_this_job.street = request.POST['street_edit']
         edit_this_job.city = request.POST['city_edit']
         edit_this_job.state = request.POST['state_edit']
@@ -356,3 +530,88 @@ def active_deactive(request, user_id):
     save_edit_user.active = request.POST['active_edit']
     save_edit_user.save()
     return redirect ('/all_users')
+
+def save_invoice(request,workorder_id):
+    if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
+        this_invoice = WorkOrder.objects.get(id=workorder_id)
+        this_invoice.invoice_date = request.POST['invoice_date']
+        mat_ids = []
+        other_mat_ids = []
+        labor_ids = []
+        subtotal_material_cost = 0
+        subtotal_other_material_cost = 0
+        labor_cost_combined = 0
+        reg_hours = 0
+        prem_hours = 0
+        double_hours = 0 
+        overhead_profit = round(float(request.POST['overhead_profit']),2)
+        mat_filtered = Material.objects.filter(workorder=WorkOrder.objects.get(id=workorder_id))
+        for mat in mat_filtered:
+            if mat.product != "":
+                mat_ids.append(mat.id)  
+        other_mat_filtered = OtherMaterial.objects.filter(workorder=WorkOrder.objects.get(id=workorder_id))
+        for other_mat in other_mat_filtered:
+            if other_mat.other_name != "":
+                other_mat_ids.append(other_mat.id)  
+        labor_filtered = LaborType.objects.filter(workorder=WorkOrder.objects.get(id=workorder_id))
+        for labor in labor_filtered:
+            if labor.labor_type != "":
+                labor_ids.append(labor.id)  
+        for i in range(0, len(mat_ids), 1):
+            material_id = mat_ids[i]
+            print(material_id)
+            edit_this_material = Material.objects.get(id=material_id)
+            edit_this_material.quantity = request.POST[f'quantity{material_id}']
+            if edit_this_material.measurement == "EA" or edit_this_material.measurement == "Box(s)":
+                edit_this_material.measurement_amount = 1
+            else:
+                edit_this_material.measurement_amount = request.POST[f'measurement_amount{material_id}']
+            edit_this_material.total_material_cost = request.POST[f'total_material_cost{material_id}']
+            subtotal_material_cost = subtotal_material_cost + round(float(request.POST[f'total_material_cost{material_id}']),2)
+            edit_this_material.save()
+        for x in range(0, len(other_mat_ids), 1):
+            other_material_id = other_mat_ids[x]
+            edit_other_material = OtherMaterial.objects.get(id=other_material_id)
+            edit_other_material.other_quantity = request.POST[f'other_quantity{other_material_id}']
+            edit_other_material.other_measurement_amount = request.POST[f'other_measurement_amount{other_material_id}']
+            edit_other_material.total_other_material_cost = request.POST[f'total_other_material_cost{other_material_id}']
+            subtotal_other_material_cost = subtotal_other_material_cost + round(float(request.POST[f'total_other_material_cost{other_material_id}']),2)
+            edit_other_material.save()
+        for y in range(0, len(labor_ids), 1):
+            labor_id = labor_ids[y]
+            edit_labor = LaborType.objects.get(id=labor_id)
+            reg_hours = round(float(edit_labor.regular_hours),2)
+            prem_hours = round(float(edit_labor.premium_hours),2)
+            double_hours = round(float(edit_labor.double_hours),2)
+            total_labor_hours = reg_hours+prem_hours+double_hours
+            edit_labor.employee_numbers = request.POST[f'employee_numbers{labor_id}']
+            if round(float(request.POST[f'total_hours{labor_id}']),2) != round(float(total_labor_hours),2):
+                edit_labor.total_hours = request.POST[f'total_hours{labor_id}']
+            else:
+                edit_labor.total_hours = round(float(reg_hours+prem_hours+double_hours),2)
+            edit_labor.total_labor_cost = request.POST[f'total_labor_cost{labor_id}']
+            labor_cost_combined = labor_cost_combined + round(float(request.POST[f'total_labor_cost{labor_id}']),2)
+            edit_labor.save()
+        this_invoice.material_cost_combined = round(float(subtotal_material_cost + subtotal_other_material_cost),2)
+        this_invoice.overhead_profit = overhead_profit
+        this_invoice.labor_cost_combined = labor_cost_combined
+        this_invoice.total_invoice_amount = round(float(subtotal_material_cost + subtotal_other_material_cost + labor_cost_combined + overhead_profit),2)
+        this_invoice.memo = request.POST['memo']
+        this_invoice.save()
+        return redirect(f'/invoicepreview/{workorder_id}')
+    else:
+        return redirect('/')
+
+def finalinvoice(request, workorder_id):
+    if request.session['secret_code'] == "FGadmin!" :
+            context = {
+                'edit_this_order': WorkOrder.objects.get(id=workorder_id),
+                'this_work_order' : WorkOrder.objects.get(id=workorder_id),
+                'all_jobs' : JobName.objects.all(),
+                'all_materials': Material.objects.all(),
+                 'our_company_info': OurCompanyInfo.objects.filter(status="Active"),
+
+            }
+            return render(request, 'finalinvoice.html', context)
+    else:
+        return redirect('/')

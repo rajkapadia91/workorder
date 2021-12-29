@@ -66,7 +66,9 @@
                 <div id="material">
                     <h3>Material</h3>
                     <p id="material_message">Input quantity (number format) and product used below. To add more
-                        materials, click on the button.</p>
+                        materials, click on the button. <br><br>
+                   <span style="font-weight:bolder; text-decoration: underline ;"> If you select material that requires to input in SQ FT or FT, please enter the SQ FT or FT per piece <br> in the measurement amount section. Along with that enter in the # of pieces in the Quantity field. <br><br>
+                For any material that requires to enter in the number of "Box(s)"" or "EA", please enter in the number in the quantity field.</span></p>
                     <table id="material_table">
                         <tr>
                             <th>Quantity</th>
@@ -75,149 +77,24 @@
                             <th>Measurement Amount</th>
                         </tr>
                         <tr>
-                            <td><input type="number" name="quantity1" id="mat_quantity"></td>
-                            <td><select name="product1" class="material_list">
-                                <option value="">None</option>
-                                <option value="">Other (Input Below)</option>
-                                <option value="2&quot; Z furring  20 gauge ">Location: Framing&#160;&#160;&#160;&#160;Product: 2" Z furring  20 gauge </option>
-                                <option value="7/8&quot; Hat Channel 20 gauge">Location: Framing&#160;&#160;&#160;&#160;Product: 7/8" Hat Channel 20 gauge</option>
-                                <option value="1 5/8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Metal Stud</option>
-                                <option value="1 5/8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Metal Track</option>
-                                <option value="1 5/8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; x20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" x20 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 20 Ga Defelction Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 20 Ga Defelction Track</option>
-                                <option value="2 1/2&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Deflection Track</option>
-                                <option value="2 1/2&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2"x 16 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 16 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 16 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Deflection Track</option>
-                                <option value="3-5/8&quot;x 25 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8"x 25 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 25 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 25 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Deflection Track</option>
-                                <option value="3-5/8&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Deflection Track</option>
-                                <option value="3-5/8&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8"x 16 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 16 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 16 Ga Deflection Track</option>
-                                <option value="3 5/8&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Metal Stud</option>
-                                <option value="3 5/8&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Metal Track</option>
-                                <option value="3 5/8&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Deflection Track</option>
-                                <option value="6&quot;x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 20 Ga Metal Stud</option>
-                                <option value="6&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Metal Track</option>
-                                <option value="6&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Deflection Track</option>
-                                <option value="6&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Metal Stud</option>
-                                <option value="6&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Metal Track</option>
-                                <option value="6&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Deflection Track</option>
-                                <option value="6&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 16 Ga Metal Stud</option>
-                                <option value="6&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 16 Ga Metal Track</option>
-                                <option value="6&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 16 Ga Deflection Track</option>
-                                <option value="6&quot;x 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 14 Ga Metal Stud</option>
-                                <option value="6&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 14 Ga Metal Track</option>
-                                <option value="6&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 14 Ga Deflection Track</option>
-                                <option value="8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Metal Stud</option>
-                                <option value="8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Metal Track</option>
-                                <option value="8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Deflection Track</option>
-                                <option value="8&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Metal Stud</option>
-                                <option value="8&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Metal Track</option>
-                                <option value="8&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Deflection Track</option>
-                                <option value="8&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Metal Stud</option>
-                                <option value="8&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Metal Track</option>
-                                <option value="8&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Deflection Track</option>
-                                <option value="8&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Metal Stud</option>
-                                <option value="8&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Metal Track</option>
-                                <option value="8&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Deflection Track</option>
-                                <option value="10&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Metal Stud</option>
-                                <option value="10&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Metal Track</option>
-                                <option value="10&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Deflection Track</option>
-                                <option value="10&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Metal Stud</option>
-                                <option value="10&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Metal Track</option>
-                                <option value="10&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Deflection Track</option>
-                                <option value="10&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Metal Stud</option>
-                                <option value="10&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Metal Track</option>
-                                <option value="10&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Deflection Track</option>
-                                <option value="12&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Metal Stud</option>
-                                <option value="12&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Metal Track</option>
-                                <option value="12&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Deflection Track</option>
-                                <option value="12&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Metal Stud</option>
-                                <option value="12&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Metal Track</option>
-                                <option value="12&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Deflection Track</option>
-                                <option value="12&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Metal Stud</option>
-                                <option value="12&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Metal Track</option>
-                                <option value="12&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; CH or CT Studs x10' 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" CH or CT Studs x10' 20 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 20 Ga Jamb Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 20 Ga Jamb Track</option>
-                                <option value="4&quot; CH Studs x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 4" CH Studs x 20 Ga Metal Stud</option>
-                                <option value="4&quot; 20 Ga Metal TAB Track">Location: Framing&#160;&#160;&#160;&#160;Product: 4" 20 Ga Metal TAB Track</option>
-                                <option value="6&quot; CH Studs x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6" CH Studs x 20 Ga Metal Stud</option>
-                                <option value="6&quot; 20 Ga Metal TAB Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Metal TAB Track</option>
-                                <option value="Black Iron">Location: Framing&#160;&#160;&#160;&#160;Product: Black Iron</option>
-                                <option value="6&quot; Deflection Clips">Location: Framing&#160;&#160;&#160;&#160;Product: 6" Deflection Clips</option>
-                                <option value="Knee Wall Posts">Location: Framing&#160;&#160;&#160;&#160;Product: Knee Wall Posts</option>
-                                <option value="2x2 Angle">Location: Framing&#160;&#160;&#160;&#160;Product: 2x2 Angle</option>
-                                <option value="5/8&quot; Fire Rated Drywall">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Fire Rated Drywall</option>
-                                <option value="5/8&quot; Green Board">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Green Board</option>
-                                <option value="5/8&quot; Durock">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Durock</option>
-                                <option value="5/8&quot; Abuse Rated Drywall">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Abuse Rated Drywall</option>
-                                <option value="5/8&quot; Glass Mat Sheathing">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Glass Mat Sheathing</option>
-                                <option value="1&quot; Fire Rated Core Board">Location: Drywall&#160;&#160;&#160;&#160;Product: 1" Fire Rated Core Board</option>
-                                <option value="No Coat 10&quot; Sticks">Location: Drywall&#160;&#160;&#160;&#160;Product: No Coat 10" Sticks</option>
-                                <option value="Joint Tape ">Location: Drywall&#160;&#160;&#160;&#160;Product: Joint Tape </option>
-                                <option value="Fry Reglet">Location: Drywall&#160;&#160;&#160;&#160;Product: Fry Reglet</option>
-                                <option value="Joint Compound ">Location: Drywall&#160;&#160;&#160;&#160;Product: Joint Compound </option>
-                                <option value="R-11 Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-11 Insulation </option>
-                                <option value="2&quot; Rigid Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: 2" Rigid Insulation </option>
-                                <option value="R-19 Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-19 Insulation </option>
-                                <option value="3 1/2&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 3 1/2" Thermal Fiber Insulation</option>
-                                <option value="R-21 Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-21 Insulation</option>
-                                <option value="2&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 2" Thermal Fiber Insulation</option>
-                                <option value="6&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 6" Thermal Fiber Insulation</option>
-                                <option value="1 1/4&quot; Drywall Screws ">Location: Screws&#160;&#160;&#160;&#160;Product: 1 1/4" Drywall Screws </option>
-                                <option value="Hex Heads ">Location: Screws&#160;&#160;&#160;&#160;Product: Hex Heads </option>
-                                <option value="Tek Screws (Zippys)">Location: Screws&#160;&#160;&#160;&#160;Product: Tek Screws (Zippys)</option>
-                                <option value="5/8&quot; FRT Plywood">Location: Lumber&#160;&#160;&#160;&#160;Product: 5/8" FRT Plywood</option>
-                                <option value="Smoke and Fire">Location: Sealants&#160;&#160;&#160;&#160;Product: Smoke and Fire</option>
-                                <option value="Acoustical Sealant">Location: Sealants&#160;&#160;&#160;&#160;Product: Acoustical Sealant</option>
-                                <option value="2'x2'x5/8&quot; Acoustical Tiles-Call For Pricing-Request Product #">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2'x2'x5/8" Acoustical Tiles-Call For Pricing-Request Product #</option>
-                                <option value="2'x4'x5/8&quot; Acoustical Tiles-Call For Pricing-Request Product #">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2'x4'x5/8" Acoustical Tiles-Call For Pricing-Request Product #</option>
-                                <option value="Armstrong 15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" Mains</option>
-                                <option value="Armstrong 15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" 4' Tees</option>
-                                <option value="Armstrong 15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" 2' Tees</option>
-                                <option value="Armstrong Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong Wall Angle</option>
-                                <option value="12' Ceiling Wires">Location: Ceilings&#160;&#160;&#160;&#160;Product: 12' Ceiling Wires</option>
-                                <option value="USG-15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" Mains</option>
-                                <option value="USG-15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" 4' Tees</option>
-                                <option value="USG-15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" 2' Tees</option>
-                                <option value="USG-Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-Wall Angle</option>
-                                <option value="Certainteed-15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" Mains</option>
-                                <option value="Certainteed-15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" 4' Tees</option>
-                                <option value="Certainteed-15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" 2' Tees</option>
-                                <option value="Certainteed-Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-Wall Angle</option>
-                                <option value="Shadow Molding">Location: Ceilings&#160;&#160;&#160;&#160;Product: Shadow Molding</option>
-                                <option value="2&quot; Axiom">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2" Axiom</option>
-                                <option value="Unit Strut P1000T">Location: Ceilings&#160;&#160;&#160;&#160;Product: Unit Strut P1000T</option>
-                                <option value="12' Pencil Rod">Location: Ceilings&#160;&#160;&#160;&#160;Product: 12' Pencil Rod</option>
-                                <option value="Black Iron Clips">Location: Ceilings&#160;&#160;&#160;&#160;Product: Black Iron Clips</option>
-                                <option value="Accoustical Grid Clips(ceilings)">Location: Ceilings&#160;&#160;&#160;&#160;Product: Accoustical Grid Clips(ceilings)</option>
-                                <option value="5/8&quot; Hat Channel Clips">Location: Ceilings&#160;&#160;&#160;&#160;Product: 5/8" Hat Channel Clips</option>
-                                <option value="FRP">Location: FRP&#160;&#160;&#160;&#160;Product: FRP</option>
-                                <option value="FRP Glue ">Location: FRP&#160;&#160;&#160;&#160;Product: FRP Glue </option>
+                            <td><input type="number" name="quantity1" id="mat_quantity1"></td>
+                            <td><select name="product1" class="material_list" id="material_list1" onchange="material_unit_match()">
+                                <option value="">None &#160;&#160;&#160;&#160;</option>
+                                <option value="">Other (Input Below)&#160;&#160;&#160;&#160;</option>
+                                {% for one_material in all_material_names %}
+                                <option value="{{one_material.product_name}}| {{one_material.unit_of_measurement}}|{{one_material.price}}">{{one_material.product_name}}</option>
+                                {% endfor %}
                             </select>
                             </td>
-                            <td><select name="measurement1" class="measurement">
-                                <option value="">None &#160;&#160;&#160;&#160;</option>
-                                <option value="FT">FT</option>
-                                <option value="EA">EA</option>
-                                <option value="Box(s)">Box(s)</option>
-                                <option value="SQ FT">SQ FT</option>
-                            </select></td>
-                            <td><input type="text" name="measurement_amount1" id="measurement_amount"></td>
+                            <td><input type="text" readonly name="measurement1" id="unit_measurement1"></td>
+                            <!-- <td>
+                                <select name="measurement1" class="measurement" id=unit_measurement1>
+                                <option value="">None&#160;&#160;&#160;&#160;</option>
+                               {% for one_material in all_material_names %}
+                               <option value="{{one_material.id}}">{{one_material.unit_of_measurement}}</option>
+                               {% endfor %}
+                            </select></td> -->
+                            <td><input type="text" name="measurement_amount1" id="measurement_amount1"></td>
                         </tr>
                     </table><br>
                     <button style="width: 100px !important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_material"><b>Add One More</b></button>
@@ -603,7 +480,7 @@
             $('.job_list').select2();
             $('.request_for_pricing').select2();
             $('.material_list').select2();
-            $('.measurement').select2();
+            // $('.measurement').select2();
             $('.labor_drop').select2();
 
         });
@@ -612,143 +489,42 @@
         $('#add_material').click(function (e) {
             $('#material_count').attr('value', Number($('#material_count').attr('value')) + 1)
             var i = Number($('#material_count').attr('value'))
-            $('#material_table').append(`<tr> <td><input type="number" name="quantity${i}" id="mat_quantity"></td> <td><select name="product${i}" class="material_list"><option value="">None</option><option value="">Other (Input Below)</option>
-                <option value="2&quot; Z furring  20 gauge ">Location: Framing&#160;&#160;&#160;&#160;Product: 2" Z furring  20 gauge </option>
-                                <option value="7/8&quot; Hat Channel 20 gauge">Location: Framing&#160;&#160;&#160;&#160;Product: 7/8" Hat Channel 20 gauge</option>
-                                <option value="1 5/8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Metal Stud</option>
-                                <option value="1 5/8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Metal Track</option>
-                                <option value="1 5/8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 1 5/8" 20 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; x20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" x20 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 20 Ga Defelction Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 20 Ga Defelction Track</option>
-                                <option value="2 1/2&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 18 Ga Deflection Track</option>
-                                <option value="2 1/2&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2"x 16 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 16 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 16 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Metal Track</option>
-                                <option value="2 1/2&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 14 Ga Deflection Track</option>
-                                <option value="3-5/8&quot;x 25 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8"x 25 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 25 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 25 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 20 Ga Deflection Track</option>
-                                <option value="3-5/8&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 18 Ga Deflection Track</option>
-                                <option value="3-5/8&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8"x 16 Ga Metal Stud</option>
-                                <option value="3-5/8&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 16 Ga Metal Track</option>
-                                <option value="3-5/8&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3-5/8" 16 Ga Deflection Track</option>
-                                <option value="3 5/8&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Metal Stud</option>
-                                <option value="3 5/8&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Metal Track</option>
-                                <option value="3 5/8&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 3 5/8" 14 Ga Deflection Track</option>
-                                <option value="6&quot;x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 20 Ga Metal Stud</option>
-                                <option value="6&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Metal Track</option>
-                                <option value="6&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Deflection Track</option>
-                                <option value="6&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Metal Stud</option>
-                                <option value="6&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Metal Track</option>
-                                <option value="6&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 18 Ga Deflection Track</option>
-                                <option value="6&quot;x 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 16 Ga Metal Stud</option>
-                                <option value="6&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 16 Ga Metal Track</option>
-                                <option value="6&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 16 Ga Deflection Track</option>
-                                <option value="6&quot;x 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6"x 14 Ga Metal Stud</option>
-                                <option value="6&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 14 Ga Metal Track</option>
-                                <option value="6&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 14 Ga Deflection Track</option>
-                                <option value="8&quot; 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Metal Stud</option>
-                                <option value="8&quot; 20 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Metal Track</option>
-                                <option value="8&quot; 20 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 20 Ga Deflection Track</option>
-                                <option value="8&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Metal Stud</option>
-                                <option value="8&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Metal Track</option>
-                                <option value="8&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 18 Ga Deflection Track</option>
-                                <option value="8&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Metal Stud</option>
-                                <option value="8&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Metal Track</option>
-                                <option value="8&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 16 Ga Deflection Track</option>
-                                <option value="8&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Metal Stud</option>
-                                <option value="8&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Metal Track</option>
-                                <option value="8&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 8" 14 Ga Deflection Track</option>
-                                <option value="10&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Metal Stud</option>
-                                <option value="10&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Metal Track</option>
-                                <option value="10&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 18 Ga Deflection Track</option>
-                                <option value="10&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Metal Stud</option>
-                                <option value="10&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Metal Track</option>
-                                <option value="10&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 16 Ga Deflection Track</option>
-                                <option value="10&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Metal Stud</option>
-                                <option value="10&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Metal Track</option>
-                                <option value="10&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 10" 14 Ga Deflection Track</option>
-                                <option value="12&quot; 18 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Metal Stud</option>
-                                <option value="12&quot; 18 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Metal Track</option>
-                                <option value="12&quot; 18 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 18 Ga Deflection Track</option>
-                                <option value="12&quot; 16 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Metal Stud</option>
-                                <option value="12&quot; 16 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Metal Track</option>
-                                <option value="12&quot; 16 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 16 Ga Deflection Track</option>
-                                <option value="12&quot; 14 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Metal Stud</option>
-                                <option value="12&quot; 14 Ga Metal Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Metal Track</option>
-                                <option value="12&quot; 14 Ga Deflection Track">Location: Framing&#160;&#160;&#160;&#160;Product: 12" 14 Ga Deflection Track</option>
-                                <option value="2 1/2&quot; CH or CT Studs x10' 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" CH or CT Studs x10' 20 Ga Metal Stud</option>
-                                <option value="2 1/2&quot; 20 Ga Jamb Track">Location: Framing&#160;&#160;&#160;&#160;Product: 2 1/2" 20 Ga Jamb Track</option>
-                                <option value="4&quot; CH Studs x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 4" CH Studs x 20 Ga Metal Stud</option>
-                                <option value="4&quot; 20 Ga Metal TAB Track">Location: Framing&#160;&#160;&#160;&#160;Product: 4" 20 Ga Metal TAB Track</option>
-                                <option value="6&quot; CH Studs x 20 Ga Metal Stud">Location: Framing&#160;&#160;&#160;&#160;Product: 6" CH Studs x 20 Ga Metal Stud</option>
-                                <option value="6&quot; 20 Ga Metal TAB Track">Location: Framing&#160;&#160;&#160;&#160;Product: 6" 20 Ga Metal TAB Track</option>
-                                <option value="Black Iron">Location: Framing&#160;&#160;&#160;&#160;Product: Black Iron</option>
-                                <option value="6&quot; Deflection Clips">Location: Framing&#160;&#160;&#160;&#160;Product: 6" Deflection Clips</option>
-                                <option value="Knee Wall Posts">Location: Framing&#160;&#160;&#160;&#160;Product: Knee Wall Posts</option>
-                                <option value="2x2 Angle">Location: Framing&#160;&#160;&#160;&#160;Product: 2x2 Angle</option>
-                                <option value="5/8&quot; Fire Rated Drywall">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Fire Rated Drywall</option>
-                                <option value="5/8&quot; Green Board">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Green Board</option>
-                                <option value="5/8&quot; Durock">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Durock</option>
-                                <option value="5/8&quot; Abuse Rated Drywall">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Abuse Rated Drywall</option>
-                                <option value="5/8&quot; Glass Mat Sheathing">Location: Drywall&#160;&#160;&#160;&#160;Product: 5/8" Glass Mat Sheathing</option>
-                                <option value="1&quot; Fire Rated Core Board">Location: Drywall&#160;&#160;&#160;&#160;Product: 1" Fire Rated Core Board</option>
-                                <option value="No Coat 10&quot; Sticks">Location: Drywall&#160;&#160;&#160;&#160;Product: No Coat 10" Sticks</option>
-                                <option value="Joint Tape ">Location: Drywall&#160;&#160;&#160;&#160;Product: Joint Tape </option>
-                                <option value="Fry Reglet">Location: Drywall&#160;&#160;&#160;&#160;Product: Fry Reglet</option>
-                                <option value="Joint Compound ">Location: Drywall&#160;&#160;&#160;&#160;Product: Joint Compound </option>
-                                <option value="R-11 Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-11 Insulation </option>
-                                <option value="2&quot; Rigid Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: 2" Rigid Insulation </option>
-                                <option value="R-19 Insulation ">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-19 Insulation </option>
-                                <option value="3 1/2&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 3 1/2" Thermal Fiber Insulation</option>
-                                <option value="R-21 Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: R-21 Insulation</option>
-                                <option value="2&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 2" Thermal Fiber Insulation</option>
-                                <option value="6&quot; Thermal Fiber Insulation">Location: Insualtion&#160;&#160;&#160;&#160;Product: 6" Thermal Fiber Insulation</option>
-                                <option value="1 1/4&quot; Drywall Screws ">Location: Screws&#160;&#160;&#160;&#160;Product: 1 1/4" Drywall Screws </option>
-                                <option value="Hex Heads ">Location: Screws&#160;&#160;&#160;&#160;Product: Hex Heads </option>
-                                <option value="Tek Screws (Zippys)">Location: Screws&#160;&#160;&#160;&#160;Product: Tek Screws (Zippys)</option>
-                                <option value="5/8&quot; FRT Plywood">Location: Lumber&#160;&#160;&#160;&#160;Product: 5/8" FRT Plywood</option>
-                                <option value="Smoke and Fire">Location: Sealants&#160;&#160;&#160;&#160;Product: Smoke and Fire</option>
-                                <option value="Acoustical Sealant">Location: Sealants&#160;&#160;&#160;&#160;Product: Acoustical Sealant</option>
-                                <option value="2'x2'x5/8&quot; Acoustical Tiles-Call For Pricing-Request Product #">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2'x2'x5/8" Acoustical Tiles-Call For Pricing-Request Product #</option>
-                                <option value="2'x4'x5/8&quot; Acoustical Tiles-Call For Pricing-Request Product #">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2'x4'x5/8" Acoustical Tiles-Call For Pricing-Request Product #</option>
-                                <option value="Armstrong 15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" Mains</option>
-                                <option value="Armstrong 15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" 4' Tees</option>
-                                <option value="Armstrong 15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong 15/16" 2' Tees</option>
-                                <option value="Armstrong Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: Armstrong Wall Angle</option>
-                                <option value="12' Ceiling Wires">Location: Ceilings&#160;&#160;&#160;&#160;Product: 12' Ceiling Wires</option>
-                                <option value="USG-15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" Mains</option>
-                                <option value="USG-15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" 4' Tees</option>
-                                <option value="USG-15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-15/16" 2' Tees</option>
-                                <option value="USG-Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: USG-Wall Angle</option>
-                                <option value="Certainteed-15/16&quot; Mains">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" Mains</option>
-                                <option value="Certainteed-15/16&quot; 4' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" 4' Tees</option>
-                                <option value="Certainteed-15/16&quot; 2' Tees">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-15/16" 2' Tees</option>
-                                <option value="Certainteed-Wall Angle">Location: Ceilings&#160;&#160;&#160;&#160;Product: Certainteed-Wall Angle</option>
-                                <option value="Shadow Molding">Location: Ceilings&#160;&#160;&#160;&#160;Product: Shadow Molding</option>
-                                <option value="2&quot; Axiom">Location: Ceilings&#160;&#160;&#160;&#160;Product: 2" Axiom</option>
-                                <option value="Unit Strut P1000T">Location: Ceilings&#160;&#160;&#160;&#160;Product: Unit Strut P1000T</option>
-                                <option value="12' Pencil Rod">Location: Ceilings&#160;&#160;&#160;&#160;Product: 12' Pencil Rod</option>
-                                <option value="Black Iron Clips">Location: Ceilings&#160;&#160;&#160;&#160;Product: Black Iron Clips</option>
-                                <option value="Accoustical Grid Clips(ceilings)">Location: Ceilings&#160;&#160;&#160;&#160;Product: Accoustical Grid Clips(ceilings)</option>
-                                <option value="5/8&quot; Hat Channel Clips">Location: Ceilings&#160;&#160;&#160;&#160;Product: 5/8" Hat Channel Clips</option>
-                                <option value="FRP">Location: FRP&#160;&#160;&#160;&#160;Product: FRP</option>
-                                <option value="FRP Glue ">Location: FRP&#160;&#160;&#160;&#160;Product: FRP Glue </option>
-                            </select>
-                            </td><td><select name="measurement${i}" class="measurement"><option value="">None &#160;&#160;&#160;&#160;</option><option value="FT">FT</option><option value="EA">EA</option><option value="Box(s)">Box(s)</option><option value="SQ FT">SQ FT</option></select></td><td><input type="text" name="measurement_amount${i}" id="measurement_amount"></td></tr>`)
+            $('#material_table').append(`<tr> <td><input type="number" name="quantity${i}" id="mat_quantity${i}"></td> <td><select name="product${i}" class="material_list" id=material_list${i} onchange="material_unit_match()"><option value="">None&#160;&#160;&#160;&#160;</option>
+                                <option value="">Other (Input Below)&#160;&#160;&#160;&#160;</option>
+            {% for one_material in all_material_names %}
+            <option value="{{one_material.product_name}}| {{one_material.unit_of_measurement}}|{{one_material.price}}">{{one_material.product_name}}</option>
+            {% endfor %}
+            </select>
+                            </td><td><input type="text" readonly name="measurement${i}" id="unit_measurement${i}"></td><td><input type="text" name="measurement_amount${i}" id="measurement_amount${i}"></td></tr>`)
             $(document).ready(function () {
             $('.material_list').select2();
-            $('.measurement').select2();
+            // $('.measurement').select2();
         });
         })
+
+        
+
+        function material_unit_match(){ 
+            var full_id = event.target.id
+            var length = full_id.length - 1
+            var the_value = (full_id. split("|")[1]).trim();
+            console.log(the_value)
+            var the_id = full_id[21]
+            $(`#unit_measurement${the_id}`).val(the_value)
+            if(the_value == "EA" || the_value == "Box(s)" ){
+                $(`#measurement_amount${the_id}`).css("background", "black").prop("readonly", true);
+                $(`#measurement_amount${the_id}`).val(1);
+            }
+            else{
+                $(`#measurement_amount${the_id}`).css('background','').prop("readonly", false);
+
+            }
+        }
+
+        // function unit_match(){
+        //     var full_id1 = event.target.id
+        //     console.log(full_id1)
+        // }
 
         $('#add_more').click(function (e) {
                     $('#other_material_count').attr('value', Number($('#other_material_count').attr('value')) + 1)

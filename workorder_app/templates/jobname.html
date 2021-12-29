@@ -20,6 +20,9 @@
             <form action="/create_jobname" method="post">
                 {% csrf_token %}
                 General Contractor: <input type="text" name="contractor_name" id=""><br><br>
+                GC_Street: <input type="text" name="gc_street" id="gc_street"><br><br>
+                GC_City/State/Zip: <input type="text" name="gc_city_state_zip" id="gc_city_state_zip"><br><br>
+                GC_Phone: <input type="text" name="gc_phone" id="gc_phone"><br><br>
                 Name of Job: <input type="text" name="job_name" id=""><br><br>
                 <p>Full Address Below:</p>
                 <div id="address">
@@ -36,7 +39,7 @@
                 <tr>
                     <th>General Contractor</th>
                     <th>Name of Job</th>
-                    <th>Address</th>
+                    <th>Job Address</th>
                     <th>Delete Job</th>
                     <th>Edit Job</th>
 
@@ -59,6 +62,9 @@
                             {% csrf_token %}
                             General Contractor: <input type="text" name="contractor_name_edit" value="{{one_job.contractor_name}}" id="edit_contractor1"><br><br>
                             Name of Job: <input type="text" name="job_name_edit" value="{{one_job.name}}" id="edit_name1"><br><br>
+                            GC_Street: <input type="text" name="gc_street_edit" value="{{one_job.gc_street}}"  id="gc_street_edit1"><br><br>
+                            GC_City/State/Zip: <input type="text" name="gc_city_state_zip_edit" value="{{one_job.gc_city_state_zip}}" id="gc_city_state_zip_edit1"><br><br>
+                            GC_Phone: <input type="text" name="gc_phone_edit" value="{{one_job.gc_phone}}" id="gc_phone_edit1"><br><br>
                             <div id="edit_address">
                                 Street: <input type="text" name="street_edit" value="{{one_job.street}}" id="edit_street1">
                                 City: <input type="text" name="city_edit" value="{{one_job.city}}" id="edit_city1">
