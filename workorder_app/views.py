@@ -266,20 +266,39 @@ def create_order(request):
         other_mat_count = int(request.POST['other_material_count'])
         print(lab_count)
         for i in range(1, mat_count+1):
-            measurement_amount_entered = request.POST[f"measurement_amount{i}"]
+            measurement_amount_entered = 1
+            prod_material = ""
+            material_post = ""
+            material_price = 0.0
+            quantity = 0.0
             if request.POST[f"measurement_amount{i}"] == "" or request.POST[f"measurement_amount{i}"] == 0:
                 measurement_amount_entered = 1
-            prod_material = request.POST[f"product{i}"]
-            material_post = prod_material.split('|')[0]
-            material_price = prod_material.split('|')[2].strip()
+            else:
+                measurement_amount_entered = request.POST[f"measurement_amount{i}"]
+            if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                prod_material = ""
+            else:
+                prod_material = request.POST[f"product{i}"]
+            if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                material_post =  ""
+            else:
+                material_post = prod_material.split('|')[0]
+            if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                material_price = 0.0
+            else:
+                material_price = prod_material.split('|')[2].strip()
+            if request.POST[f"quantity{i}"] == "" or request.POST[f"quantity{i}"] == " " or request.POST[f"quantity{i}"] == 0:
+                quantity = 0
+            else:
+                quantity = request.POST[f"quantity{i}"]
             print(material_price)
             new_material = Material.objects.create(
                 product=material_post,
                 per_price = round(float(material_price),2),
-                quantity= request.POST[f"quantity{i}"], 
+                quantity= quantity, 
                 measurement=request.POST[f"measurement{i}"], 
                 measurement_amount= measurement_amount_entered, 
-                total_material_cost = round(round(float(request.POST[f"quantity{i}"]),2) * round(float(material_price),2) * round(float(measurement_amount_entered),2),2),
+                total_material_cost = round(round(float(quantity),2) * round(float(material_price),2) * round(float(measurement_amount_entered),2),2),
                 workorder=WorkOrder.objects.get(id=new_order.id))
         for c in range(1, other_mat_count+1):
             new_other_material = OtherMaterial.objects.create(other_name=request.POST[f"other_name{c}"], other_quantity=request.POST[f"other_quantity{c}"], other_measurement=request.POST[f"other_measurement{c}"], other_measurement_amount=request.POST[f"other_measurement_amount{c}"], total_other_material_cost=0  ,workorder=WorkOrder.objects.get(id=new_order.id))
@@ -303,7 +322,7 @@ def create_order(request):
             regular_hours=round(float(regular_hours),2),
             premium_hours=round(float(premium_hours),2),
             double_hours=round(float(double_hours),2),
-            hourly_rate = round(float(0.00),2),
+            hourly_rate = round(float("1.11"),2),
             total_hours= total_hours,
             total_labor_cost=0,
             workorder=WorkOrder.objects.get(id=new_order.id)
