@@ -13,7 +13,7 @@
 
 <body>
 
-   <div class="container">
+   <div class="container" id="the_main_wrapper">
       <div class="col-md-12">
          <div class="invoice">
             <!-- begin invoice-company -->
@@ -65,16 +65,17 @@
                         <thead>
                            <tr>
                               <th>Description</th>
-                              <th class="text-center" width="10%">Quantity / <br> # of Emp</th>
-                              <th class="text-center" width="10%">Measurement / <br> # of Hours</th>
+                              <th class="text-center" width="10%">Quantity or <br> # of Emp</th>
+                              <th class="text-center" width="10%">Measurement or <br> # of Hours</th>
+                              <th class="text-center" width="10%">Price or Hourly Rate</th>
                               <th class="text-right" width="20%">Total</th>
                            </tr>
                         </thead>
                         <tr>
-                           <td colspan="4">Work Performed: {{edit_this_order.work_performed}}</td>
+                           <td colspan="5">Work Performed: {{edit_this_order.work_performed}}</td>
                         </tr>
                         <tr>
-                           <td colspan="4">
+                           <td colspan="5">
                               <small><b>Job:</b> {{edit_this_order.jobname.name}}<br>{{edit_this_order.jobname.street}}<br>{{edit_this_order.jobname.city}},
                                  {{edit_this_order.jobname.state}} {{edit_this_order.jobname.zip_code}}</small>
                            </td>
@@ -96,9 +97,14 @@
                               </td>
                               {% endif %}
                               <td class="text-right"><input style="color: red;" type="text"
+                                 name="per_price{{material.id}}" id="invoice"
+                                 value="{{material.per_price}}" class="invoice_inputs"></td>
+                                 <td class="text-right"><input style="color: red;" type="text"
                                     name="total_material_cost{{material.id}}" id="invoice"
                                     value="{{material.total_material_cost}}" class="invoice_inputs"></td>
                            </tr>
+                              
+                           <!-- </tr> -->
                            {% endif %}
                            {% endfor %}
                            {% for one_other_material in edit_this_order.othermaterials.all %}
@@ -113,7 +119,7 @@
                               <td class="text-center"><input style="color: red;" type="text"
                                     name="other_measurement_amount{{one_other_material.id}}" id="invoice"
                                     class="invoice_inputs" value="{{one_other_material.other_measurement_amount}}"></td>
-
+                                 <td></td>
                               <td class="text-center"><input type="text" style="color: red;"
                                     name="total_other_material_cost{{one_other_material.id}}" id="invoice"
                                     class="invoice_inputs" value="{{one_other_material.total_other_material_cost}}">
@@ -127,6 +133,7 @@
                                  style="background-color: #f1dfcf; border-radius: 3px; border-color: #f1dfcf;"
                                  onclick="show_hide_line_items()"><span id="button_sign">-</span></button><b>
                                  &#160;Total Material Cost</b></td>
+                           <td></td>
                            <td></td>
                            <td></td>
                            <td><input type="text" readonly name="material_cost_combined"
@@ -143,6 +150,8 @@
                                     value="{{one_labor.employee_numbers}}" id="invoice" class="invoice_inputs"></td>
                               <td><input type="text" style="color: red;" name="total_hours{{one_labor.id}}"
                                     value="{{one_labor.total_hours}}" id="invoice" class="invoice_inputs"></td>
+                                    <td><input type="text" style="color: red;" name="hourly_rate{{one_labor.id}}"
+                                       value="{{one_labor.hourly_rate}}" id="invoice" class="invoice_inputs"></td>         
                               <td><input type="text" style="color: red;" name="total_labor_cost{{one_labor.id}}"
                                     value="{{one_labor.total_labor_cost}}" id="invoice" class="invoice_inputs"></td>
                            </tr>
@@ -155,12 +164,14 @@
                                  &#160;Total Labor Cost</b></td>
                            <td></td>
                            <td></td>
+                           <td></td>
                            <td><b><input type="text" readonly name="labor_cost_combined"
                                     value="{{edit_this_order.labor_cost_combined}}" id="invoice"
                                     class="invoice_inputs"></b></td>
                         </tr>
                         <tr class="totals">
                            <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Overhead & Profit</b></td>
+                           <td></td>
                            <td></td>
                            <td></td>
                            <td><b><input type="text" style="color: red;" name="overhead_profit"
@@ -171,19 +182,20 @@
                            <td><b>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Grand Total</b></td>
                            <td></td>
                            <td></td>
+                           <td></td>
                            <td><b><input type="text" readonly name="total_invoice_amount"
                                     value="{{edit_this_order.total_invoice_amount}}" id="invoice"
                                     class="invoice_inputs"></b></td>
                         </tr>
                         <tr>
-                           <td colspan="4"><input
+                           <td colspan="5"><input
                                  style="width: 500px; height: 20px; border: none; border-bottom: 1px solid;" type="text"
                                  name="memo" placeholder="Any other comments" value="{{edit_this_order.memo}}"
                                  id="memo"></td>
                         </tr>
                         <tr>
 
-                           <td colspan="4">
+                           <td colspan="5">
                               <input style="display: inline-block;
                         margin-right: 20px;
                         padding:0.3em 1.2em;
@@ -227,9 +239,9 @@
          </div>
 
       </div>
-      <div id="footer">
+      <!-- <div id="footer">
          <p id="gc_name_under_signature">{{edit_this_order.jobname.contractor_name}}</p>
-      </div>
+      </div> -->
       <!-- end invoice-note -->
    </div>
    <!-- </div>

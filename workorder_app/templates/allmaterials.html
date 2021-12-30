@@ -7,6 +7,7 @@
     <title>Create & View Jobs</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'jobname.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
                Location: <input type="text" name="location" id="location"><br><br>
                 Product Name: <input type="text" name="product_name" id="product_name"><br><br>
                 Unit: <input type="text" name="unit_of_measurement" id="unit_of_measurement"><br><br>
-                Price: <input type="text" name="price" id="price"><br><br>
+                Price: <input type="text"  name="price" placeholder="0.89" id="price"><br><br>
                 <input id="create_button" type="submit" value="Create Material">
             </form>
         </div>
@@ -33,8 +34,8 @@
                 <input type="file" id="file1" name="file">
                 <small>Only accepts CSV files</small>
                 <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Upload">
-            </form> </p>
-            <p><button><a href="/deleteallmaterials">Delete All</a></button></p>
+            </form></p>
+            <p><button><a href="/deleteallmaterials">Delete All</a></button>&#160;&#160;<button><a href="/download_all_material">Download Material Report</a></button>&#160;&#160; <button><a href="/download_material_template">Download Material Upload Template</a></button></p>
         </div>
         <div>
             <table>
@@ -57,6 +58,16 @@
             </table>
         </div>
     </div>
+    <script>
+        $("#price").on("input", function(evt) {
+            var self = $(this);
+            self.val(self.val().replace(/[^0-9\.]/g, ''));
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+            {
+                evt.preventDefault();
+            }
+            });
+    </script>
 </body>
 
 </html>

@@ -42,4 +42,8 @@ urlpatterns = [
     path('finalinvoice/<int:workorder_id>', views.finalinvoice),
     path('edit_company_profile/<int:info_id>', views.edit_company_profile),
     path('deleteallmaterials', views.deleteallmaterials),
+    path('download_material_template', views.download_material_template),
+    path('download_all_material', views.download_all_material),
+
+
 ]

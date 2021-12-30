@@ -119,6 +119,65 @@ def deleteallmaterials(request):
     else:
         return redirect('/')
 
+def download_material_template(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="upload_material_template.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+        smart_str(u"location"),
+        smart_str(u"product_name"),
+        smart_str(u"unit_of_measurement"),
+        smart_str(u"price")
+        ])
+        # no date to get - this is just a template
+        writer.writerow([
+        smart_str(u"Framing"),
+        smart_str(u"2 ft sheets"),
+        smart_str(u"SQ FT"),
+        smart_str(u"3.22")
+            ])
+        return response
+    else:
+        return redirect('/')
+
+def download_all_material(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="materialproductlist.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+            smart_str(u"location"),
+            smart_str(u"product_name"),
+            smart_str(u"unit_of_measurement"),
+            smart_str(u"price")
+        ])
+        #get data from database or from text file....
+        materials = MaterialProductDB.objects.all()
+        for one_material in materials:
+            writer.writerow([
+                smart_str(one_material.location),
+                smart_str(one_material.product_name),
+                smart_str(one_material.unit_of_measurement),
+                smart_str(one_material.price)
+                   ])
+        return response
+    else:
+        return redirect('/')
 
 def upload_material(request):
     data = MaterialProductDB.objects.all()
@@ -215,7 +274,8 @@ def create_order(request):
             material_price = prod_material.split('|')[2].strip()
             print(material_price)
             new_material = Material.objects.create(
-                product=material_post, 
+                product=material_post,
+                per_price = round(float(material_price),2),
                 quantity= request.POST[f"quantity{i}"], 
                 measurement=request.POST[f"measurement{i}"], 
                 measurement_amount= measurement_amount_entered, 
@@ -243,6 +303,7 @@ def create_order(request):
             regular_hours=round(float(regular_hours),2),
             premium_hours=round(float(premium_hours),2),
             double_hours=round(float(double_hours),2),
+            hourly_rate = round(float(0.00),2),
             total_hours= total_hours,
             total_labor_cost=0,
             workorder=WorkOrder.objects.get(id=new_order.id)
@@ -569,6 +630,7 @@ def save_invoice(request,workorder_id):
             else:
                 edit_this_material.measurement_amount = request.POST[f'measurement_amount{material_id}']
             edit_this_material.total_material_cost = request.POST[f'total_material_cost{material_id}']
+            edit_this_material.per_price = round(float(request.POST[f'per_price{material_id}']),2)
             subtotal_material_cost = subtotal_material_cost + round(float(request.POST[f'total_material_cost{material_id}']),2)
             edit_this_material.save()
         for x in range(0, len(other_mat_ids), 1):
@@ -587,6 +649,7 @@ def save_invoice(request,workorder_id):
             double_hours = round(float(edit_labor.double_hours),2)
             total_labor_hours = reg_hours+prem_hours+double_hours
             edit_labor.employee_numbers = request.POST[f'employee_numbers{labor_id}']
+            edit_labor.hourly_rate = round(float(request.POST[f'hourly_rate{labor_id}']),2)
             if round(float(request.POST[f'total_hours{labor_id}']),2) != round(float(total_labor_hours),2):
                 edit_labor.total_hours = request.POST[f'total_hours{labor_id}']
             else:
