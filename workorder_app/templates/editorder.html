@@ -74,12 +74,14 @@
                     <th>Measurement Amount</th>
                 </tr>
                 {% for material in edit_this_order.materials.all %}
+                {% if material.product != "" %}
                 <tr>
                     <td>{{material.quantity}}</td>
                     <td>{{material.product}}</td>
                     <td>{{material.measurement}}</td>
                     <td>{{material.measurement_amount}}</td>
                 </tr>
+                {% endif %}
                 {% endfor %}
                 <tr><th colspan="4">Other Material</th></tr>
                 <tr>
