@@ -215,8 +215,13 @@ def jobname(request):
 
 def create_job(request):
     if request.method == 'POST':
+        gc_name = request.POST['contractor_name']
+        if request.POST['contractor_name'] == "" or request.POST['contractor_name'] == None or request.POST['contractor_name'] == " ":
+            gc_name = request.POST['gc_dropdown']
+        else:
+            gc_name = request.POST['contractor_name']
         new_job = JobName.objects.create(name = request.POST['job_name'], 
-        contractor_name = request.POST['contractor_name'], 
+        contractor_name = gc_name, 
         gc_street = request.POST['gc_street'], 
         gc_city_state_zip = request.POST['gc_city_state_zip'], 
         gc_phone = request.POST['gc_phone'], 
@@ -304,9 +309,17 @@ def create_order(request):
             new_other_material = OtherMaterial.objects.create(other_name=request.POST[f"other_name{c}"], other_quantity=request.POST[f"other_quantity{c}"], other_measurement=request.POST[f"other_measurement{c}"], other_measurement_amount=request.POST[f"other_measurement_amount{c}"], total_other_material_cost=0  ,workorder=WorkOrder.objects.get(id=new_order.id))
             print(new_other_material)
         for n in range(1, lab_count+1):
+            hourly_rate_objects = LaborRate.objects.filter(job_name=job_id_selected.name, labor_type_name=request.POST[f"labor_type{n}"])
+            hourly_rate_filter = 1.11
+            if hourly_rate_objects:
+                hourly_rate_filter = round(float(hourly_rate_objects[0].labor_hourly_rate),2)
+            else:
+                hourly_rate_filter = 1.11
+            print(hourly_rate_filter)
             regular_hours = request.POST[f"regular_hours{n}"]
             double_hours = request.POST[f"double_hours{n}"]
             premium_hours = request.POST[f"premium_hours{n}"]
+            over_hours = request.POST[f"over_hours{n}"]
             print(f'Reg: {regular_hours}, Prem: {premium_hours}, Dou: {double_hours}')
             if request.POST[f"regular_hours{n}"] == "" or request.POST[f"regular_hours{n}"] == "'" or request.POST[f"regular_hours{n}"] == '' or request.POST[f"regular_hours{n}"] is None :
                 regular_hours=0
@@ -314,7 +327,9 @@ def create_order(request):
                 double_hours=0
             if request.POST[f"premium_hours{n}"] == "" or request.POST[f"premium_hours{n}"] == "'" or request.POST[f"premium_hours{n}"] == '' or request.POST[f"premium_hours{n}"] is None:
                 premium_hours=0
-            total_hours = round(float(regular_hours),2)+round(float(double_hours),2)+round(float(premium_hours),2)
+            if request.POST[f"over_hours{n}"] == "" or request.POST[f"over_hours{n}"] == "'" or request.POST[f"over_hours{n}"] == '' or request.POST[f"over_hours{n}"] is None:
+                over_hours=0
+            total_hours = round(float(regular_hours),2)+round(float(double_hours),2)+round(float(premium_hours),2)+round(float(over_hours),2)
             new_labor = LaborType.objects.create(
             labor_type=request.POST[f"labor_type{n}"],
             labor_description=request.POST[f"labor_description{n}"],
@@ -322,9 +337,10 @@ def create_order(request):
             regular_hours=round(float(regular_hours),2),
             premium_hours=round(float(premium_hours),2),
             double_hours=round(float(double_hours),2),
-            hourly_rate = round(float("1.11"),2),
+            over_hours=round(float(over_hours),2),
+            hourly_rate = round(float(hourly_rate_filter),2),
             total_hours= total_hours,
-            total_labor_cost=0,
+            total_labor_cost= (hourly_rate_filter*(round(float(regular_hours),2)))+(hourly_rate_filter*(round(float(double_hours),2))*2)+(hourly_rate_filter*(round(float(over_hours),2))*1.5)+(hourly_rate_filter*(round(float(premium_hours),2))*1.0),
             workorder=WorkOrder.objects.get(id=new_order.id)
             )
             print(new_labor)
@@ -625,7 +641,8 @@ def save_invoice(request,workorder_id):
         labor_cost_combined = 0
         reg_hours = 0
         prem_hours = 0
-        double_hours = 0 
+        double_hours = 0
+        over_hours = 0
         overhead_profit = round(float(request.POST['overhead_profit']),2)
         mat_filtered = Material.objects.filter(workorder=WorkOrder.objects.get(id=workorder_id))
         for mat in mat_filtered:
@@ -666,7 +683,8 @@ def save_invoice(request,workorder_id):
             reg_hours = round(float(edit_labor.regular_hours),2)
             prem_hours = round(float(edit_labor.premium_hours),2)
             double_hours = round(float(edit_labor.double_hours),2)
-            total_labor_hours = reg_hours+prem_hours+double_hours
+            over_hours = round(float(edit_labor.over_hours),2)
+            total_labor_hours = reg_hours+prem_hours+double_hours+over_hours
             edit_labor.employee_numbers = request.POST[f'employee_numbers{labor_id}']
             edit_labor.hourly_rate = round(float(request.POST[f'hourly_rate{labor_id}']),2)
             if round(float(request.POST[f'total_hours{labor_id}']),2) != round(float(total_labor_hours),2):
@@ -697,5 +715,125 @@ def finalinvoice(request, workorder_id):
 
             }
             return render(request, 'finalinvoice.html', context)
+    else:
+        return redirect('/')
+
+def laborrates(request):
+    if request.session['secret_code'] == "FGadmin!":
+        context = {
+            'all_labor_rates' : LaborRate.objects.all(),
+            'all_jobs' : JobName.objects.all(),
+        }
+        return render(request, 'laborrates.html', context)
+    else:
+        return redirect('/')
+
+def create_labor_rate(request):
+    if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
+        new_labor_rate = LaborRate.objects.create(
+            labor_type_name = request.POST['labor_type_name'],
+            job_name = request.POST['job_name'],
+            labor_hourly_rate = round(float(request.POST['labor_hourly_rate']),2)
+        )
+        return redirect('/laborrates')
+    else:
+        return redirect('/')
+
+def delete_labor_rate(request, labor_rate_id):
+    if request.session['secret_code'] == "FGadmin!":
+        LaborRate.objects.get(id=labor_rate_id).delete()
+        return redirect('/laborrates')
+    else:
+        return redirect('/')
+
+def upload_labor_rate(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        data = LaborRate.objects.all()
+        prompt = {
+            'order': 'Order of the CSV should be full_name, union, position',
+            'profiles': data
+            }
+        if request.method == "GET":
+            return redirect('/')
+        csv_file = request.FILES['file']
+        # let's check if it is a csv file
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')
+        data_set = csv_file.read().decode('UTF-8')
+        # setup a stream which is when we loop through each line we are able to handle a data in a stream
+        io_string = io.StringIO(data_set)
+        next(io_string)
+        for column in csv.reader(io_string, delimiter=','):
+                created = LaborRate.objects.update_or_create(
+                labor_type_name=column[0],
+                job_name=column[1],
+                labor_hourly_rate=column[2]
+            )
+        return redirect('/laborrates')
+    else:
+        return redirect('/')
+
+def delete_all_labor_rates(request):
+    if request.session['secret_code'] == "FGadmin!" :
+        all_rates = LaborRate.objects.all()
+        for one_rate in all_rates:
+            LaborRate.objects.get(id=one_rate.id).delete()
+        return redirect('/laborrates')
+    else:
+        return redirect('/')
+
+def download_labor_rate_template(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="upload_labor_rate_template.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+        smart_str(u"labor_type_name"),
+        smart_str(u"job_name"),
+        smart_str(u"labor_hourly_rate")
+        ])
+        # no date to get - this is just a template
+        writer.writerow([
+        smart_str(u"Carpenter - Foreman"),
+        smart_str(u"ABCD Example"),
+        smart_str(u"150.50")
+            ])
+        return response
+    else:
+        return redirect('/')
+
+def download_all_labor_rates(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="LaborratesbyJob.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+            smart_str(u"labor_type_name"),
+            smart_str(u"job_name"),
+            smart_str(u"labor_hourly_rate")
+        ])
+        #get data from database or from text file....
+        laborrates = LaborRate.objects.all()
+        for one_rate in laborrates:
+            writer.writerow([
+                smart_str(one_rate.labor_type_name),
+                smart_str(one_rate.job_name),
+                smart_str(one_rate.labor_hourly_rate)
+                   ])
+        return response
     else:
         return redirect('/')

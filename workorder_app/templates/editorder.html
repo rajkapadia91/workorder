@@ -108,6 +108,7 @@
                         <th>Regular Hours</th>
                         <th>Premium Hours</th>
                         <th>Doubletime Hours</th>
+                        <th>Overtime Hours</th>
                     </tr>
                     {% for one_labor in edit_this_order.labortypes.all %}
                     <tr>
@@ -117,6 +118,7 @@
                         <td>{{one_labor.regular_hours}}</td>
                         <td>{{one_labor.premium_hours}}</td>
                         <td>{{one_labor.double_hours}}</td>
+                        <td>{{one_labor.over_hours}}</td>
                     </tr>
                     {% endfor %}
             </table><br><br><br>

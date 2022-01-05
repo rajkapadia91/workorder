@@ -12,6 +12,7 @@
 
 .head{
     display: block;
+
 }
 
 .head button{
@@ -117,6 +118,10 @@ button:hover{
 
 #submit_button:hover{
     border-color: rgba(255,255,255,1);
+}
+
+#last_button{
+    margin-top: 10px;
 }
 
 #active {

@@ -114,6 +114,7 @@ class LaborType(models.Model):
     regular_hours = models.CharField(max_length=255, default="0")
     premium_hours = models.CharField(max_length=255,default="0")
     double_hours = models.CharField(max_length=255,default="0")
+    over_hours = models.CharField(max_length=255,default="0")
     hourly_rate = models.CharField(max_length=255,default="0")
     total_hours = models.CharField(max_length=255,default="0")
     total_labor_cost = models.CharField(max_length=255,default="0")
@@ -139,3 +140,7 @@ class OurCompanyInfo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class LaborRate(models.Model):
+    labor_type_name = models.CharField(max_length=255, default="None")
+    job_name = models.CharField(max_length=255, default="None")
+    labor_hourly_rate = models.CharField(max_length=255,default="0")

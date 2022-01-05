@@ -162,6 +162,12 @@
     margin-right: 10px;
 }
 
+#over_hours{
+    width: 95px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 #other_measurement_amount{
     width: 100px;
 }
