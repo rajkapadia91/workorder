@@ -21,10 +21,15 @@
                 <button><a href="/laborrates">Create Labor Rates</a></button>
                 <button><a href="/workordernotpriced">Work Orders Not Priced</a></button><br>
                 <button><a href="/logout">Logout</a></button>
-                <button id="last_button"><a href="/all_users">All User Accounts</a></button>
+                <button id="last_button"><a href="/all_users">All User Accounts</a></button><br><br>
+                <form action="/delete_specific_wo" method="post">
+                    {% csrf_token %}
+                    Delete Work Orders Submitted on and before: <input type="date" name="date_submitted" id="date_submitted">
+                    <button type="submit">Delete</button>
+                </form>
             </div>
         </div>
-        <div id="main_table">
+        <div id="main_table" style="margin-top: 80px;">
             <table>
                 <tr>
                     <th>Work Order No.</th>

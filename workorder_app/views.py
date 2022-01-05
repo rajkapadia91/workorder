@@ -843,3 +843,13 @@ def download_all_labor_rates(request):
         return response
     else:
         return redirect('/')
+
+def delete_specific_wo(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        date_entered = request.POST['date_submitted']
+        all_work_orders_to_be_deleted = WorkOrder.objects.filter(created_at__lte=date_entered)
+        for one_wo in all_work_orders_to_be_deleted:
+            one_wo.delete()
+        return redirect('/workorder')
+    else:
+        return redirect('/')

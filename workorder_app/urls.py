@@ -50,6 +50,7 @@ urlpatterns = [
     path('download_all_labor_rates', views.download_all_labor_rates),
     path('download_labor_rate_template', views.download_labor_rate_template),
     path('delete_all_labor_rates', views.delete_all_labor_rates),
-    path('upload_labor_rate', views.upload_labor_rate)
+    path('upload_labor_rate', views.upload_labor_rate),
+    path('delete_specific_wo', views.delete_specific_wo)
 
 ]
