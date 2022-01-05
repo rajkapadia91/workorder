@@ -24,8 +24,8 @@
                 {% csrf_token %}
                 General Contractor: <select name="gc_dropdown" id="gc_dropdown">
                     <option selected="true" disabled="disabled">Select One or Enter Manually</option>
-                    {% for one_job in all_jobs %}
-                    <option value="{{one_job.contractor_name}}">{{one_job.contractor_name}}</option>
+                    {% for one_gc in unique_contractor_names %}
+                    <option value="{{one_gc}}">{{one_gc}}</option>
                     {% endfor %}
                 </select>
                 <input type="text" name="contractor_name" id=""><br><br>

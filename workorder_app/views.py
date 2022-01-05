@@ -206,8 +206,14 @@ def upload_material(request):
 
 def jobname(request):
     if request.session['secret_code'] == "FGadmin!" :
+        all_jobs = JobName.objects.all()
+        contractor_names = []
+        for i in range(0, len(all_jobs), 1):
+            contractor_names.append(all_jobs[i].contractor_name)
+        unique_contractor_names = set(contractor_names)
         context = {
-            'all_jobs' : JobName.objects.all()
+            'all_jobs' : JobName.objects.all(),
+            'unique_contractor_names': unique_contractor_names
         }
         return render(request, 'jobname.html', context)
     else:
