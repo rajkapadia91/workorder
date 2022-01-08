@@ -346,7 +346,7 @@ def create_order(request):
             over_hours=round(float(over_hours),2),
             hourly_rate = round(float(hourly_rate_filter),2),
             total_hours= total_hours,
-            total_labor_cost= round(float((hourly_rate_filter*(round(float(regular_hours),2)))+(hourly_rate_filter*(round(float(double_hours),2))*2)+(hourly_rate_filter*(round(float(over_hours),2))*1.5)+(hourly_rate_filter*(round(float(premium_hours),2))*1.0)),2),
+            total_labor_cost= round(float((hourly_rate_filter*(round(float(regular_hours),2)))+(hourly_rate_filter*(round(float(double_hours),2))*2)+(hourly_rate_filter*(round(float(over_hours),2))*1.5)+(hourly_rate_filter*(round(float(premium_hours),2))*0.5)),2),
             workorder=WorkOrder.objects.get(id=new_order.id)
             )
             print(new_labor)
