@@ -19,6 +19,7 @@
         </div>
         <button><a href="/">Creating a New Extra Work Order</a></button>
         <button><a href="/workorder">Back to All Extra Work Orders</a></button>
+        <button><a href="/download_all_jobs">Download Report for All Jobs</a></button>
         <div id="form_1">
             <form action="/create_jobname" method="post">
                 {% csrf_token %}
@@ -33,7 +34,7 @@
                 GC_City/State/Zip: <input type="text" name="gc_city_state_zip" id="gc_city_state_zip"><br><br>
                 GC_Phone: <input type="text" name="gc_phone" id="gc_phone"><br><br>
                 Name of Job: <input type="text" name="job_name" id=""><br><br>
-                <p>Full Address Below:</p>
+                <p>Full Address (For the Project/Job) Below:</p>
                 <div id="address">
                     Street: <input type="text" name="street" id="">
                     City: <input type="text" name="city" id="">
@@ -42,6 +43,15 @@
                 </div> <br>
                 <input id="create_button" type="submit" value="Create">
             </form>
+            <div id="bulk_upload">
+                <p><form action="/update_job_values" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="file1">Bulk Change GC Information</label>
+                    <input type="file" id="file1" name="file">
+                    <small>Only accepts CSV files</small>
+                    <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Upload">
+                </form></p>
+            </div>
         </div>
         <div>
             <table>

@@ -853,3 +853,65 @@ def delete_specific_wo(request):
         return redirect('/workorder')
     else:
         return redirect('/')
+
+def download_all_jobs(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="AllGCsandJobs.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+            smart_str(u"ID"),
+            smart_str(u"General_Contractor"),
+            smart_str(u"GC_Address"),
+            smart_str(u"GC_Phone"),
+            smart_str(u"Name_of_Job"),
+            smart_str(u"Job_Address")
+        ])
+        #get data from database or from text file....
+        alljobs = JobName.objects.all()
+        for one_job in alljobs:
+            writer.writerow([
+                smart_str(one_job.id),
+                smart_str(one_job.contractor_name),
+                smart_str(f'{one_job.gc_street}, {one_job.gc_city_state_zip}'),
+                smart_str(one_job.gc_phone),
+                smart_str(one_job.name),
+                smart_str(f'{one_job.street}, {one_job.city} {one_job.state} {one_job.zip_code}')
+                   ])
+        return response
+    else:
+        return redirect('/')
+
+def update_job_values(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        data = JobName.objects.all()
+        prompt = {
+            'order': 'Order of the CSV should be full_name, union, position',
+            'profiles': data
+            }
+        if request.method == "GET":
+            return redirect('/')
+        csv_file = request.FILES['file']
+        # let's check if it is a csv file
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')
+        data_set = csv_file.read().decode('UTF-8')
+        # setup a stream which is when we loop through each line we are able to handle a data in a stream
+        io_string = io.StringIO(data_set)
+        next(io_string)
+        for column in csv.reader(io_string, delimiter=','):
+            this_job = JobName.objects.get(id=column[0])
+            this_job.contractor_name=column[1]
+            this_job.gc_street=column[2]
+            this_job.gc_city_state_zip=column[3]
+            this_job.save()
+        return redirect('/jobname')
+    else:
+        return redirect('/')
