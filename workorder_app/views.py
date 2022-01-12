@@ -911,7 +911,7 @@ def update_job_values(request):
             this_job.contractor_name=column[1]
             this_job.gc_street=column[2]
             this_job.gc_city_state_zip=column[3]
-            this_job.gc_phone=column[3]
+            this_job.gc_phone=column[4]
             this_job.save()
         return redirect('/jobname')
     else:
