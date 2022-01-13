@@ -917,7 +917,7 @@ def update_job_values(request):
     else:
         return redirect('/')
 
-def edit_material_info(material_id, request):
+def edit_material_info(request, material_id):
     if request.session['secret_code'] == 'FGadmin!':
         this_material = MaterialProductDB.objects.get(id=material_id)
         this_material.location = request.POST['edit_mat_location']
