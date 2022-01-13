@@ -916,3 +916,15 @@ def update_job_values(request):
         return redirect('/jobname')
     else:
         return redirect('/')
+
+def edit_material_info(material_id, request):
+    if request.session['secret_code'] == 'FGadmin!':
+        this_material = MaterialProductDB.objects.get(id=material_id)
+        this_material.location = request.POST['edit_mat_location']
+        this_material.product_name = request.POST['edit_mat_name']
+        this_material.unit_of_measurement = request.POST['edit_mat_unit_measurement']
+        this_material.price = request.POST['edit_mat_price']
+        this_material.save()
+        return redirect('/allmaterials')
+    else:
+        return redirect('/')

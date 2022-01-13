@@ -40,6 +40,7 @@
         <div>
             <table>
                 <tr>
+                    <th>ID</th>
                     <th>Location</th>
                     <th>Product Name</th>
                     <th>Unit</th>
@@ -47,14 +48,18 @@
                     <th>Delete</th>
                 </tr>
                 {% for one_material in all_material_names reversed %}
+                <form action="/edit_material_info/{{one_material.id}}" method="post">
                 <tr>
-                    <td>{{one_material.location}}</td>
-                    <td>{{one_material.product_name}}</td>
-                    <td>{{one_material.unit_of_measurement}}</td>
-                    <td>{{one_material.price}}</td>
+                    <td>{{one_material.id}}</td>
+                    <td><input type="text" name="edit_mat_location" value="{{one_material.location}}" id="edit_mat_location"></td>
+                    <td><input type="text" name="edit_mat_name" value="{{one_material.product_name}}" id="edit_mat_name"></td>
+                    <td><input type="text" name="edit_mat_unit_measurement" value="{{one_material.unit_of_measurement}}" id="edit_mat_unit_measurement"></td>
+                    <td><input type="text" name="edit_mat_price" value="{{one_material.price}}" class="edit_mat_price" id="edit_mat_price_{{one_material.id}}"></td>
                     <td><button><a href="/delete_material_db/{{one_material.id}}">Delete Material</a></button></td>
                 </tr>
+                </form>
                 {% endfor %}
+                <p id="count_rows" hidden>{{all_material_names.count}}</p>
             </table>
         </div>
     </div>
@@ -67,6 +72,30 @@
                 evt.preventDefault();
             }
             });
+
+            $(".edit_mat_price").on("input", function(evt) {
+            var self = $(this);
+            self.val(self.val().replace(/[^0-9\.]/g, ''));
+            if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+            {
+                evt.preventDefault();
+            }
+            });
+
+            function pricing(){
+                total_rows = document.getElementById('count_rows').innerHTML
+                for(var i =0; i < total_rows; i++ ){
+                    $(".edit_mat_price").on("input", function(evt) {
+                    var self = $(this);
+                    self.val(self.val().replace(/[^0-9\.]/g, ''));
+                    if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+                    {
+                        evt.preventDefault();
+                    }
+                    });
+                }
+            }
+            pricing()
     </script>
 </body>
 

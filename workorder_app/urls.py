@@ -53,5 +53,6 @@ urlpatterns = [
     path('upload_labor_rate', views.upload_labor_rate),
     path('delete_specific_wo', views.delete_specific_wo),
     path('download_all_jobs', views.download_all_jobs),
-    path('update_job_values', views.update_job_values)
+    path('update_job_values', views.update_job_values),
+    path('edit_material_info/<int:material_id>', views.edit_material_info)
 ]
