@@ -45,6 +45,7 @@
                     <th>Product Name</th>
                     <th>Unit</th>
                     <th>Price</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
                 {% for one_material in all_material_names reversed %}
@@ -55,9 +56,10 @@
                     <td><input type="text" name="edit_mat_name" value="{{one_material.product_name}}" id="edit_mat_name"></td>
                     <td><input type="text" name="edit_mat_unit_measurement" value="{{one_material.unit_of_measurement}}" id="edit_mat_unit_measurement"></td>
                     <td><input type="text" name="edit_mat_price" value="{{one_material.price}}" class="edit_mat_price" id="edit_mat_price_{{one_material.id}}"></td>
+                    <td><button type="submit">Edit</button></td>
                     <td><button><a href="/delete_material_db/{{one_material.id}}">Delete Material</a></button></td>
                 </tr>
-                </form>
+
                 {% endfor %}
                 <p id="count_rows" hidden>{{all_material_names.count}}</p>
             </table>
