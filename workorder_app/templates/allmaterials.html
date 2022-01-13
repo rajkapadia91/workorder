@@ -50,6 +50,7 @@
                 </tr>
                 {% for one_material in all_material_names reversed %}
                 <form action="/edit_material_info/{{one_material.id}}" method="post">
+                    {% csrf_token %}
                 <tr>
                     <td>{{one_material.id}}</td>
                     <td><input type="text" name="edit_mat_location" value="{{one_material.location}}" id="edit_mat_location"></td>
