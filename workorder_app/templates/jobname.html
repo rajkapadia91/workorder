@@ -24,11 +24,11 @@
             <form action="/create_jobname" method="post">
                 {% csrf_token %}
                 General Contractor: <select name="gc_dropdown" id="gc_dropdown">
-                    <option selected="true" disabled="disabled">Select One or Enter Manually</option>
+                    <option selected="true" disabled="disabled">Select One</option> ** If you cannot find your GC here, you need to create an entry in the New GC section.
                     {% for one_gc in all_gcs %}
                     <option value="{{one_gc.gc_name}}">{{one_gc.gc_name}}</option>
                     {% endfor %}
-                </select>        
+                </select><br><br>
                 Name of Job: <input type="text" name="job_name" id=""><br><br>
                 <p>Full Address (For the Project/Job) Below:</p>
                 <div id="address">
