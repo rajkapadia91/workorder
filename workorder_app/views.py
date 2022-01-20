@@ -333,7 +333,7 @@ def download_gc_info_template(request):
 
         response = HttpResponse(content_type='text/csv')
         #decide the file name
-        response['Content-Disposition'] = 'attachment; filename="AllGCs.csv"'
+        response['Content-Disposition'] = 'attachment; filename="GCUploadTemplate.csv"'
 
         writer = csv.writer(response, csv.excel)
         response.write(u'\ufeff'.encode('utf8'))
