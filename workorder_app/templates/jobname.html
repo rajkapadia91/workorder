@@ -25,14 +25,10 @@
                 {% csrf_token %}
                 General Contractor: <select name="gc_dropdown" id="gc_dropdown">
                     <option selected="true" disabled="disabled">Select One or Enter Manually</option>
-                    {% for one_gc in unique_contractor_names %}
-                    <option value="{{one_gc}}">{{one_gc}}</option>
+                    {% for one_gc in all_gcs %}
+                    <option value="{{one_gc.gc_name}}">{{one_gc.gc_name}}</option>
                     {% endfor %}
-                </select>
-                <input type="text" name="contractor_name" id=""> **if no gc is needed, then please manually enter none<br><br>
-                GC_Street: <input type="text" name="gc_street" id="gc_street"><br><br>
-                GC_City/State/Zip: <input type="text" name="gc_city_state_zip" id="gc_city_state_zip"><br><br>
-                GC_Phone: <input type="text" name="gc_phone" id="gc_phone"><br><br>
+                </select>        
                 Name of Job: <input type="text" name="job_name" id=""><br><br>
                 <p>Full Address (For the Project/Job) Below:</p>
                 <div id="address">
@@ -43,15 +39,6 @@
                 </div> <br>
                 <input id="create_button" type="submit" value="Create">
             </form>
-            <div id="bulk_upload">
-                <p><form action="/update_job_values" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label for="file1">Bulk Change GC Information</label>
-                    <input type="file" id="file1" name="file">
-                    <small>Only accepts CSV files</small>
-                    <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Upload">
-                </form></p>
-            </div>
         </div>
         <div>
             <table>
@@ -79,11 +66,17 @@
                     <td>
                         <form action="/edit_job/{{one_job.id}}" method="post">
                             {% csrf_token %}
-                            General Contractor: <input type="text" name="contractor_name_edit" value="{{one_job.contractor_name}}" id="edit_contractor1"><br><br>
+                            General Contractor Associated to this Job: <br>
+                            <select name="contractor_name_edit" class="edit_gc_on_this_job" >
+                                <option selected value="{{one_job.contractor_name}}">{{one_job.contractor_name}}</option>
+                                {% for one_gc in all_gcs %}
+                                {% if one_job.contractor_name != one_gc.gc_name %}
+                                <option value="{{one_gc.gc_name}}">{{one_gc.gc_name}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select><br>
+                            <br>
                             Name of Job: <input type="text" name="job_name_edit" value="{{one_job.name}}" id="edit_name1"><br><br>
-                            GC_Street: <input type="text" name="gc_street_edit" value="{{one_job.gc_street}}"  id="gc_street_edit1"><br><br>
-                            GC_City/State/Zip: <input type="text" name="gc_city_state_zip_edit" value="{{one_job.gc_city_state_zip}}" id="gc_city_state_zip_edit1"><br><br>
-                            GC_Phone: <input type="text" name="gc_phone_edit" value="{{one_job.gc_phone}}" id="gc_phone_edit1"><br><br>
                             <div id="edit_address">
                                 Street: <input type="text" name="street_edit" value="{{one_job.street}}" id="edit_street1">
                                 City: <input type="text" name="city_edit" value="{{one_job.city}}" id="edit_city1">
@@ -101,6 +94,7 @@
     <script>
          $(document).ready(function () {
             $('#gc_dropdown').select2();
+            $('.edit_gc_on_this_job').select2();
         });
     </script>
 </body>

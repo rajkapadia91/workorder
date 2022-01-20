@@ -206,31 +206,18 @@ def upload_material(request):
 
 def jobname(request):
     if request.session['secret_code'] == "FGadmin!" :
-        all_jobs = JobName.objects.all()
-        contractor_names = []
-        for i in range(0, len(all_jobs), 1):
-            contractor_names.append(all_jobs[i].contractor_name)
-        unique_contractor_names = set(contractor_names)
         context = {
             'all_jobs' : JobName.objects.all(),
-            'unique_contractor_names': unique_contractor_names
+            'all_gcs' :GCInfo.objects.all()
         }
         return render(request, 'jobname.html', context)
     else:
         return redirect('/')
 
 def create_job(request):
-    if request.method == 'POST':
-        gc_name = request.POST['contractor_name']
-        if request.POST['contractor_name'] == "" or request.POST['contractor_name'] == None or request.POST['contractor_name'] == " ":
-            gc_name = request.POST['gc_dropdown']
-        else:
-            gc_name = request.POST['contractor_name']
+    if request.session['secret_code'] == "FGadmin!" and request.method == 'POST':
         new_job = JobName.objects.create(name = request.POST['job_name'], 
-        contractor_name = gc_name, 
-        gc_street = request.POST['gc_street'], 
-        gc_city_state_zip = request.POST['gc_city_state_zip'], 
-        gc_phone = request.POST['gc_phone'], 
+        contractor_name = request.POST['gc_dropdown'],
         street = request.POST['street'], 
         city= request.POST['city'], 
         state= request.POST['state'], 
@@ -242,6 +229,132 @@ def create_job(request):
 def delete_job(request, job_id):
     JobName.objects.get(id=job_id).delete()
     return redirect('/jobname')
+
+def generalcontractor(request):
+    if request.session['secret_code'] == "FGadmin!":
+        context = {
+            'all_gcs' :GCInfo.objects.all()
+        }
+        return render(request, 'generalcontractor.html', context)
+    else:
+        return redirect('/')
+
+def creategeneralcontractor(request):
+    if request.session['secret_code'] == "FGadmin!" and request.method == 'POST':
+        newgc = GCInfo.objects.create(
+                gc_name = request.POST['gc_name'],
+                gc_street_name =  request.POST['gc_street_name'],
+                gc_city_state_zipcode = request.POST['gc_city_state_zipcode'],
+                gc_phone_number =request.POST['gc_phone_number']
+        )
+        return redirect('/generalcontractor')
+    else:
+        return redirect('/')
+
+def editgc(request, gc_id):
+    if request.session['secret_code'] == "FGadmin!" and request.method == 'POST':
+        this_gc = GCInfo.objects.get(id=gc_id)
+        this_gc.gc_name = request.POST['contractor_name_edit']
+        this_gc.gc_street_name = request.POST['gc_street_edit']
+        this_gc.gc_city_state_zipcode = request.POST['gc_city_state_zip_edit']
+        this_gc.gc_phone_number = request.POST['gc_phone_edit']
+        this_gc.save()
+        return redirect('/generalcontractor')
+    else:
+        return redirect('/')
+
+def deletegc(request, gc_id):
+    if request.session['secret_code'] == "FGadmin!":
+        GCInfo.objects.get(id=gc_id).delete()
+        return redirect('/generalcontractor')
+    else:
+        return redirect('/')
+
+def downloadallgcs(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="AllGCs.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+            smart_str(u"GC_Name"),
+            smart_str(u"GC_Address"),
+            smart_str(u"GC_PhoneNumber")
+        ])
+        #get data from database or from text file....
+        allgcs = GCInfo.objects.all()
+        for onegc in allgcs:
+            writer.writerow([
+                smart_str(onegc.gc_name),
+                smart_str(f"{onegc.gc_street_name} {onegc.gc_city_state_zipcode}"),
+                smart_str(onegc.gc_phone_number)
+                   ])
+        return response
+    else:
+        return redirect('/')
+
+def upload_gc_info(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        data = GCInfo.objects.all()
+        prompt = {
+            'order': 'Order of the CSV should be based on the template.',
+            'profiles': data
+            }
+        if request.method == "GET":
+            return redirect('/')
+        csv_file = request.FILES['gcfile']
+        # let's check if it is a csv file
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')
+        data_set = csv_file.read().decode('UTF-8')
+        # setup a stream which is when we loop through each line we are able to handle a data in a stream
+        io_string = io.StringIO(data_set)
+        next(io_string)
+        for column in csv.reader(io_string, delimiter=','):
+                created = GCInfo.objects.update_or_create(
+                gc_name=column[0],
+                gc_street_name=column[1],
+                gc_city_state_zipcode=column[2],
+                gc_phone_number=column[3]
+            )
+        return redirect('/generalcontractor')
+    else:
+        return redirect('/')
+
+def download_gc_info_template(request):
+    if request.session['secret_code'] == 'FGadmin!':
+        # response content type
+
+        response = HttpResponse(content_type='text/csv')
+        #decide the file name
+        response['Content-Disposition'] = 'attachment; filename="AllGCs.csv"'
+
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8'))
+
+        #write the headers
+        writer.writerow([
+            smart_str(u"GC_Name"),
+            smart_str(u"GC_Street_Name"),
+            smart_str(u"GC_City_State_Zipcode"),
+            smart_str(u"GC_Phonenumber")
+        ])
+        #write the rows
+        writer.writerow([
+            smart_str("Tom Construction"),
+            smart_str("411 Example Drive"),
+            smart_str("Westchester, NY 10001"),
+            smart_str("123.456.7890")
+                   ])
+        return response
+    else:
+        return redirect('/')
 
 def create_order(request):
     if request.method == 'POST':
@@ -427,8 +540,13 @@ def editorder(request, workorder_id):
 
 def invoicepreview(request, workorder_id):
     if request.session['secret_code'] == "FGadmin!" :
+        this_workorder = WorkOrder.objects.get(id=workorder_id)
+        this_gc_name= this_workorder.jobname.contractor_name
+        gc_info = GCInfo.objects.get(gc_name=this_gc_name)
         context = {
             'edit_this_order': WorkOrder.objects.get(id=workorder_id),
+            'all_gcs': GCInfo.objects.all(),
+            'gc_on_work_order':gc_info,
             'all_jobs' : JobName.objects.all(),
             'all_materials': Material.objects.all(),
             'our_company_info': OurCompanyInfo.objects.filter(status="Active"),
@@ -581,9 +699,6 @@ def save_job_edit(request, job_id):
         edit_this_job = JobName.objects.get(id=job_id)
         edit_this_job.name = request.POST['job_name_edit']
         edit_this_job.contractor_name = request.POST['contractor_name_edit']
-        edit_this_job.gc_street = request.POST['gc_street_edit']
-        edit_this_job.gc_city_state_zip = request.POST['gc_city_state_zip_edit']
-        edit_this_job.gc_phone = request.POST['gc_phone_edit']
         edit_this_job.street = request.POST['street_edit']
         edit_this_job.city = request.POST['city_edit']
         edit_this_job.state = request.POST['state_edit']
@@ -712,15 +827,20 @@ def save_invoice(request,workorder_id):
 
 def finalinvoice(request, workorder_id):
     if request.session['secret_code'] == "FGadmin!" :
-            context = {
+        this_workorder = WorkOrder.objects.get(id=workorder_id)
+        this_gc_name= this_workorder.jobname.contractor_name
+        gc_info = GCInfo.objects.get(gc_name=this_gc_name)
+        context = {
                 'edit_this_order': WorkOrder.objects.get(id=workorder_id),
                 'this_work_order' : WorkOrder.objects.get(id=workorder_id),
+                'all_gcs': GCInfo.objects.all(),
+                'gc_on_work_order':gc_info,
                 'all_jobs' : JobName.objects.all(),
                 'all_materials': Material.objects.all(),
                  'our_company_info': OurCompanyInfo.objects.filter(status="Active"),
 
             }
-            return render(request, 'finalinvoice.html', context)
+        return render(request, 'finalinvoice.html', context)
     else:
         return redirect('/')
 
@@ -869,8 +989,6 @@ def download_all_jobs(request):
         writer.writerow([
             smart_str(u"ID"),
             smart_str(u"General_Contractor"),
-            smart_str(u"GC_Address"),
-            smart_str(u"GC_Phone"),
             smart_str(u"Name_of_Job"),
             smart_str(u"Job_Address")
         ])
@@ -880,8 +998,6 @@ def download_all_jobs(request):
             writer.writerow([
                 smart_str(one_job.id),
                 smart_str(one_job.contractor_name),
-                smart_str(f'{one_job.gc_street}, {one_job.gc_city_state_zip}'),
-                smart_str(one_job.gc_phone),
                 smart_str(one_job.name),
                 smart_str(f'{one_job.street}, {one_job.city} {one_job.state} {one_job.zip_code}')
                    ])
@@ -889,33 +1005,33 @@ def download_all_jobs(request):
     else:
         return redirect('/')
 
-def update_job_values(request):
-    if request.session['secret_code'] == 'FGadmin!':
-        data = JobName.objects.all()
-        prompt = {
-            'order': 'Order of the CSV should be full_name, union, position',
-            'profiles': data
-            }
-        if request.method == "GET":
-            return redirect('/')
-        csv_file = request.FILES['file']
-        # let's check if it is a csv file
-        if not csv_file.name.endswith('.csv'):
-            messages.error(request, 'THIS IS NOT A CSV FILE')
-        data_set = csv_file.read().decode('UTF-8')
-        # setup a stream which is when we loop through each line we are able to handle a data in a stream
-        io_string = io.StringIO(data_set)
-        next(io_string)
-        for column in csv.reader(io_string, delimiter=','):
-            this_job = JobName.objects.get(id=column[0])
-            this_job.contractor_name=column[1]
-            this_job.gc_street=column[2]
-            this_job.gc_city_state_zip=column[3]
-            this_job.gc_phone=column[4]
-            this_job.save()
-        return redirect('/jobname')
-    else:
-        return redirect('/')
+# def update_job_values(request):
+#     if request.session['secret_code'] == 'FGadmin!':
+#         data = JobName.objects.all()
+#         prompt = {
+#             'order': 'Order of the CSV should be full_name, union, position',
+#             'profiles': data
+#             }
+#         if request.method == "GET":
+#             return redirect('/')
+#         csv_file = request.FILES['file']
+#         # let's check if it is a csv file
+#         if not csv_file.name.endswith('.csv'):
+#             messages.error(request, 'THIS IS NOT A CSV FILE')
+#         data_set = csv_file.read().decode('UTF-8')
+#         # setup a stream which is when we loop through each line we are able to handle a data in a stream
+#         io_string = io.StringIO(data_set)
+#         next(io_string)
+#         for column in csv.reader(io_string, delimiter=','):
+#             this_job = JobName.objects.get(id=column[0])
+#             this_job.contractor_name=column[1]
+#             this_job.gc_street=column[2]
+#             this_job.gc_city_state_zip=column[3]
+#             this_job.gc_phone=column[4]
+#             this_job.save()
+#         return redirect('/jobname')
+#     else:
+#         return redirect('/')
 
 def edit_material_info(request, material_id):
     if request.session['secret_code'] == 'FGadmin!':

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create & View Jobs</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'jobname.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script defer src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h2>Create Project/Job</h2>
+        </div>
+        <button><a href="/">Creating a New Extra Work Order</a></button>
+        <button><a href="/workorder">Back to All Extra Work Orders</a></button>
+        <button><a href="/downloadallgcs">Download Report for All GCs</a></button>
+        <button><a href="/download_gc_info_template">Download GC Upload Template</a></button>
+        <div id="form_1">
+            <form action="/creategeneralcontractor" method="post">
+                {% csrf_token %}
+                General Contractor Name: <input type="text" name="gc_name" id=""><br><br>
+                <p>Full Address Below:</p>
+                <div id="address">
+                    Street: <input type="text" name="gc_street_name" id="">
+                    City, State Zipcode: <input type="text" name="gc_city_state_zipcode" id="">
+                    Phone Number: <input type="number" name="gc_phone_number" placeholder="123.456.7890" id="">
+                </div> <br>
+                <input id="create_button" type="submit" value="Create">
+            </form>
+            <div id="bulk_upload">
+                <p><form action="/upload_gc_info" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="file1">Bulk Upload GC Information</label>
+                    <input type="file" id="file1" name="gcfile">
+                    <small>Only accepts CSV files</small>
+                    <input style="background-color: #EFEFEF !important; font-weight: bold;" id="submit_button" type="submit" value="Upload">
+                </form></p>
+            </div>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>General Contractor Name</th>
+                    <th>Address & Phone Number</th>
+                    <th>Edit Job</th>
+                    <th>Delete Job</th>
+
+                </tr>
+                {% for one_gc in all_gcs reversed %}
+                <tr>
+                    <td>{{one_gc.gc_name}}</td>
+                    <td>{{one_gc.gc_street}}</td>
+                    <td>
+                        <ul>
+                            <li>{{one_gc.gc_street_name}}</li>
+                            <li>{{one_gc.gc_city_state_zipcode}}</li>
+                            <li>{{one_gc.gc_phone_number}}</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <form action="/editgc/{{one_gc.id}}" method="post">
+                            {% csrf_token %}
+                            General Contractor: <input type="text" name="contractor_name_edit" value="{{one_gc.gc_name}}" id="edit_contractor{{one_gc.id}}"><br><br>
+                            GC_Street: <input type="text" name="gc_street_edit" value="{{one_gc.gc_street_name}}"  id="gc_street_edit{{one_gc.id}}"><br><br>
+                            GC_City/State/Zip: <input type="text" name="gc_city_state_zip_edit" value="{{one_gc.gc_city_state_zipcode}}" id="gc_city_state_zip_edit{{one_gc.id}}"><br><br>
+                            GC_Phone: <input type="text" name="gc_phone_edit" value="{{one_gc.gc_phone_number}}" id="gc_phone_edit{{one_gc.id}}"><br><br>
+                            <input id="create_button" type="submit" value="Edit GC Infor">
+                        </form>
+                    </td>
+                    <td>
+                        <button><a href="/deletegc/{{one_gc.id}}">Delete GC</a></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script>
+         $(document).ready(function () {
+            $('#gc_dropdown').select2();
+        });
+    </script>
+</body>
+
+</html>

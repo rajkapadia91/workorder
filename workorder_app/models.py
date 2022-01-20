@@ -55,9 +55,6 @@ class JobName(models.Model):
     state = models.CharField(max_length=2)
     zip_code = models.CharField(max_length=5)
     contractor_name = models.CharField(max_length=255)
-    gc_street = models.CharField(max_length=255, default="111 Roseland Ave")
-    gc_city_state_zip = models.CharField(max_length=255, default= "Caldwell, NJ 07000")
-    gc_phone = models.CharField(max_length=255, default="123.456.789")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
  
@@ -144,3 +141,11 @@ class LaborRate(models.Model):
     labor_type_name = models.CharField(max_length=255, default="None")
     job_name = models.CharField(max_length=255, default="None")
     labor_hourly_rate = models.CharField(max_length=255,default="0")
+
+class GCInfo(models.Model):
+    gc_name = models.CharField(max_length=255, default="None")
+    gc_street_name = models.CharField(max_length=255, default="111 Roseland Ave")
+    gc_city_state_zipcode = models.CharField(max_length=255, default= "Caldwell, NJ 07000")
+    gc_phone_number = models.CharField(max_length=255, default="123.456.789")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

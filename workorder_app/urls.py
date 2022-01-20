@@ -53,6 +53,15 @@ urlpatterns = [
     path('upload_labor_rate', views.upload_labor_rate),
     path('delete_specific_wo', views.delete_specific_wo),
     path('download_all_jobs', views.download_all_jobs),
-    path('update_job_values', views.update_job_values),
-    path('edit_material_info/<int:material_id>', views.edit_material_info)
+    path('edit_material_info/<int:material_id>', views.edit_material_info),
+    path('generalcontractor', views.generalcontractor),
+    path('creategeneralcontractor', views.creategeneralcontractor),
+    path('editgc/<int:gc_id>', views.editgc),
+    path('deletegc/<int:gc_id>', views.deletegc),
+    path('downloadallgcs', views.downloadallgcs),
+    path('upload_gc_info', views.upload_gc_info),
+    path('download_gc_info_template', views.download_gc_info_template),
+
+
+
 ]
