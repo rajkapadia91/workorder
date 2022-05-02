@@ -87,6 +87,10 @@ class WorkOrder(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+@receiver(models.signals.pre_delete, sender=WorkOrder)
+def remove_file_from_s3(sender, instance, using, **kwargs):
+    instance.picture_1.delete(save=False)
+
 class Material(models.Model):
     product = models.CharField(max_length=255, default="None")
     quantity = models.CharField(max_length=10, default="0")
