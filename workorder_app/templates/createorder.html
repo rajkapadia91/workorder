@@ -13,7 +13,13 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"
         defer></script>
 </head>
-
+<style>
+    .select2-selection__rendered[title="REQUEST FOR PRICING (RFP)"] {
+      color: red!important;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    </style>
 <body>
     <div id="wrapper">
         <!-- Start This is where the logo and contact info is embedded -->
@@ -50,9 +56,9 @@
                     <option value="{{one_job.id}}">Job Name: {{one_job.name}}</option>
                     {% endfor %}
                 </select> <br> <br>
-                Reason For Pricing (Please select one option from the dropdown): <select name="request_for_pricing" class="request_for_pricing">
-                    <option value="Yes - Request Pricing">&#160;REQUEST FOR PRICING (RFP)&#160;</option>
-                    <option value="Work Already Performed">&#160;Work Already Performed&#160;</option>
+                Reason For Pricing (Please select one option from the dropdown): <select style="width: 300px;" name="request_for_pricing" class="request_for_pricing" onchange="hide_show_signature_func()">
+                    <option value="Yes - Request Pricing">REQUEST FOR PRICING (RFP)</option>
+                    <option value="Work Already Performed">Work Already Performed</option>
                 </select><br><br>
                 Location of Work Performed: <input type="text" name="location" id="location_work"> <br><br>
                 Date/ Date Range Work Performed: <input type="text" name="date_work_performed" id="date_work_performed"> <br><br>
@@ -169,6 +175,7 @@
                             <p><b>We agree to pay for the above work on the basis of cost of material, labor,<br>
                                 insurance and taxes, on labor and direct costs, plus overhead and profit.</b></p>
                         <!-- Start This is the canvas functionality -->
+                        <div class="the_signature_canvases_elements" hidden>
                         <img hidden src="" id="imgConverted"
                             style="float: left; background: none; border: 2px solid blue ;" alt="This is the signature">
                         <canvas id="canvas" style="border:black solid 1px;" width="500" height="150"></canvas>
@@ -178,10 +185,13 @@
                         <!-- Start This is the div for the clear signature and save signature -->
 
                         <!-- End This is the div for the clear signature and save signature -->
+                    </div>
                     </div><br>
+                    <div class="the_signature_canvases_elements" hidden>
                     <p id="TY" hidden>General Contractor has successfully signed!</p>
                     <button style="background-color: #EFEFEF !important;" type="button" onclick="myFunction()"><b>Clear & Re-Sign</b></button>
                     <input style="background-color: #EFEFEF !important; font-weight: bold;" onclick="saveSignature()" type="button" id="save1" value="Save Signature">
+                    </div>
                 </div><br><br>
                 <hr><br>
                 <div>
@@ -189,6 +199,7 @@
                         Name of Belcon Foreman Signing: <input type="text" name="signator_2" class="signator_name"
                             id="signator_2" placeholder="Please print your name."><br><br>
                         <!-- Start This is the canvas functionality -->
+                        <div class="the_signature_canvases_elements" hidden>
                         <img hidden src="" id="imgConverted2"
                             style="float: left; background: none; border: 2px solid blue ;" alt="This is the signature">
                         <canvas id="canvas_2" style="border:black solid 1px;" width="500" height="150"></canvas>
@@ -197,10 +208,13 @@
                         <!-- Start This is the div for the clear signature and save signature -->
 
                         <!-- End This is the div for the clear signature and save signature -->
+                    </div>
                     </div><br>
+                    <div class="the_signature_canvases_elements" hidden>
                     <p id="TY2" hidden>Belcon foreman has successfully signed!</p>
                     <button style="background-color: #EFEFEF !important;" type="button" onclick="myFunction1()"><b>Clear & Re-Sign</b></button>
                     <input style="background-color: #EFEFEF !important; font-weight: bold;" onclick="saveSignature2()" type="button" id="save2" value="Save Signature">
+                </div>
                 </div>
 
                 <!-- 1) End of the signature div general contractor   -->
@@ -563,6 +577,20 @@
           }
           return true;
         }
+
+        // if reason for pricing is request for pricing then hide signature
+
+        function hide_show_signature_func(){
+            var id_of_reason = event.target.id
+            var final_value_selected = `${id_of_reason[43]}${id_of_reason[44]}${id_of_reason[45]}`
+            console.log(final_value_selected)
+            if(final_value_selected == "Yes"){
+                $('.the_signature_canvases_elements').hide()
+            }
+            else
+            $('.the_signature_canvases_elements').show()
+        }
+        //end logic for above
       </script>
     <!-- End This is the javascript for the signature -->
 </body>
