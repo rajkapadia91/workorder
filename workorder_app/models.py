@@ -1,5 +1,8 @@
 from django.db import models
 import re
+from django.db.models.signals import post_delete, pre_delete
+from django.dispatch import receiver
+from django.core.files.storage import default_storage as storage
 
 # Create your models here.
 class UserManager(models.Manager):
@@ -80,6 +83,7 @@ class WorkOrder(models.Model):
     overhead_profit = models.CharField(max_length=300, default="0")
     total_invoice_amount =  models.CharField(max_length=255, default="0")
     memo = models.CharField(max_length=255, default="")
+    picture_1 = models.FileField(blank=True, null=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
