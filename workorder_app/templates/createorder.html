@@ -56,7 +56,8 @@
                     <option value="{{one_job.id}}">Job Name: {{one_job.name}}</option>
                     {% endfor %}
                 </select> <br> <br>
-               <b><span style="color: red; text-decoration: underline;">REASON FOR PRICING (PLEASE SELECT ONE OPTION FROM THE DROPDOWN):</span></b> <select style="width: 300px;" name="request_for_pricing" class="request_for_pricing" onchange="hide_show_signature_func()">
+               <b><span style="color: red; text-decoration: underline;">REASON FOR PRICING (PLEASE SELECT ONE OPTION FROM THE DROPDOWN):</span></b> <select required style="width: 300px;" name="request_for_pricing" class="request_for_pricing" onchange="hide_show_signature_func()">
+                    <option selected disabled value="">Select from dropdown</option>
                     <option value="Yes - Request Pricing">REQUEST FOR PRICING (RFP)</option>
                     <option value="Work Already Performed">Work Already Performed</option>
                 </select><br><br>
