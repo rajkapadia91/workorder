@@ -83,7 +83,7 @@ class WorkOrder(models.Model):
     overhead_profit = models.CharField(max_length=300, default="0")
     total_invoice_amount =  models.CharField(max_length=255, default="0")
     memo = models.CharField(max_length=255, default="")
-    picture_1 = models.FileField(blank=True, null=True, default="")
+    picture_1 = models.FileField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
