@@ -2,7 +2,6 @@ from django.db import models
 import re
 from django.db.models.signals import post_delete, pre_delete
 from django.dispatch import receiver
-from django.core.files.storage import default_storage as storage
 
 # Create your models here.
 class UserManager(models.Manager):

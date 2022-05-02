@@ -49,7 +49,7 @@
         
         <!-- Start - Master Div for creating work order -->
         <div id="create_order">
-            <form action="/create_order" method="post">
+            <form action="/create_order" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 Job/Project Name: <select class="job_list" name="contractor">
                     {% for one_job in all_jobs %}
