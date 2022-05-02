@@ -384,7 +384,7 @@ def create_order(request):
             total_invoice_amount = 0,
             overhead_profit = 0,
             memo = "",
-            picture_1 = request.FILES.get(f'picture_1', None),
+            picture_1 = request.FILES.get('picture_1', None),
             user=User.objects.get(id=user_creating_order.id))
         mat_count = int(request.POST['material_count'])
         lab_count = int(request.POST['labor_count'])
