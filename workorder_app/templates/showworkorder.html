@@ -27,6 +27,11 @@
             <p> <span class="titles">General Contractor:</span> {{this_work_order.jobname.contractor_name}}</p>
             <p> <span class="titles">Name of Job:</span> {{this_work_order.jobname.name}}</p>
             <p> <span class="titles">Address:</span> {{this_work_order.jobname.street}}, {{this_work_order.jobname.city}}, {{this_work_order.jobname.state}} {{this_work_order.jobname.zip_code}}</p>
+            {% if this_work_order.request_for_pricing == 'Yes - Request Pricing' %}
+            <p> <span class="titles">Reason For Pricing:</span><span style="color: red; text-decoration: underline; font-weight: bold;">{{this_work_order.request_for_pricing}}</span></p>
+            {% else %}
+            <p> <span class="titles">Reason For Pricing:</span>{{this_work_order.request_for_pricing}}</p>
+            {% endif %}
             <p> <span class="titles">Reason For Pricing:</span> {{this_work_order.request_for_pricing}}</p>
             <p> <span class="titles">Location of Work Performed:</span> {{this_work_order.location}}</p>
             <p> <span class="titles">Date/ Date Range Work Performed:</span> {{this_work_order.date_work_performed}}</p>
