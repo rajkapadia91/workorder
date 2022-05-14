@@ -119,8 +119,12 @@ table, td, th {
   }
   
   table {
-    width: 40%;
+    width: 90%;
     border-collapse: collapse;
+  }
+
+  .the_product_name{
+      width: 220px;
   }
 
   #belcon_signator{

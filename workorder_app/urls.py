@@ -63,7 +63,7 @@ urlpatterns = [
     path('downloadallgcs', views.downloadallgcs),
     path('upload_gc_info', views.upload_gc_info),
     path('download_gc_info_template', views.download_gc_info_template),
-
+    path('create_labor_type', views.create_labor_type),
 
 
 ]

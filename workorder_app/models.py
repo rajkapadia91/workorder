@@ -156,3 +156,8 @@ class GCInfo(models.Model):
     gc_phone_number = models.CharField(max_length=255, default="123.456.789")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class LaborTypeDB(models.Model):
+    labor_type_name = models.CharField(max_length=255, default="None")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

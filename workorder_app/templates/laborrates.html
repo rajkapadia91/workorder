@@ -15,11 +15,36 @@
 <body>
     <div id="wrapper">
         <div id="header">
-            <h2>Create Labor Rate</h2>
+            <h2>Create Labor Type & Rate</h2>
         </div>
         <button><a href="/">Creating a New Extra Work Order</a></button>
-        <button><a href="/workorder">Back to All Extra Work Orders</a></button>
+        <button><a href="/workorder">Back to All Extra Work Orders</a></button><br><br>
+        <hr>
         <div id="form_1">
+            <h4>Create Labor Type Here</h4>
+            <div id="create_labor_types">
+                <form action="/create_labor_type" method="post">
+                    {% csrf_token %}
+                  Labor Type Name: <input type="text" name="labor_type_name" id="labor_type_name_id">
+                  <input id="create_button" type="submit" value="Create Labor Type">
+                </form><br><br>
+                <table>
+                    <tr>
+                        <th>Labor Type ID</th>
+                        <th>Labor Type Name</th>
+                        <th>Delete Type</th>
+                    </tr>
+                    {% for one_labor_type in all_labor_types %}
+                    <tr>
+                        <td>{{one_labor_type.id}}</td>
+                        <td>{{one_labor_type.labor_type_name}}</td>
+                        <td><button><a href="#">Delete Labor Type</a></button></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><br><br>
+            <hr><br>
+            <h4>Assign Hourly Rates To Labor Types</h4>
             <form action="/create_labor_rate" method="post">
                 {% csrf_token %}
                Labor Type: <select name="labor_type_name" id="labor_type_name" class="labor_type_name_dropdown">

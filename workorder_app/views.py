@@ -77,6 +77,7 @@ def createorder(request):
             'all_materials': Material.objects.all(),
             'all_jobs' : JobName.objects.all(),
             'all_material_names': MaterialProductDB.objects.all(),
+            'all_labor_types': LaborTypeDB.objects.all()
         }
         return render(request, 'createorder.html', context)
     else:
@@ -100,6 +101,15 @@ def create_new_material(request):
             price = request.POST['price']
         )
         return redirect('/allmaterials')
+    else:
+        return redirect('/')
+
+def create_labor_type(request):
+    if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
+        new_labor_type = LaborTypeDB.objects.create(
+            labor_type_name = request.POST['labor_type_name']
+        )
+        return redirect('/laborrates')
     else:
         return redirect('/')
 
@@ -534,7 +544,9 @@ def editorder(request, workorder_id):
     context = {
         'edit_this_order': WorkOrder.objects.get(id=workorder_id),
         'all_jobs' : JobName.objects.all(),
-        'all_materials': Material.objects.all()
+        'all_materials': Material.objects.all(),
+        'all_material_names': MaterialProductDB.objects.all(),
+        'all_labor_types': LaborTypeDB.objects.all()
 
     }
     return render(request, 'editorder.html', context)
@@ -605,7 +617,162 @@ def email(request, workorder_id):
         return redirect('/')
 
 def save_edit(request, workorder_id):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.session['secret_code'] == "FGadmin!":
+        edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
+        edit_this_work_order.jobname=JobName.objects.get(id=request.POST['contractor_edit'])
+        edit_this_work_order.location=request.POST['location_edit']
+        edit_this_work_order.request_for_pricing=request.POST['request_for_pricing_edit']
+        edit_this_work_order.date_work_performed=request.POST['date_work_performed_edit']
+        edit_this_work_order.work_performed=request.POST['work_performed_edit']
+        edit_this_work_order.priced=request.POST['priced_edit']
+        counter_for_existing_materials = int(request.POST['count_of_existing_materials'])
+        if counter_for_existing_materials != 0:
+            for one_mat in range(1,counter_for_existing_materials+1):
+                the_material = Material.objects.get(id=request.POST[f'this_material_id{one_mat}'])
+                print(f'This is the count: {one_mat} and this is the mat_id {the_material.id}')
+                the_material.quantity = request.POST[f"edit_material_quantity{one_mat}"]
+                the_material.product = request.POST[f"edit_material_product_name{one_mat}"]
+                the_material.measurement = request.POST[f'edit_material_unit_of_measurement{one_mat}']
+                the_material.measurement_amount = request.POST[f'edit_material_measurement_amount{one_mat}']
+                the_material.save()
+        mat_count = int(request.POST['material_count'])
+        if mat_count != 0:
+            for i in range(1, mat_count+1):
+                measurement_amount_entered = 1
+                prod_material = ""
+                material_post = ""
+                material_price = 0.0
+                quantity = 0.0
+                if request.POST[f"measurement_amount{i}"] == "" or request.POST[f"measurement_amount{i}"] == 0:
+                    measurement_amount_entered = 1
+                else:
+                    measurement_amount_entered = request.POST[f"measurement_amount{i}"]
+                if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                    prod_material = ""
+                else:
+                    prod_material = request.POST[f"product{i}"]
+                if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                    material_post =  ""
+                else:
+                    material_post = prod_material.split('|')[0]
+                if request.POST[f"product{i}"] == "" or request.POST[f"product{i}"] == " " or request.POST[f"product{i}"] == '':
+                    material_price = 0.0
+                else:
+                    material_price = prod_material.split('|')[2].strip()
+                if request.POST[f"quantity{i}"] == "" or request.POST[f"quantity{i}"] == " " or request.POST[f"quantity{i}"] == 0:
+                    quantity = 0
+                else:
+                    quantity = request.POST[f"quantity{i}"]
+                print(material_price)
+                new_material = Material.objects.create(
+                    product=material_post,
+                    per_price = round(float(material_price),2),
+                    quantity= quantity, 
+                    measurement=request.POST[f"measurement{i}"], 
+                    measurement_amount= measurement_amount_entered, 
+                    total_material_cost = round(round(float(quantity),2) * round(float(material_price),2) * round(float(measurement_amount_entered),2),2),
+                    workorder=WorkOrder.objects.get(id=workorder_id))
+        counter_for_existing_other_materials = int(request.POST['count_of_existing_other_materials'])
+        if counter_for_existing_other_materials !=0:
+            for one_other_mat in range(1,counter_for_existing_other_materials+1):
+                the_other_material = OtherMaterial.objects.get(id=request.POST[f'this_other_material_id{one_other_mat}'])
+                print(f'This is the count: {one_other_mat} and this is the other_mat_id {the_other_material.id}')
+                the_other_material.other_quantity = request.POST[f"edit_other_material_quantity{one_other_mat}"]
+                the_other_material.other_name = request.POST[f"edit_other_material_product_name{one_other_mat}"]
+                the_other_material.other_measurement = request.POST[f'edit_other_material_unit_of_measurement{one_other_mat}']
+                the_other_material.other_measurement_amount = request.POST[f'edit_other_material_measurement_amount{one_other_mat}']
+                the_other_material.save()
+        other_mat_count = int(request.POST['other_material_count'])
+        if other_mat_count != 0:
+            for c in range(1, other_mat_count+1):
+                new_other_material = OtherMaterial.objects.create(
+                    other_name=request.POST[f"other_name{c}"],
+                    other_quantity=request.POST[f"other_quantity{c}"],
+                    other_measurement=request.POST[f"other_measurement{c}"],
+                    other_measurement_amount=request.POST[f"other_measurement_amount{c}"],
+                    total_other_material_cost=0,
+                    workorder=WorkOrder.objects.get(id=workorder_id))
+        counter_for_labor = int(request.POST['count_of_labor'])
+        job_id_selected = JobName.objects.get(id=request.POST['contractor_edit'])
+        if counter_for_labor !=0:
+            for one_labor in range(1,counter_for_labor+1):
+                the_labor = LaborType.objects.get(id=request.POST[f'this_one_labor_id{one_labor}'])
+                the_labor.labor_type = request.POST[f'edit_labor_type_dropdown{one_labor}']
+                the_labor.labor_description = request.POST[f'edit_labor_description{one_labor}']
+                the_labor.employee_numbers =request.POST[f'edit_employee_numbers{one_labor}']
+                the_labor.regular_hours = request.POST[f'edit_regular_hours{one_labor}']
+                the_labor.premium_hours = request.POST[f'edit_premium_hours{one_labor}']
+                the_labor.double_hours = request.POST[f'edit_double_hours{one_labor}']
+                the_labor.over_hours = request.POST[f'edit_over_hours{one_labor}']
+                hourly_rate_objects_edit = LaborRate.objects.filter(job_name=job_id_selected.name, labor_type_name=request.POST[f'edit_labor_type_dropdown{one_labor}'])
+                hourly_rate_filter_edit = 1.11
+                if hourly_rate_objects_edit:
+                    hourly_rate_filter_edit = round(float(hourly_rate_objects_edit[0].labor_hourly_rate),2)
+                else:
+                    hourly_rate_filter_edit = 1.11
+                the_labor.hourly_rate = hourly_rate_filter_edit
+                total_hours_edit = round(float(request.POST[f'edit_regular_hours{one_labor}']),2)+round(float(request.POST[f'edit_double_hours{one_labor}']),2)+round(float(request.POST[f'edit_premium_hours{one_labor}']),2)+round(float(request.POST[f'edit_over_hours{one_labor}']),2)
+                the_labor.total_hours = total_hours_edit
+                total_labor_cost_edited = round(float((hourly_rate_filter_edit*(round(float(request.POST[f'edit_regular_hours{one_labor}']),2)))+(hourly_rate_filter_edit*(round(float(request.POST[f'edit_double_hours{one_labor}']),2))*2)+(hourly_rate_filter_edit*(round(float(request.POST[f'edit_over_hours{one_labor}']),2))*1.5)+(hourly_rate_filter_edit*(round(float(request.POST[f'edit_premium_hours{one_labor}']),2))*0.5)),2)
+                the_labor.total_labor_cost = total_labor_cost_edited
+                the_labor.save()
+        lab_count = int(request.POST['labor_count'])
+        if lab_count !=0:
+            for n in range(1, lab_count+1):
+                hourly_rate_objects = LaborRate.objects.filter(job_name=job_id_selected.name, labor_type_name=request.POST[f"labor_type{n}"])
+                hourly_rate_filter = 1.11
+                if hourly_rate_objects:
+                    hourly_rate_filter = round(float(hourly_rate_objects[0].labor_hourly_rate),2)
+                else:
+                    hourly_rate_filter = 1.11
+                print(hourly_rate_filter)
+                regular_hours = request.POST[f"regular_hours{n}"]
+                double_hours = request.POST[f"double_hours{n}"]
+                premium_hours = request.POST[f"premium_hours{n}"]
+                over_hours = request.POST[f"over_hours{n}"]
+                print(f'Reg: {regular_hours}, Prem: {premium_hours}, Dou: {double_hours}')
+                if request.POST[f"regular_hours{n}"] == "" or request.POST[f"regular_hours{n}"] == "'" or request.POST[f"regular_hours{n}"] == '' or request.POST[f"regular_hours{n}"] is None :
+                    regular_hours=0
+                if request.POST[f"double_hours{n}"] == "" or request.POST[f"double_hours{n}"] == "'" or request.POST[f"double_hours{n}"] == '' or request.POST[f"double_hours{n}"] is None:
+                    double_hours=0
+                if request.POST[f"premium_hours{n}"] == "" or request.POST[f"premium_hours{n}"] == "'" or request.POST[f"premium_hours{n}"] == '' or request.POST[f"premium_hours{n}"] is None:
+                    premium_hours=0
+                if request.POST[f"over_hours{n}"] == "" or request.POST[f"over_hours{n}"] == "'" or request.POST[f"over_hours{n}"] == '' or request.POST[f"over_hours{n}"] is None:
+                    over_hours=0
+                total_hours = round(float(regular_hours),2)+round(float(double_hours),2)+round(float(premium_hours),2)+round(float(over_hours),2)
+                new_labor = LaborType.objects.create(
+                labor_type=request.POST[f"labor_type{n}"],
+                labor_description=request.POST[f"labor_description{n}"],
+                employee_numbers=round(float(request.POST[f"employee_numbers{n}"]),2),
+                regular_hours=round(float(regular_hours),2),
+                premium_hours=round(float(premium_hours),2),
+                double_hours=round(float(double_hours),2),
+                over_hours=round(float(over_hours),2),
+                hourly_rate = round(float(hourly_rate_filter),2),
+                total_hours= total_hours,
+                total_labor_cost= round(float((hourly_rate_filter*(round(float(regular_hours),2)))+(hourly_rate_filter*(round(float(double_hours),2))*2)+(hourly_rate_filter*(round(float(over_hours),2))*1.5)+(hourly_rate_filter*(round(float(premium_hours),2))*0.5)),2),
+                workorder=WorkOrder.objects.get(id=workorder_id)
+                )
+                print(new_labor)
+        edit_this_work_order.signature_1=request.POST['signature_1']
+        edit_this_work_order.signator_1=request.POST['signator_1']
+        edit_this_work_order.general_contractor_email=request.POST['general_contractor_email_edit']
+        edit_this_work_order.signature_2=request.POST['signature_2']
+        edit_this_work_order.signator_2=request.POST['signator_2']
+        edit_this_work_order.save()
+        creator_name = edit_this_work_order.user.first_name
+        context  = {
+            'this_work_order_email': WorkOrder.objects.get(id=workorder_id)
+        }
+        msg_html = render_to_string('email.html', context)
+        this_work_order_details = WorkOrder.objects.get(id=workorder_id)
+        recipient = edit_this_work_order.user.email
+        gcemail = this_work_order_details.general_contractor_email
+        msg = EmailMessage(subject=f"Extra Work Order - {edit_this_work_order.id} ", body=msg_html, from_email='belconcentral@gmail.com', to=['fgalioto@belconservice.com'], cc=[recipient,gcemail, 'dzarfino@belconservice.com'])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
+        return redirect(f'/edit/{workorder_id}')
+    elif request.method == 'POST' and request.session['secret_code'] != "Inside1":
         edit_this_work_order = WorkOrder.objects.get(id=workorder_id)
         edit_this_work_order.jobname=JobName.objects.get(id=request.POST['contractor_edit'])
         edit_this_work_order.location=request.POST['location_edit']
@@ -850,6 +1017,7 @@ def laborrates(request):
         context = {
             'all_labor_rates' : LaborRate.objects.all(),
             'all_jobs' : JobName.objects.all(),
+            'all_labor_types': LaborTypeDB.objects.all()
         }
         return render(request, 'laborrates.html', context)
     else:

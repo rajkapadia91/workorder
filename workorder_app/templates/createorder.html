@@ -146,13 +146,16 @@
                         <tr>
                             <td>
                                 <select name="labor_type1" id="labor_type_select" class="labor_drop">
-                                    <option value="Carpenter - Foreman">Carpenter - Foreman</option>
+                                    <!-- <option value="Carpenter - Foreman">Carpenter - Foreman</option>
                                     <option value="Carpenter - Journeyman">Carpenter - Journeyman</option>
                                     <option value="Taper - Journeyman">Taper - Journeyman</option>
                                     <option value="Taper - Foreman">Taper - Foreman</option>
                                     <option value="Laborer">Laborer</option>
                                     <option value="Supervisor">Supervisor</option>
-                                    <option value="Other">Other</option>
+                                    <option value="Other">Other</option> -->
+                                    {% for one_labor_type in  all_labor_types %}
+                                    <option value="{{one_labor_type.labor_type_name}}">{{one_labor_type.labor_type_name}}</option>
+                                    {% endfor %}
                                 </select>
                             </td>
                             <td><input type="text" name="labor_description1" id="labor_description"></td>
@@ -554,7 +557,7 @@
                 $('#add_labor').click(function (e) {
                     $('#labor_count').attr('value', Number($('#labor_count').attr('value')) + 1)
                     var n = Number($('#labor_count').attr('value'))
-                    $('#labor_table_master').append(`<tr><td><select name="labor_type${n}" class="labor_drop"><option value="Carpenter - Foreman">Carpenter - Foreman</option><option value="Carpenter - Journeyman">Carpenter - Journeyman</option><option value="Taper - Journeyman">Taper - Journeyman</option><option value="Taper - Foreman">Taper - Foreman</option><option value="Laborer">Laborer</option><option value="Supervisor">Supervisor</option><option value="Other">Other</option></select></td><td><input type="text" name="labor_description${n}" id="labor_description"></td><td><input type="text" required name="employee_numbers${n}" id="employee_numbers"></td><td><input type="text" name="regular_hours${n}" id="regular_hours"></td><td><input type="text" name="premium_hours${n}" id="premium_hours"></td><td><input type="text" name="double_hours${n}" id="double_hours"></td><td><input type="text" name="over_hours${n}" id="over_hours"></td></tr>`)
+                    $('#labor_table_master').append(`<tr><td><select name="labor_type${n}" class="labor_drop">{% for one_labor_type in  all_labor_types %}<option value="{{one_labor_type.labor_type_name}}">{{one_labor_type.labor_type_name}}</option>{% endfor %}</select></td><td><input type="text" name="labor_description${n}" id="labor_description"></td><td><input type="text" required name="employee_numbers${n}" id="employee_numbers"></td><td><input type="text" name="regular_hours${n}" id="regular_hours"></td><td><input type="text" name="premium_hours${n}" id="premium_hours"></td><td><input type="text" name="double_hours${n}" id="double_hours"></td><td><input type="text" name="over_hours${n}" id="over_hours"></td></tr>`)
 
             $(document).ready(function () {
             $('.labor_drop').select2();

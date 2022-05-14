@@ -66,16 +66,32 @@
             <input hidden type="text" name="priced_edit" value="No">
             <hr>
             <h3>Material/s Used</h3>
-            <table>
+            <table id="material_table">
                 <tr>
+                    <th>Material ID</th>
                     <th>Quantity</th>
                     <th>Product</th>
                     <th>Unit of Measurement</th>
                     <th>Measurement Amount</th>
                 </tr>
+                {% if request.session.secret_code == "FGadmin!" %}
                 {% for material in edit_this_order.materials.all %}
                 {% if material.product != "" %}
                 <tr>
+                    <td><input type="text" readonly name="this_material_id" value="{{material.id}}" class="this_material_id_class" id="this_material_id_id"></td>
+                    <td><input type="number" name="edit_material_quantity" value="{{material.quantity}}" class="material_quantity_class" id="material_quantity"></td>
+                    <td class="the_product_name"><input style="width: 90%;" type="text" name="edit_material_product_name" value="{{material.product}}" class="material_product_name_class" id="material_product_name"></td>
+                    <td><input type="text" name="edit_material_unit_of_measurement" value="{{material.measurement}}" class="material_unit_of_measurement_class" id="material_unit_of_measurement"></td>
+                    <td><input type="text" name="edit_material_measurement_amount" value="{{material.measurement_amount}}" class="material_material_measurement_amount_class" id="material_material_measurement_amount"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                <input hidden type="number" name="count_of_existing_materials" value="0" class="count_of_existing_materials_class" id="count_of_existing_materials">
+                {% else %}
+                {% for material in edit_this_order.materials.all %}
+                {% if material.product != "" %}
+                <tr>
+                    <td></td>
                     <td>{{material.quantity}}</td>
                     <td>{{material.product}}</td>
                     <td>{{material.measurement}}</td>
@@ -83,25 +99,56 @@
                 </tr>
                 {% endif %}
                 {% endfor %}
-                <tr><th colspan="4">Other Material</th></tr>
+                {% endif %}
+            </table><br>
+            {% if request.session.secret_code == "FGadmin!" %}
+                <button style="width: 100px !important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_material"><b>Add One More</b></button><br><br>
+                {% endif %}
+                <input type="hidden" name="material_count" value="0" id="material_count">
+            <table id="other_material_table">
+                <h3>Other Material/s Used</h3>
                 <tr>
-                    <th>Other: Quantity</th>
-                    <th>Other: Product</th>
+                    <th>Other Material ID</th>
+                    <th>Quantity</th>
+                    <th>Product</th>
                     <th>Unit of Measurement</th>
                     <th>Measurement Amount</th>
                 </tr>
+                {% if request.session.secret_code == "FGadmin!" %}
                 {% for one_other_material in edit_this_order.othermaterials.all %}
+                {% if one_other_material.other_name != "" %}
                 <tr>
+                    <td><input type="text" readonly name="this_other_material_id" value="{{one_other_material.id}}" class="this_one_other_material_id_class" id="this_one_other_material_id_id"></td>
+                    <td><input type="number" name="edit_other_material_quantity" value="{{one_other_material.other_quantity}}" class="other_material_quantity_class" id="other_material_quantity"></td>
+                    <td class="the_product_name"><input style="width: 90%;" type="text" name="edit_other_material_product_name" value="{{one_other_material.other_name}}" class="other_material_product_name_class" id="other_material_product_name"></td>
+                    <td><input type="text" name="edit_other_material_unit_of_measurement" value="{{one_other_material.other_measurement}}" class="other_material_unit_of_measurement_class" id="other_material_unit_of_measurement"></td>
+                    <td><input type="text" name="edit_material_measurement_amount" value="{{one_other_material.other_measurement_amount}}" class="other_material_material_measurement_amount_class" id="other_material_material_measurement_amount"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                {% for one_other_material in edit_this_order.othermaterials.all %}
+                {% if one_other_material.other_name != "" %}
+                <tr>
+                    <td></td>
                     <td>{{one_other_material.other_quantity}}</td>
                     <td>{{one_other_material.other_name}}</td>
                     <td>{{one_other_material.other_measurement}}</td>
                     <td>{{one_other_material.other_measurement_amount}}</td>
                 </tr>
+                {% endif %}
                 {% endfor %}
-            </table>
+                {% endif %}
+                <input hidden type="number" name="count_of_existing_other_materials" value="0" class="count_of_existing_other_materials_class" id="count_of_existing_other_materials">
+            </table><br>
+            {% if request.session.secret_code == "FGadmin!" %}
+            <button style="width: 100px!important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_more"><b>Add One More</b></button><br><br><br>
+            {% endif %}
+            <input type="hidden" name="other_material_count" value="0" id="other_material_count">
             <h3>Labor Type</h3>
-            <table>
-                    <tr>
+            <table id="labor_table_master">
+                <tr id="labor_header">
+                        <th hidden>Labor ID</th>
                         <th>Labor Type</th>
                         <th>Labor Description (if selecting other)</th>
                         <th># of Employees</th>
@@ -110,8 +157,32 @@
                         <th>Doubletime Hours</th>
                         <th>Overtime Hours</th>
                     </tr>
+                    {% if request.session.secret_code == "FGadmin!" %}
                     {% for one_labor in edit_this_order.labortypes.all %}
                     <tr>
+                        <td hidden><input type="text" readonly name="this_one_labor_id" value="{{one_labor.id}}" class="this_one_labor_id_class" id="this_one_labor_id_id"></td>                        
+                        <td>
+                             <select name="edit_labor_type_dropdown" class="edit_labor_type_dropdown_class" id="edit_labor_type_dropdown_id">
+                                 <option selected value="{{one_labor.labor_type}}">{{one_labor.labor_type}}</option>
+                                {% for one_labor_type in all_labor_types %}
+                                {% if one_labor.labor_type != one_labor_type.labor_type_name %}
+                                <option value="{{one_labor_type.labor_type_name}}">{{one_labor_type.labor_type_name}}</option>
+                               {% endif %}
+                               {% endfor %}
+                            </select>
+                            </td>
+                        <td><input type="text" name="edit_labor_description" value="{{one_labor.labor_description}}" class="edit_labor_description_class" id="edit_labor_description_id"></td>
+                        <td><input required type="text" name="edit_employee_numbers" value="{{one_labor.employee_numbers}}" class="edit_employee_numbers_class" id="edit_employee_numbers_id"></td>
+                        <td><input required type="text" name="edit_regular_hours" value="{{one_labor.regular_hours}}" class="edit_regular_hours_class" id="edit_regular_hours_id"></td>
+                        <td><input required type="text" name="edit_premium_hours" value="{{one_labor.premium_hours}}" class="edit_premium_hours_class" id="edit_premium_hours_id"></td>
+                        <td><input required type="text" name="edit_double_hours" value="{{one_labor.double_hours}}" class="edit_double_hours_class" id="edit_double_hours_id"></td>
+                        <td><input required type="text" name="edit_over_hours" value="{{one_labor.over_hours}}" class="edit_over_hours_class" id="edit_over_hours_id"></td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    {% for one_labor in edit_this_order.labortypes.all %}
+                    <tr>
+                        <td hidden><input type="text" readonly name="this_one_labor_id" value="{{one_labor.id}}" class="this_one_labor_id_class" id="this_one_labor_id_id"></td>                        
                         <td>{{one_labor.labor_type}}</td>
                         <td>{{one_labor.labor_description}}</td>
                         <td>{{one_labor.employee_numbers}}</td>
@@ -121,7 +192,13 @@
                         <td>{{one_labor.over_hours}}</td>
                     </tr>
                     {% endfor %}
+                    {% endif %}
+                    <input hidden type="number" name="count_of_labor" value="0" class="count_of_labor" id="count_of_labor">
             </table><br><br><br>
+            {% if request.session.secret_code == "FGadmin!" %}
+            <button style="width: 100px!important; height: 50px !important; background-color: #EFEFEF;" type="button" id="add_labor"><b>Add One More</b></button><br><br><br>
+            {% endif %}
+            <input type="hidden" name="labor_count" value="0" id="labor_count">
             <hr>
             <div id="contractor_signator">
                 <p><span class="titles">Name of General Contractor who Signed the Order:</span> {{edit_this_order.signator_1}} </p>
@@ -445,6 +522,7 @@
     
         $(document).ready(function () {
             $('.joblist').select2();
+            $('.material_list').select2();
         });
 
 
@@ -461,7 +539,153 @@
         }
 
         )
-        </script>
+    </script>
+    <script>
+
+
+// to input in the count of existing materials that is on this work order  
+    counter = 1
+
+    
+    $('#material_table > tbody > tr').not(':first').each(function(index, tr){
+        var material_id = document.getElementsByClassName('this_material_id_class')[counter-1]
+        var material_quantity = document.getElementsByClassName('material_quantity_class')[counter-1]
+        var material_product_name = document.getElementsByClassName('material_product_name_class')[counter-1]
+        var material_unit_of_measurement = document.getElementsByClassName('material_unit_of_measurement_class')[counter-1]
+        var material_material_measurement_amount = document.getElementsByClassName('material_material_measurement_amount_class')[counter-1]
+        material_id.setAttribute("name", `this_material_id${counter}`);
+        material_quantity.setAttribute("name", `edit_material_quantity${counter}`);
+        material_product_name.setAttribute("name", `edit_material_product_name${counter}`);
+        material_unit_of_measurement.setAttribute("name", `edit_material_unit_of_measurement${counter}`);
+        material_material_measurement_amount.setAttribute("name", `edit_material_measurement_amount${counter}`);
+        counter = counter + 1
+        var counter_input_for_materials = document.getElementById('count_of_existing_materials');
+        counter_input_for_materials.setAttribute("value", `${counter-1}`);
+    })
+    
+
+// end edit materials that are currently on this workorder
+            
+</script>
+<script>
+
+    // add more material to material section
+
+    $('#add_material').click(function (e) {
+            $('#material_count').attr('value', Number($('#material_count').attr('value')) + 1)
+            var i = Number($('#material_count').attr('value'))
+            $('#material_table').append(`<tr><td></td> <td><input type="number" name="quantity${i}" id="mat_quantity${i}" onkeypress="return isNumberKey(this, event);"></td> <td><select name="product${i}" class="material_list" id=material_list${i} onchange="material_unit_match()"><option value="">None&#160;&#160;&#160;&#160;</option>
+                                <option value="">Other (Input Below)&#160;&#160;&#160;&#160;</option>
+            {% for one_material in all_material_names %}
+            <option value="{{one_material.product_name}}| {{one_material.unit_of_measurement}}|{{one_material.price}}">{{one_material.product_name}}</option>
+            {% endfor %}
+            </select>
+                            </td><td><input type="text" readonly name="measurement${i}" id="unit_measurement${i}"></td><td><input type="text" name="measurement_amount${i}" id="measurement_amount${i}" onkeypress="return isNumberKey(this, event);"></td></tr>`)
+            $(document).ready(function () {
+            $('.material_list').select2();
+            // $('.measurement').select2();
+        });
+        })
+
+        function material_unit_match(){ 
+            var full_id = event.target.id
+            var length = full_id.length - 1
+            var the_value = (full_id. split("|")[1]).trim();
+            console.log(the_value)
+            var the_id = full_id[21]
+            $(`#unit_measurement${the_id}`).val(the_value)
+            if(the_value == "EA" || the_value == "Box(s)" ){
+                $(`#measurement_amount${the_id}`).css("background", "black").prop("readonly", true);
+                $(`#measurement_amount${the_id}`).val(1);
+            }
+            else{
+                $(`#measurement_amount${the_id}`).css('background','').prop("readonly", false);
+
+            }
+        }
+
+
+        function isNumberKey(txt, evt) {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode == 46) {
+            //Check if the text already contains the . character
+            if (txt.value.indexOf('.') === -1) {
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            if (charCode > 31 &&
+              (charCode < 48 || charCode > 57))
+              return false;
+          }
+          return true;
+        }
+        //end
+
+        // for other material
+
+        counter_other_mat = 1
+
+            
+        $('#other_material_table > tbody > tr').not(':first').each(function(index, tr){
+            var other_material_id = document.getElementsByClassName('this_one_other_material_id_class')[counter_other_mat-1]
+            var other_material_quantity = document.getElementsByClassName('other_material_quantity_class')[counter_other_mat-1]
+            var other_material_product_name = document.getElementsByClassName('other_material_product_name_class')[counter_other_mat-1]
+            var other_material_unit_of_measurement = document.getElementsByClassName('other_material_unit_of_measurement_class')[counter_other_mat-1]
+            var other_material_material_measurement_amount = document.getElementsByClassName('other_material_material_measurement_amount_class')[counter_other_mat-1]
+            other_material_id.setAttribute("name", `this_other_material_id${counter_other_mat}`);
+            other_material_quantity.setAttribute("name", `edit_other_material_quantity${counter_other_mat}`);
+            other_material_product_name.setAttribute("name", `edit_other_material_product_name${counter_other_mat}`);
+            other_material_unit_of_measurement.setAttribute("name", `edit_other_material_unit_of_measurement${counter_other_mat}`);
+            other_material_material_measurement_amount.setAttribute("name", `edit_other_material_measurement_amount${counter_other_mat}`);
+            counter_other_mat = counter_other_mat + 1
+            var counter_input_for_other_materials = document.getElementById('count_of_existing_other_materials');
+            counter_input_for_other_materials.setAttribute("value", `${counter_other_mat-1}`);
+        })
+
+
+        $('#add_more').click(function (e) {
+                    $('#other_material_count').attr('value', Number($('#other_material_count').attr('value')) + 1)
+                    var c = Number($('#other_material_count').attr('value'))
+                    $('#other_material_table').append(`<tr><td></td><td><input type="number" id="other_quantity" name="other_quantity${c}"></td><td class="the_product_name"><input style="width: 90%;" type="text" id="other_name" name="other_name${c}"></td><td><input type="test" id="other_measurement" name="other_measurement${c}"></td><td><input type="text" id="other_measurement_amount" name="other_measurement_amount${c}"></td></tr>`)
+                })
+
+        counter_labor = 1
+         $('#labor_table_master > tbody > tr').not(':first').each(function(index, tr){
+            var labor_id = document.getElementsByClassName('this_one_labor_id_class')[counter_labor-1]
+            var labor_type = document.getElementsByClassName('edit_labor_type_dropdown_class')[counter_labor-1]
+            var labor_description = document.getElementsByClassName('edit_labor_description_class')[counter_labor-1]
+            var employee_numbers = document.getElementsByClassName('edit_employee_numbers_class')[counter_labor-1]
+            var regular_numbers = document.getElementsByClassName('edit_regular_hours_class')[counter_labor-1]
+            var premium_numbers = document.getElementsByClassName('edit_premium_hours_class')[counter_labor-1]
+            var double_numbers = document.getElementsByClassName('edit_double_hours_class')[counter_labor-1]
+            var over_numbers = document.getElementsByClassName('edit_over_hours_class')[counter_labor-1]
+            labor_id.setAttribute("name", `this_one_labor_id${counter_labor}`);
+            labor_type.setAttribute("name", `edit_labor_type_dropdown${counter_labor}`);
+            labor_description.setAttribute("name", `edit_labor_description${counter_labor}`);
+            employee_numbers.setAttribute("name", `edit_employee_numbers${counter_labor}`);
+            regular_numbers.setAttribute("name", `edit_regular_hours${counter_labor}`);
+            premium_numbers.setAttribute("name", `edit_premium_hours${counter_labor}`);
+            double_numbers.setAttribute("name", `edit_double_hours${counter_labor}`);
+            over_numbers.setAttribute("name", `edit_over_hours${counter_labor}`);
+            counter_labor = counter_labor + 1
+            var counter_input_for_labor = document.getElementById('count_of_labor');
+            counter_input_for_labor.setAttribute("value", `${counter_labor-1}`);
+        })
+
+        $('#add_labor').click(function (e) {
+                    $('#labor_count').attr('value', Number($('#labor_count').attr('value')) + 1)
+                    var n = Number($('#labor_count').attr('value'))
+                    $('#labor_table_master').append(`<tr><td><select name="labor_type${n}" class="labor_drop">{% for one_labor_type in  all_labor_types %}<option value="{{one_labor_type.labor_type_name}}">{{one_labor_type.labor_type_name}}</option>{% endfor %}</select></td><td><input type="text" name="labor_description${n}" id="labor_description"></td><td><input type="text" required name="employee_numbers${n}" id="employee_numbers"></td><td><input type="text" name="regular_hours${n}" id="regular_hours"></td><td><input type="text" name="premium_hours${n}" id="premium_hours"></td><td><input type="text" name="double_hours${n}" id="double_hours"></td><td><input type="text" name="over_hours${n}" id="over_hours"></td></tr>`)
+
+            $(document).ready(function () {
+            $('.labor_drop').select2();
+                });
+                })
+
+    </script>
+
 </body>
 
 </html>
