@@ -48,12 +48,9 @@
             <form action="/create_labor_rate" method="post">
                 {% csrf_token %}
                Labor Type: <select name="labor_type_name" id="labor_type_name" class="labor_type_name_dropdown">
-                <option value="Carpenter - Foreman">Carpenter - Foreman</option>
-                <option value="Carpenter - Journeyman">Carpenter - Journeyman</option>
-                <option value="Taper - Journeyman">Taper - Journeyman</option>
-                <option value="Taper - Foreman">Taper - Foreman</option>
-                <option value="Laborer">Laborer</option>
-                <option value="Supervisor">Supervisor</option>
+                {% for one_labor_type in all_labor_types %}
+                <option value="{{one_labor_type.labor_type_name}}">{{one_labor_type.labor_type_name}}</option>
+                {% endfor %}
             </select><br><br>
                 Job Name: <select name="job_name" id="job_name">
                     <option selected="true" disabled="disabled">Select One</option>

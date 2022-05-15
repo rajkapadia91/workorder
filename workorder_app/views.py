@@ -634,6 +634,8 @@ def save_edit(request, workorder_id):
                 the_material.product = request.POST[f"edit_material_product_name{one_mat}"]
                 the_material.measurement = request.POST[f'edit_material_unit_of_measurement{one_mat}']
                 the_material.measurement_amount = request.POST[f'edit_material_measurement_amount{one_mat}']
+                total_material_revised_cost = round(round(float(request.POST[f"edit_material_quantity{one_mat}"]),2) * round(float(the_material.per_price),2) * round(float(request.POST[f'edit_material_measurement_amount{one_mat}']),2),2)
+                the_material.total_material_cost = total_material_revised_cost
                 the_material.save()
         mat_count = int(request.POST['material_count'])
         if mat_count != 0:
